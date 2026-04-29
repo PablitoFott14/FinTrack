@@ -1,1083 +1,1165 @@
 /* ═══════════════════════════════════════════════════════════════
-   OpenClaw FinTrack Universe — Data Explorer
-   Full drill-down access to every record across all 5 services.
-   Provides: detail panel, universal tables, global search,
-             user 360° view, and scenario builder.
+   FinTrack · OpenClaw — Explorer + Modal Data Chains
+   Interaction model: table row click → modal with FK chain
 ═══════════════════════════════════════════════════════════════ */
 
 const PAGE_SIZE = 50;
 
-/* ─── Explorer state ─── */
-const EX = {
-  tx:   { page: 0, sort: { col: 'date', dir: 'desc' }, filters: { search:'', cat:'', userId:'', dateFrom:'', dateTo:'', amtMin:'', amtMax:'' } },
-  user: { page: 0, sort: { col: 'user_id', dir: 'asc' }, filter: '' },
-  acct: { page: 0, filter: '', typeFilter: '', instFilter: '' },
-  sub:  { page: 0, filter: '', statusFilter: '', freqFilter: '' },
-  sup:  { filter: '' },
+/* ─── Sort state per table ─── */
+const SORT = {
+  users: { col:'user_id', dir:'asc' },
+  accts: { col:'account_id', dir:'asc' },
+  tx:    { col:'date', dir:'desc' },
+  subs:  { col:'subscription_id', dir:'asc' },
 };
-
-let _detailRecord   = null;
-let _detailType     = null;
-let _detailTabState = { fields: true, related: false, raw: false };
+const PAGE = { users:0, accts:0, tx:0, subs:0 };
 
 /* ══════════════════════════════════════════════════
-   DETAIL PANEL
+   MODAL ENGINE
 ══════════════════════════════════════════════════ */
-
-function openDetail(type, record, title) {
-  _detailRecord = record;
-  _detailType   = type;
-
-  const panel = document.getElementById('detail-panel');
-  document.getElementById('detail-type-badge').textContent = type.toUpperCase();
-  document.getElementById('detail-type-badge').className = 'detail-type-badge badge badge-' + type;
-  document.getElementById('detail-title').textContent = title || type;
-
-  renderDetailFields(type, record);
-  renderDetailRelated(type, record);
-  renderDetailRaw(record);
-
-  panel.classList.add('open');
-  document.getElementById('layout').classList.add('panel-open');
-  switchDetailTab('fields', document.querySelector('.detail-tab[data-dtab="fields"]'));
+function openModal(type, badgeLabel, title, bodyHtml) {
+  const overlay = document.getElementById('modal-overlay');
+  document.getElementById('modal-badge').textContent = badgeLabel;
+  document.getElementById('modal-badge').className = `modal-badge badge badge-${type}`;
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = bodyHtml;
+  overlay.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
 }
 
-function closeDetail() {
-  document.getElementById('detail-panel').classList.remove('open');
-  document.getElementById('layout').classList.remove('panel-open');
-  _detailRecord = null;
+function closeModal() {
+  document.getElementById('modal-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
 }
 
-function switchDetailTab(tab, btn) {
-  document.querySelectorAll('.detail-tab').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  const ids = { fields: 'detail-body', related: 'detail-related', raw: 'detail-raw' };
-  Object.values(ids).forEach(id => document.getElementById(id).classList.add('hidden'));
-  document.getElementById(ids[tab]).classList.remove('hidden');
+function handleModalClick(e) {
+  if (e.target.id === 'modal-overlay') closeModal();
 }
 
-function renderDetailFields(type, r) {
-  const body = document.getElementById('detail-body');
-  const mask = v => v ? '•••-••-' + String(v).slice(-4) : '—';
-  const fmt  = v => v == null ? '<span style="color:var(--text3)">null</span>' : String(v);
-  const money= v => v == null ? '—' : `<span class="${v < 0 ? 'amt-neg':'amt-pos'}">$${Math.abs(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</span>`;
-
-  let fields = [];
-
-  if (type === 'user') {
-    fields = [
-      { k:'User ID',       v: r.user_id },
-      { k:'Full Name',     v: r.name },
-      { k:'Email',         v: r.email },
-      { k:'Phone',         v: r.phone },
-      { k:'Member Since',  v: r.member_since },
-      { k:'Status',        v: `<span class="badge badge-${r.status?.toLowerCase()}">${r.status}</span>` },
-      { k:'Linked Accounts', v: r.linked_accounts_count },
-      { k:'Date of Birth', v: r.date_of_birth },
-      { k:'SSN',           v: mask(r.ssn), mono: true, cls:'masked' },
-      { k:"Mother's Maiden", v: r.mothers_maiden_name },
-    ];
-  } else if (type === 'account') {
-    const owner = FT.users.find(u => u.user_id === r.user_id);
-    fields = [
-      { k:'Account ID',   v: r.account_id },
-      { k:'User',         v: owner ? `<button class="link-btn" onclick="openUserDetail('${r.user_id}')">${owner.name}</button>` : r.user_id },
-      { k:'Institution',  v: r.institution_name },
-      { k:'Type',         v: r.account_type },
-      { k:'Last Four',    v: r.last_four ? `•••• ${r.last_four}` : '—', mono: true },
-      { k:'Balance',      v: money(r.balance), raw: true },
-      { k:'Status',       v: `<span class="badge badge-${r.status?.toLowerCase()}">${r.status}</span>` },
-    ];
-  } else if (type === 'tx') {
-    const owner = FT.users.find(u => u.user_id === r.user_id);
-    fields = [
-      { k:'Transaction ID', v: r.transaction_id, mono: true },
-      { k:'Date',           v: r.date },
-      { k:'User',           v: owner ? `<button class="link-btn" onclick="openUserDetail('${r.user_id}')">${owner.name}</button>` : r.user_id },
-      { k:'Merchant',       v: r.merchant },
-      { k:'Amount',         v: money(r.amount), raw: true },
-      { k:'Category',       v: `<span class="badge badge-cat">${r.category}</span>` },
-      { k:'Account (last4)',v: r.account_last_four ? `•••• ${r.account_last_four}` : '—', mono: true },
-    ];
-  } else if (type === 'sub') {
-    const owner = FT.users.find(u => u.user_id === r.user_id);
-    fields = [
-      { k:'Subscription ID', v: r.subscription_id, mono: true },
-      { k:'User',            v: owner ? `<button class="link-btn" onclick="openUserDetail('${r.user_id}')">${owner.name}</button>` : r.user_id },
-      { k:'Service',         v: r.service_name },
-      { k:'Amount',          v: `$${r.amount?.toFixed(2)}` },
-      { k:'Frequency',       v: r.billing_frequency },
-      { k:'Next Billing',    v: r.next_billing_date },
-      { k:'Status',          v: `<span class="badge badge-${r.status?.toLowerCase()}">${r.status}</span>` },
-    ];
-  } else if (type === 'ticket') {
-    const zdUser = (ZD.users||[]).find(u => u.id === r.requester_id);
-    const ftUser = zdUser ? FT.users.find(u => u.user_id === zdUser.external_id) : null;
-    fields = [
-      { k:'Ticket ID',   v: r.external_id, mono: true },
-      { k:'Internal ID', v: r.id },
-      { k:'Subject',     v: r.subject },
-      { k:'Description', v: r.description },
-      { k:'Status',      v: `<span class="badge badge-${r.status}">${r.status}</span>` },
-      { k:'Priority',    v: `<span class="badge badge-${r.priority}">${r.priority}</span>` },
-      { k:'Type',        v: r.type },
-      { k:'Requester',   v: zdUser ? `<button class="link-btn" onclick="${ftUser ? `openUserDetail('${zdUser.external_id}')` : ''}">${zdUser.name}</button>` : r.requester_id },
-      { k:'FinTrack ID', v: zdUser?.external_id || '—', mono: true },
-      { k:'Channel',     v: r.via_channel },
-      { k:'Created',     v: r.created_at?.slice(0,16).replace('T',' ') },
-      { k:'Updated',     v: r.updated_at?.slice(0,16).replace('T',' ') },
-      { k:'Tags',        v: (r.tags||[]).map(t => `<span class="badge badge-cat">${t}</span>`).join(' ') || '—' },
-    ];
-  } else if (type === 'email') {
-    fields = [
-      { k:'Email ID',   v: r.email_id?.slice(0,16) + '…', mono: true },
-      { k:'Folder',     v: r.folder },
-      { k:'Sender',     v: r.sender },
-      { k:'Recipients', v: (r.recipients||[]).join(', ') },
-      { k:'Subject',    v: r.subject },
-      { k:'Read',       v: r.is_read ? '✓ Read' : '✗ Unread' },
-      { k:'Timestamp',  v: r.timestamp ? new Date(r.timestamp*1000).toISOString().slice(0,16).replace('T',' ') : '—' },
-      { k:'Content',    v: `<div style="max-height:120px;overflow-y:auto;font-size:11px;color:var(--text2);line-height:1.5;">${(r.content||'').replace(/\n/g,'<br>')}</div>`, raw: true },
-    ];
-  } else if (type === 'contact') {
-    fields = [
-      { k:'Contact ID', v: r.contact_id?.slice(0,16) + '…', mono: true },
-      { k:'Name',       v: `${r.first_name} ${r.last_name}` },
-      { k:'Email',      v: r.email },
-      { k:'Phone',      v: r.phone },
-      { k:'Status',     v: r.status },
-      { k:'Job',        v: r.job || '—' },
-      { k:'Country',    v: r.country || '—' },
-      { k:'Is Agent',   v: r.is_user ? 'Yes (Agent)' : 'No (Customer)' },
-      { k:'Description',v: r.description },
-    ];
-  }
-
-  const rowsHtml = fields.map(f => `
-    <div class="df-row">
-      <span class="df-key">${f.k}</span>
-      <span class="df-val${f.mono?' mono':''}${f.cls?' '+f.cls:''}">${f.raw ? f.v : escHtml(String(f.v ?? '—')).replace(/&amp;lt;/g,'<').replace(/&amp;gt;/g,'>').replace(/&amp;quot;/g,'"')}</span>
-    </div>`).join('');
-
-  /* Fix: for raw HTML fields, we need to inject them unescaped */
-  body.innerHTML = `<div class="detail-fields">${fields.map(f => `
-    <div class="df-row">
-      <span class="df-key">${f.k}</span>
-      <span class="df-val${f.mono?' mono':''}${f.cls?' '+f.cls:''}">${f.raw !== false && (f.v?.includes?.('<') || f.v?.includes?.('onclick')) ? f.v : escHtml(String(f.v ?? '—'))}</span>
-    </div>`).join('')}</div>`;
+/* ── Chain building helpers ── */
+function chainBlock(typeClass, label, count, innerHtml) {
+  return `<div class="chain-block ${typeClass}">
+    <div class="chain-block-hdr">
+      <span class="chain-block-label">${label}</span>
+      <span class="chain-block-count">${count}</span>
+    </div>
+    ${innerHtml}
+  </div>`;
 }
 
-function renderDetailRelated(type, r) {
-  const el = document.getElementById('detail-related');
-  let html = '';
-
-  if (type === 'user') {
-    const accts  = FT.accounts.filter(a => a.user_id === r.user_id);
-    const txns   = FT.transactions.filter(t => t.user_id === r.user_id).slice(0,10);
-    const subs   = FT.subscriptions.filter(s => s.user_id === r.user_id && s.status === 'Active');
-    const zdUser = (ZD.users||[]).find(u => u.external_id === r.user_id);
-    const tickets= zdUser ? (ZD.tickets||[]).filter(t => t.requester_id === zdUser.id) : [];
-    const contact= (CT.contacts||[]).find(c => c.email === r.email);
-    const calEvts= (CAL.events||[]).filter(e => (e.attendees||[]).includes(r.name)).slice(0,5);
-
-    html += relatedSection('🏦 Accounts', accts.map(a =>
-      `<div class="related-item" onclick="openDetail('account', ${safeJson(a)}, '${esc(a.institution_name)} ${esc(a.account_type)}')">
-        <span class="related-item-icon">🏦</span>
-        <div><div class="related-item-main">${esc(a.institution_name)} — ${esc(a.account_type)}</div>
-        <div class="related-item-sub">•••• ${a.last_four} | Balance: <span class="${a.balance<0?'amt-neg':'amt-pos'}">$${Math.abs(a.balance).toLocaleString()}</span></div></div></div>`).join('')
-    );
-
-    html += relatedSection('💳 Recent Transactions', `
-      <table class="related-mini-table">
-        <thead><tr><th>Date</th><th>Merchant</th><th>Amount</th><th>Category</th></tr></thead>
-        <tbody>${txns.map(t =>
-          `<tr class="link-row" onclick="openDetail('tx', ${safeJson(t)}, '${esc(t.merchant)}')">
-            <td>${t.date}</td><td>${esc(t.merchant)}</td>
-            <td class="${t.amount<0?'amt-neg':'amt-pos'}">$${Math.abs(t.amount).toFixed(2)}</td>
-            <td><span class="badge badge-cat">${esc(t.category)}</span></td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
-      <button class="btn-ghost" style="margin-top:8px;font-size:10px" onclick="filterTxByUser('${r.user_id}')">View all transactions →</button>
-    `);
-
-    if (subs.length) html += relatedSection('🔄 Active Subscriptions', subs.map(s =>
-      `<div class="related-item" onclick="openDetail('sub', ${safeJson(s)}, '${esc(s.service_name)}')">
-        <span class="related-item-icon">🔄</span>
-        <div><div class="related-item-main">${esc(s.service_name)}</div>
-        <div class="related-item-sub">$${s.amount} / ${s.billing_frequency} · Next: ${s.next_billing_date}</div></div></div>`).join('')
-    );
-
-    if (tickets.length) html += relatedSection('🎫 Support Tickets', tickets.map(t =>
-      `<div class="related-item" onclick="openDetail('ticket', ${safeJson(t)}, '${esc(t.subject?.slice(0,40))}')">
-        <span class="related-item-icon">🎫</span>
-        <div><div class="related-item-main">${esc(t.subject)}</div>
-        <div class="related-item-sub">${t.external_id} · ${t.created_at?.slice(0,10)}</div></div></div>`).join('')
-    );
-
-    if (contact) html += relatedSection('📇 Contact Record', `
-      <div class="related-item" onclick="openDetail('contact', ${safeJson(contact)}, '${esc(contact.first_name+' '+contact.last_name)}')">
-        <span class="related-item-icon">📇</span>
-        <div><div class="related-item-main">${esc(contact.first_name)} ${esc(contact.last_name)}</div>
-        <div class="related-item-sub">${esc(contact.description||'')}</div></div></div>`);
-
-    if (calEvts.length) html += relatedSection('📅 Upcoming Billing Events', calEvts.map(e => {
-      const d = new Date(e.start_datetime * 1000).toLocaleDateString();
-      return `<div class="related-item"><span class="related-item-icon">📅</span>
-        <div><div class="related-item-main">${esc(e.title)}</div>
-        <div class="related-item-sub">${d}</div></div></div>`;
-    }).join(''));
-
-  } else if (type === 'account') {
-    const txns = FT.transactions.filter(t =>
-      t.user_id === r.user_id && t.account_last_four === r.last_four
-    ).slice(0,12);
-    const owner = FT.users.find(u => u.user_id === r.user_id);
-
-    if (owner) html += relatedSection('👤 Account Owner', `
-      <div class="related-item" onclick="openUserDetail('${r.user_id}')">
-        <span class="related-item-icon">👤</span>
-        <div><div class="related-item-main">${esc(owner.name)}</div>
-        <div class="related-item-sub">${esc(owner.email)} · Member since ${owner.member_since}</div></div></div>`);
-
-    html += relatedSection('💳 Transactions on this Account', `
-      <table class="related-mini-table">
-        <thead><tr><th>Date</th><th>Merchant</th><th>Amount</th><th>Cat.</th></tr></thead>
-        <tbody>${txns.map(t =>
-          `<tr class="link-row" onclick="openDetail('tx', ${safeJson(t)}, '${esc(t.merchant)}')">
-            <td>${t.date}</td><td>${esc(t.merchant)}</td>
-            <td class="${t.amount<0?'amt-neg':'amt-pos'}">$${Math.abs(t.amount).toFixed(2)}</td>
-            <td>${esc(t.category)}</td></tr>`).join('')}
-        </tbody>
-      </table>`);
-
-  } else if (type === 'tx') {
-    const owner = FT.users.find(u => u.user_id === r.user_id);
-    const acct  = FT.accounts.find(a => a.user_id === r.user_id && a.last_four === r.account_last_four);
-    const sameMerchant = FT.transactions.filter(t => t.merchant === r.merchant && t.transaction_id !== r.transaction_id).slice(0,8);
-
-    if (owner) html += relatedSection('👤 User', `
-      <div class="related-item" onclick="openUserDetail('${r.user_id}')">
-        <span class="related-item-icon">👤</span>
-        <div><div class="related-item-main">${esc(owner.name)}</div>
-        <div class="related-item-sub">${esc(owner.email)}</div></div></div>`);
-
-    if (acct) html += relatedSection('🏦 Account', `
-      <div class="related-item" onclick="openDetail('account', ${safeJson(acct)}, '${esc(acct.institution_name)}')">
-        <span class="related-item-icon">🏦</span>
-        <div><div class="related-item-main">${esc(acct.institution_name)} — ${esc(acct.account_type)}</div>
-        <div class="related-item-sub">•••• ${acct.last_four}</div></div></div>`);
-
-    html += relatedSection(`🏪 Other transactions at ${r.merchant}`, `
-      <table class="related-mini-table">
-        <thead><tr><th>Date</th><th>User</th><th>Amount</th></tr></thead>
-        <tbody>${sameMerchant.map(t => {
-          const u = FT.users.find(x => x.user_id === t.user_id);
-          return `<tr class="link-row" onclick="openDetail('tx', ${safeJson(t)}, '${esc(t.merchant)}')">
-            <td>${t.date}</td><td>${esc(u?.name||t.user_id)}</td>
-            <td class="${t.amount<0?'amt-neg':'amt-pos'}">$${Math.abs(t.amount).toFixed(2)}</td></tr>`;
-        }).join('')}
-        </tbody>
-      </table>`);
-
-  } else if (type === 'ticket') {
-    const zdUser = (ZD.users||[]).find(u => u.id === r.requester_id);
-    const ftUser = zdUser ? FT.users.find(u => u.user_id === zdUser.external_id) : null;
-    const email  = (EM.emails||[]).find(e => e.sender === zdUser?.email);
-
-    if (ftUser) html += relatedSection('👤 FinTrack User Profile', `
-      <div class="related-item" onclick="openUserDetail('${ftUser.user_id}')">
-        <span class="related-item-icon">👤</span>
-        <div><div class="related-item-main">${esc(ftUser.name)} (${ftUser.user_id})</div>
-        <div class="related-item-sub">${esc(ftUser.email)} · Member since ${ftUser.member_since}</div></div></div>
-      <button class="btn-ghost" style="margin-top:8px;font-size:10px" onclick="buildScenarioFor('${ftUser.user_id}')">Build full OpenClaw context →</button>`);
-
-    if (ftUser) {
-      const accts = FT.accounts.filter(a => a.user_id === ftUser.user_id);
-      const bal = accts.reduce((s,a) => s+a.balance, 0);
-      html += relatedSection('🏦 User Accounts', `
-        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">${accts.length} accounts · Total balance: <span class="${bal<0?'amt-neg':'amt-pos'}">$${Math.abs(bal).toLocaleString()}</span></div>
-        <table class="related-mini-table">
-          <thead><tr><th>Institution</th><th>Type</th><th>Balance</th></tr></thead>
-          <tbody>${accts.map(a =>
-            `<tr onclick="openDetail('account', ${safeJson(a)}, '${esc(a.institution_name)}')" class="link-row">
-              <td>${esc(a.institution_name)}</td><td>${esc(a.account_type)}</td>
-              <td class="${a.balance<0?'amt-neg':'amt-pos'}">$${Math.abs(a.balance).toLocaleString()}</td>
-            </tr>`).join('')}
-          </tbody>
-        </table>`);
-    }
-
-    if (email) html += relatedSection('📧 Linked Email', `
-      <div class="related-item" onclick="openDetail('email', ${safeJson(email)}, '${esc(email.subject)}')">
-        <span class="related-item-icon">📧</span>
-        <div><div class="related-item-main">${esc(email.subject)}</div>
-        <div class="related-item-sub">From: ${esc(email.sender)}</div></div></div>`);
-  }
-
-  el.innerHTML = html || '<div class="empty-state"><div class="es-icon">🔗</div><p>No related records found.</p></div>';
+function chainConnector(fkExpr) {
+  return `<div class="chain-connector">
+    <div class="chain-line"></div>
+    <div class="chain-fk-pill">↓ FK: ${fkExpr}</div>
+    <div class="chain-line"></div>
+  </div>`;
 }
 
-function renderDetailRaw(record) {
-  document.getElementById('detail-raw').innerHTML =
-    `<pre class="raw-json">${escHtml(JSON.stringify(record, null, 2))}</pre>`;
+function chainFields(pairs) {
+  return `<div class="chain-fields">${pairs.map(([k,v,cls='']) =>
+    `<div class="chain-field"><div class="cf-key">${k}</div><div class="cf-val${cls?' '+cls:''}">${v}</div></div>`
+  ).join('')}</div>`;
 }
 
-function relatedSection(title, content) {
-  return `<div class="related-section"><div class="related-section-title">${title}</div>${content}</div>`;
+function chainTable(headers, rows, onRowClick) {
+  const hdr = headers.map(h => `<th>${h}</th>`).join('');
+  const bdy = rows.map((r,i) => {
+    const cls = onRowClick ? 'linkable' : '';
+    const onclick = onRowClick ? `onclick="${onRowClick(r,i)}"` : '';
+    return `<tr class="${cls}" ${onclick}>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`;
+  }).join('') || `<tr><td colspan="${headers.length}" style="color:var(--text3);text-align:center;padding:16px">No records</td></tr>`;
+  return `<table class="chain-mini-table"><thead><tr>${hdr}</tr></thead><tbody>${bdy}</tbody></table>`;
 }
 
-/* ── Utility: open user 360 detail ── */
-function openUserDetail(userId) {
+function fkCheck(pass, msg) {
+  return `<div class="fk-check"><span class="fk-check-icon">${pass?'✅':'❌'}</span><span>${msg}</span></div>`;
+}
+
+/* ── Formatters ── */
+const $ = v => v == null ? '—' : (v < 0 ? `<span class="amt-neg">-$${Math.abs(v).toFixed(2)}</span>` : `<span class="amt-pos">$${v.toFixed(2)}</span>`);
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;');
+const mono = s => `<span style="font-family:var(--mono);font-size:11px">${esc(s)}</span>`;
+const badgeHtml = (cls,t) => `<span class="badge badge-${cls}">${t}</span>`;
+const mask = v => v ? `•••-••-${String(v).slice(-4)}` : '—';
+
+/* ══════════════════════════════════════════════════
+   USER MODAL
+══════════════════════════════════════════════════ */
+function openUserModal(userId) {
   const user = FT.users.find(u => u.user_id === userId);
   if (!user) return;
-  openDetail('user', user, user.name);
-}
 
-/* ── Utility: filter transactions by user ── */
-function filterTxByUser(userId) {
-  const user = FT.users.find(u => u.user_id === userId);
-  EX.tx.filters.userId = userId;
-  EX.tx.page = 0;
-  closeDetail();
-  navigateTo('transactions');
-  setTimeout(() => {
-    const sel = document.getElementById('tx-user-filter');
-    if (sel) sel.value = userId;
-    renderTransactionsTable();
-  }, 100);
-}
+  const accts  = FT.accounts.filter(a => a.user_id === userId);
+  const txns   = FT.transactions.filter(t => t.user_id === userId);
+  const recent = [...txns].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10);
+  const subs   = FT.subscriptions.filter(s => s.user_id === userId);
+  const activeSubs = subs.filter(s=>s.status==='Active');
+  const totalBal   = accts.reduce((s,a)=>s+a.balance,0);
 
-/* ── Utility: go to scenario builder for a user ── */
-function buildScenarioFor(userId) {
-  closeDetail();
-  navigateTo('scenarios');
-  setTimeout(() => {
-    const sel = document.getElementById('scenario-user-select');
-    if (sel) { sel.value = userId; }
-    const btn = document.getElementById('scenario-build-btn');
-    if (btn) { btn.disabled = false; buildScenario(userId); }
-  }, 100);
-}
-
-/* ══════════════════════════════════════════════════
-   GLOBAL SEARCH
-══════════════════════════════════════════════════ */
-let _searchTimer = null;
-
-function initGlobalSearch() {
-  const input = document.getElementById('global-search');
-  const results = document.getElementById('search-results');
-  if (!input) return;
-
-  input.addEventListener('input', () => {
-    clearTimeout(_searchTimer);
-    _searchTimer = setTimeout(() => runGlobalSearch(input.value.trim()), 250);
-  });
-  input.addEventListener('blur', () => {
-    setTimeout(() => results.classList.add('hidden'), 200);
-  });
-  input.addEventListener('focus', () => {
-    if (input.value.trim().length >= 2) results.classList.remove('hidden');
-  });
-}
-
-function runGlobalSearch(q) {
-  const results = document.getElementById('search-results');
-  if (q.length < 2) { results.classList.add('hidden'); return; }
-  const ql = q.toLowerCase();
-
-  const userHits = FT.users.filter(u =>
-    u.name.toLowerCase().includes(ql) || u.email.toLowerCase().includes(ql) || u.user_id.toLowerCase().includes(ql)
-  ).slice(0,5);
-
-  const txHits = FT.transactions.filter(t =>
-    t.merchant.toLowerCase().includes(ql) || t.category.toLowerCase().includes(ql) || t.transaction_id.toLowerCase().includes(ql)
-  ).slice(0,5);
-
-  const acctHits = FT.accounts.filter(a =>
-    a.institution_name.toLowerCase().includes(ql) || a.account_type.toLowerCase().includes(ql) || a.last_four?.includes(ql)
-  ).slice(0,4);
-
-  const ticketHits = (ZD.tickets||[]).filter(t =>
-    t.subject?.toLowerCase().includes(ql) || t.description?.toLowerCase().includes(ql) || t.external_id?.toLowerCase().includes(ql)
-  ).slice(0,4);
-
-  const subHits = FT.subscriptions.filter(s =>
-    s.service_name.toLowerCase().includes(ql)
-  ).slice(0,4);
-
-  if (!userHits.length && !txHits.length && !acctHits.length && !ticketHits.length && !subHits.length) {
-    results.innerHTML = `<div class="search-empty">No results for "${escHtml(q)}"</div>`;
-    results.classList.remove('hidden');
-    return;
-  }
+  const zdUser = (ZD.users||[]).find(u => u.external_id === userId);
+  const tickets = zdUser ? (ZD.tickets||[]).filter(t=>t.requester_id===zdUser.id) : [];
+  const emails  = (EM.emails||[]).filter(e=>e.sender===user.email);
+  const contact = (CT.contacts||[]).find(c=>c.email===user.email);
+  const calEvts = (CAL.events||[]).filter(e=>(e.attendees||[]).includes(user.name));
+  const catMap  = {};
+  txns.filter(t=>t.amount<0).forEach(t=>{catMap[t.category]=(catMap[t.category]||0)+Math.abs(t.amount);});
+  const topCat  = Object.entries(catMap).sort((a,b)=>b[1]-a[1])[0];
 
   let html = '';
-  if (userHits.length) {
-    html += `<div class="search-group-title">👤 Users</div>`;
-    html += userHits.map(u => `
-      <div class="search-result-item" onclick="openUserDetail('${u.user_id}');document.getElementById('search-results').classList.add('hidden')">
-        <span class="sri-icon">👤</span>
-        <div><div class="sri-main">${hilite(u.name,q)}</div><div class="sri-sub">${hilite(u.email,q)} · ${u.user_id}</div></div>
-      </div>`).join('');
-  }
-  if (txHits.length) {
-    html += `<div class="search-group-title">💳 Transactions</div>`;
-    html += txHits.map(t => {
-      const u = FT.users.find(x => x.user_id === t.user_id);
-      return `<div class="search-result-item" onclick="openDetail('tx',${safeJson(t)},'${esc(t.merchant)}');document.getElementById('search-results').classList.add('hidden')">
-        <span class="sri-icon">💳</span>
-        <div><div class="sri-main">${hilite(t.merchant,q)}</div>
-        <div class="sri-sub">${t.date} · ${u?.name||t.user_id} · <span class="${t.amount<0?'amt-neg':'amt-pos'}">$${Math.abs(t.amount).toFixed(2)}</span></div></div>
-      </div>`;
-    }).join('');
-  }
-  if (acctHits.length) {
-    html += `<div class="search-group-title">🏦 Accounts</div>`;
-    html += acctHits.map(a => {
-      const u = FT.users.find(x => x.user_id === a.user_id);
-      return `<div class="search-result-item" onclick="openDetail('account',${safeJson(a)},'${esc(a.institution_name)}');document.getElementById('search-results').classList.add('hidden')">
-        <span class="sri-icon">🏦</span>
-        <div><div class="sri-main">${hilite(a.institution_name,q)} — ${a.account_type}</div>
-        <div class="sri-sub">•••• ${a.last_four} · Owner: ${u?.name||a.user_id}</div></div>
-      </div>`;
-    }).join('');
-  }
-  if (ticketHits.length) {
-    html += `<div class="search-group-title">🎫 Support Tickets</div>`;
-    html += ticketHits.map(t => `
-      <div class="search-result-item" onclick="openDetail('ticket',${safeJson(t)},'${esc(t.subject?.slice(0,40))}');document.getElementById('search-results').classList.add('hidden')">
-        <span class="sri-icon">🎫</span>
-        <div><div class="sri-main">${hilite(t.subject||'',q)}</div>
-        <div class="sri-sub">${t.external_id} · ${t.created_at?.slice(0,10)}</div></div>
-      </div>`).join('');
-  }
-  if (subHits.length) {
-    html += `<div class="search-group-title">🔄 Subscriptions</div>`;
-    html += subHits.map(s => {
-      const u = FT.users.find(x => x.user_id === s.user_id);
-      return `<div class="search-result-item" onclick="openDetail('sub',${safeJson(s)},'${esc(s.service_name)}');document.getElementById('search-results').classList.add('hidden')">
-        <span class="sri-icon">🔄</span>
-        <div><div class="sri-main">${hilite(s.service_name,q)}</div>
-        <div class="sri-sub">${u?.name||s.user_id} · $${s.amount}/${s.billing_frequency}</div></div>
-      </div>`;
-    }).join('');
+
+  /* Block 1: User record */
+  html += chainBlock('cb-user','User Record','1 record', chainFields([
+    ['user_id',       mono(user.user_id)],
+    ['name',          `<strong>${esc(user.name)}</strong>`],
+    ['email',         esc(user.email)],
+    ['phone',         esc(user.phone||'—')],
+    ['member_since',  user.member_since],
+    ['status',        badgeHtml('active', user.status)],
+    ['linked_accounts_count', user.linked_accounts_count],
+    ['date_of_birth', user.date_of_birth],
+    ['ssn',           `<span class="cf-val mono">${mask(user.ssn)}</span>`],
+    ['mothers_maiden_name', esc(user.mothers_maiden_name||'—')],
+  ]));
+
+  /* FK → Accounts */
+  html += chainConnector(`accounts.user_id = "${userId}"`);
+
+  /* Block 2: Accounts */
+  html += chainBlock('cb-account','Linked Accounts', `${accts.length} record${accts.length!==1?'s':''}`,
+    chainTable(
+      ['Account ID','Institution','Type','Last 4','Balance','Status'],
+      accts.map(a=>[
+        mono(a.account_id), esc(a.institution_name), esc(a.account_type),
+        `•••• ${a.last_four}`, $(a.balance), badgeHtml('active',a.status)
+      ]),
+      (r,i) => `openAccountModal('${accts[i].account_id}')`
+    ) +
+    fkCheck(accts.length === user.linked_accounts_count,
+      accts.length === user.linked_accounts_count
+        ? `linked_accounts_count (${user.linked_accounts_count}) matches actual account count (${accts.length})`
+        : `⚠ linked_accounts_count says ${user.linked_accounts_count} but found ${accts.length} accounts`)
+  );
+
+  /* FK → Transactions */
+  html += chainConnector(`transactions.user_id = "${userId}"`);
+
+  /* Block 3: Recent transactions */
+  html += chainBlock('cb-tx', `Recent Transactions (last 10 of ${txns.length})`, `${txns.length} total`,
+    chainTable(
+      ['Date','Merchant','Amount','Category','Account'],
+      recent.map(t=>[
+        t.date, esc(t.merchant), $(t.amount),
+        badgeHtml('cat',esc(t.category)), `•••• ${t.account_last_four||'—'}`
+      ]),
+      (r,i) => `openTransactionModal('${recent[i].transaction_id}')`
+    ) +
+    (txns.length > 10 ? `<div style="padding:8px 12px;font-size:10px;color:var(--text3)">Showing 10 of ${txns.length}. <button class="link-btn" onclick="closeModal();navigateTo('transactions');filterTxByUser('${userId}')">View all in Transactions tab →</button></div>` : '') +
+    (topCat ? `<div style="padding:8px 12px;font-size:11px;color:var(--text2)">Top spending category: <strong>${topCat[0]}</strong> ($${topCat[1].toFixed(2)})</div>` : '')
+  );
+
+  /* FK → Subscriptions */
+  html += chainConnector(`subscriptions.user_id = "${userId}"`);
+
+  /* Block 4: Subscriptions */
+  html += chainBlock('cb-sub', 'Subscriptions', `${activeSubs.length} active / ${subs.length} total`,
+    chainTable(
+      ['Service','Amount','Frequency','Next Billing','Status'],
+      subs.map(s=>[
+        esc(s.service_name), `$${s.amount?.toFixed(2)}`, s.billing_frequency,
+        s.next_billing_date, badgeHtml(s.status==='Active'?'active':'cancelled',s.status)
+      ]),
+      (r,i) => `openSubscriptionModal('${subs[i].subscription_id}')`
+    )
+  );
+
+  /* Block 5: Cross-service links */
+  const crossParts = [];
+  if (zdUser) crossParts.push(['Zendesk User', `${esc(zdUser.name)} · ID ${zdUser.id} · ${tickets.length} ticket${tickets.length!==1?'s':''}`]);
+  if (emails.length) crossParts.push(['Email Threads', `${emails.length} email${emails.length!==1?'s':''} from ${esc(user.email)}`]);
+  if (contact) crossParts.push(['Contact Record', esc(contact.description||'Found')]);
+  if (calEvts.length) crossParts.push(['Calendar Events', `${calEvts.length} billing event${calEvts.length!==1?'s':''} scheduled`]);
+  if (crossParts.length) {
+    html += chainConnector('cross-service entity resolution by email / external_id');
+    html += chainBlock('cb-cross','Cross-Service Links', `${crossParts.length} services`, chainFields(crossParts));
   }
 
-  results.innerHTML = html;
-  results.classList.remove('hidden');
+  openModal('user','USER', user.name, html);
 }
 
 /* ══════════════════════════════════════════════════
-   USERS EXPLORER
+   ACCOUNT MODAL
+══════════════════════════════════════════════════ */
+function openAccountModal(accountId) {
+  const acct = FT.accounts.find(a => a.account_id === accountId);
+  if (!acct) return;
+  const owner = FT.users.find(u => u.user_id === acct.user_id);
+  const txns  = FT.transactions.filter(t => t.user_id === acct.user_id && t.account_last_four === acct.last_four);
+  const recent = [...txns].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,12);
+
+  let html = '';
+
+  html += chainBlock('cb-account','Account Record','1 record', chainFields([
+    ['account_id',     mono(acct.account_id)],
+    ['institution',    `<strong>${esc(acct.institution_name)}</strong>`],
+    ['account_type',   esc(acct.account_type)],
+    ['last_four',      `<span class="cf-val mono">•••• ${acct.last_four}</span>`],
+    ['balance',        $(acct.balance)],
+    ['status',         badgeHtml('active',acct.status)],
+    ['user_id',        `<button class="link-btn" onclick="openUserModal('${acct.user_id}')">${esc(acct.user_id)}</button>`],
+  ]));
+
+  html += chainConnector(`account.user_id = "${acct.user_id}" → users`);
+
+  html += chainBlock('cb-user','Account Owner','1 record',
+    owner
+      ? chainFields([
+          ['user_id', mono(owner.user_id)],
+          ['name', `<strong>${esc(owner.name)}</strong>`],
+          ['email', esc(owner.email)],
+          ['member_since', owner.member_since],
+          ['status', badgeHtml('active',owner.status)],
+        ]) +
+        fkCheck(true, `account.user_id "${acct.user_id}" → user found: ${owner.name}`)
+      : fkCheck(false, `account.user_id "${acct.user_id}" → NO matching user found!`)
+  );
+
+  html += chainConnector(`transactions.user_id = "${acct.user_id}" AND transactions.account_last_four = "${acct.last_four}"`);
+
+  html += chainBlock('cb-tx', `Transactions on this Account`, `${txns.length} total`,
+    chainTable(
+      ['Date','Merchant','Amount','Category'],
+      recent.map(t=>[t.date, esc(t.merchant), $(t.amount), badgeHtml('cat',esc(t.category))]),
+      (r,i) => `openTransactionModal('${recent[i].transaction_id}')`
+    ) +
+    (txns.length > 12 ? `<div style="padding:6px 12px;font-size:10px;color:var(--text3)">Showing 12 of ${txns.length}</div>` : '') +
+    fkCheck(true, `${txns.length} transactions matched by user_id + account_last_four`)
+  );
+
+  openModal('account','ACCOUNT', `${acct.institution_name} — ${acct.account_type} (•••• ${acct.last_four})`, html);
+}
+
+/* ══════════════════════════════════════════════════
+   TRANSACTION MODAL
+══════════════════════════════════════════════════ */
+function openTransactionModal(txId) {
+  const tx = FT.transactions.find(t => t.transaction_id === txId);
+  if (!tx) return;
+  const user = FT.users.find(u => u.user_id === tx.user_id);
+  const acct = FT.accounts.find(a => a.user_id === tx.user_id && a.last_four === tx.account_last_four);
+  const sameMerch = FT.transactions
+    .filter(t => t.merchant === tx.merchant && t.transaction_id !== tx.transaction_id)
+    .sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
+
+  let html = '';
+
+  html += chainBlock('cb-tx','Transaction Record','1 record', chainFields([
+    ['transaction_id', mono(tx.transaction_id)],
+    ['date',           tx.date],
+    ['merchant',       `<strong>${esc(tx.merchant)}</strong>`],
+    ['amount',         $(tx.amount)],
+    ['category',       badgeHtml('cat',esc(tx.category))],
+    ['account_last4',  `<span class="cf-val mono">•••• ${tx.account_last_four||'—'}</span>`],
+    ['user_id',        `<button class="link-btn" onclick="openUserModal('${tx.user_id}')">${tx.user_id}</button>`],
+  ]));
+
+  html += chainConnector(`transaction.user_id = "${tx.user_id}" → users`);
+
+  html += chainBlock('cb-user','User',  '1 record',
+    user
+      ? chainFields([
+          ['user_id',      mono(user.user_id)],
+          ['name',         `<button class="link-btn" onclick="openUserModal('${user.user_id}')">${esc(user.name)}</button>`],
+          ['email',        esc(user.email)],
+          ['member_since', user.member_since],
+        ]) + fkCheck(true, `transaction.user_id "${tx.user_id}" → user found: ${user.name}`)
+      : fkCheck(false, `transaction.user_id "${tx.user_id}" → NO matching user!`)
+  );
+
+  if (tx.account_last_four) {
+    html += chainConnector(`transaction.user_id + account_last_four "${tx.account_last_four}" → accounts`);
+    html += chainBlock('cb-account','Account', '1 record',
+      acct
+        ? chainFields([
+            ['account_id',  mono(acct.account_id)],
+            ['institution', `<button class="link-btn" onclick="openAccountModal('${acct.account_id}')">${esc(acct.institution_name)}</button>`],
+            ['type',        esc(acct.account_type)],
+            ['last_four',   `<span class="cf-val mono">•••• ${acct.last_four}</span>`],
+            ['balance',     $(acct.balance)],
+          ]) + fkCheck(true, `Matched account ${acct.account_id} (${acct.institution_name})`)
+        : fkCheck(false, `No account matched user_id="${tx.user_id}" + last_four="${tx.account_last_four}"`)
+    );
+  }
+
+  if (sameMerch.length) {
+    html += chainConnector(`other transactions at "${esc(tx.merchant)}"`);
+    html += chainBlock('cb-tx', `Other Transactions at ${esc(tx.merchant)}`, `${sameMerch.length} shown`,
+      chainTable(
+        ['Date','User','Amount','Category'],
+        sameMerch.map(t=>{
+          const u=FT.users.find(x=>x.user_id===t.user_id);
+          return [t.date, esc(u?.name||t.user_id), $(t.amount), badgeHtml('cat',esc(t.category))];
+        }),
+        (r,i) => `openTransactionModal('${sameMerch[i].transaction_id}')`
+      )
+    );
+  }
+
+  openModal('tx','TRANSACTION', `${tx.merchant} · ${tx.date}`, html);
+}
+
+/* ══════════════════════════════════════════════════
+   SUBSCRIPTION MODAL
+══════════════════════════════════════════════════ */
+function openSubscriptionModal(subId) {
+  const sub = FT.subscriptions.find(s => s.subscription_id === subId);
+  if (!sub) return;
+  const user = FT.users.find(u => u.user_id === sub.user_id);
+  const keyword = sub.service_name.split(' ')[0].toLowerCase();
+  const relTxns = FT.transactions
+    .filter(t => t.user_id === sub.user_id && t.merchant.toLowerCase().includes(keyword))
+    .sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
+  const otherSubs = FT.subscriptions.filter(s => s.user_id === sub.user_id && s.subscription_id !== sub.subscription_id);
+  const calEvts = (CAL.events||[]).filter(e =>
+    (e.attendees||[]).includes(user?.name) && e.description?.includes(sub.service_name)
+  );
+
+  let html = '';
+
+  html += chainBlock('cb-sub','Subscription Record','1 record', chainFields([
+    ['subscription_id', mono(sub.subscription_id)],
+    ['service_name',    `<strong>${esc(sub.service_name)}</strong>`],
+    ['amount',          `$${sub.amount?.toFixed(2)}`],
+    ['billing_frequency', sub.billing_frequency],
+    ['next_billing_date', sub.next_billing_date],
+    ['status',          badgeHtml(sub.status==='Active'?'active':'cancelled', sub.status)],
+    ['user_id',         `<button class="link-btn" onclick="openUserModal('${sub.user_id}')">${sub.user_id}</button>`],
+  ]));
+
+  html += chainConnector(`subscription.user_id = "${sub.user_id}" → users`);
+
+  html += chainBlock('cb-user','Subscriber','1 record',
+    user
+      ? chainFields([
+          ['user_id',      mono(user.user_id)],
+          ['name',         `<button class="link-btn" onclick="openUserModal('${user.user_id}')">${esc(user.name)}</button>`],
+          ['email',        esc(user.email)],
+          ['member_since', user.member_since],
+        ]) + fkCheck(true, `subscription.user_id "${sub.user_id}" → user found: ${user.name}`)
+      : fkCheck(false, `subscription.user_id "${sub.user_id}" → NO matching user!`)
+  );
+
+  if (relTxns.length) {
+    html += chainConnector(`transactions matching merchant keyword "${keyword}" for this user`);
+    html += chainBlock('cb-tx','Related Transactions (by merchant keyword)', `${relTxns.length} found`,
+      chainTable(
+        ['Date','Merchant','Amount'],
+        relTxns.map(t=>[t.date, esc(t.merchant), $(t.amount)]),
+        (r,i) => `openTransactionModal('${relTxns[i].transaction_id}')`
+      )
+    );
+  }
+
+  if (calEvts.length) {
+    html += chainConnector(`calendar events for "${esc(sub.service_name)}" → ${user?.name}`);
+    html += chainBlock('cb-cross','Billing Calendar Events', `${calEvts.length} found`,
+      chainTable(
+        ['Date','Title','Amount','Status'],
+        calEvts.map(e=>{
+          const d = new Date(e.start_datetime*1000).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+          const amt = e.description?.match(/Amount: \$(.+)/)?.[1]||'—';
+          const st  = e.description?.match(/Status: (.+)/)?.[1]||'—';
+          return [d, esc(e.title), `$${amt}`, st];
+        }), null
+      )
+    );
+  }
+
+  if (otherSubs.length) {
+    html += chainConnector(`other subscriptions for user "${sub.user_id}"`);
+    html += chainBlock('cb-sub',`Other Subscriptions for ${user?.name||sub.user_id}`, `${otherSubs.length}`,
+      chainTable(
+        ['Service','Amount','Frequency','Status'],
+        otherSubs.map(s=>[esc(s.service_name),`$${s.amount?.toFixed(2)}`,s.billing_frequency,badgeHtml(s.status==='Active'?'active':'cancelled',s.status)]),
+        (r,i) => `openSubscriptionModal('${otherSubs[i].subscription_id}')`
+      )
+    );
+  }
+
+  openModal('sub','SUBSCRIPTION', `${sub.service_name} — ${user?.name||sub.user_id}`, html);
+}
+
+/* ══════════════════════════════════════════════════
+   TICKET MODAL
+══════════════════════════════════════════════════ */
+function openTicketModal(ticketId) {
+  const ticket = (ZD.tickets||[]).find(t => t.id === ticketId);
+  if (!ticket) return;
+
+  const zdUser = (ZD.users||[]).find(u => u.id === ticket.requester_id);
+  const ftUser = zdUser ? FT.users.find(u => u.user_id === zdUser.external_id) : null;
+  const accts  = ftUser ? FT.accounts.filter(a => a.user_id === ftUser.user_id) : [];
+  const recent = ftUser ? [...FT.transactions.filter(t=>t.user_id===ftUser.user_id)].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8) : [];
+  const email  = (EM.emails||[]).find(e => e.sender === zdUser?.email);
+
+  let html = '';
+
+  html += chainBlock('cb-ticket','Support Ticket','1 record', chainFields([
+    ['ticket_id',  mono(ticket.external_id||`TKT${ticket.id}`)],
+    ['subject',    `<strong>${esc(ticket.subject)}</strong>`],
+    ['description', `<div style="font-size:11px;color:var(--text2);line-height:1.55;max-height:80px;overflow-y:auto">${esc(ticket.description)}</div>`],
+    ['status',     badgeHtml('open',ticket.status)],
+    ['priority',   badgeHtml('normal',ticket.priority||'normal')],
+    ['type',       ticket.type||'question'],
+    ['channel',    ticket.via_channel||'web'],
+    ['created',    (ticket.created_at||'').slice(0,16).replace('T',' ')],
+  ]));
+
+  if (zdUser) {
+    html += chainConnector(`ticket.requester_id = ${ticket.requester_id} → zendesk.users`);
+    html += chainBlock('cb-user','Zendesk Requester','1 record', chainFields([
+      ['zendesk_id',  mono(zdUser.id)],
+      ['name',        esc(zdUser.name)],
+      ['email',       esc(zdUser.email)],
+      ['external_id', mono(zdUser.external_id||'—')],
+      ['role',        zdUser.role],
+    ]) + fkCheck(!!zdUser, `ticket.requester_id ${ticket.requester_id} → Zendesk user: ${zdUser.name}`));
+  }
+
+  if (ftUser) {
+    html += chainConnector(`zendesk.external_id = "${zdUser?.external_id}" → fintrack.users`);
+    html += chainBlock('cb-user','FinTrack User Profile','1 record',
+      chainFields([
+        ['user_id',      `<button class="link-btn" onclick="openUserModal('${ftUser.user_id}')">${mono(ftUser.user_id)}</button>`],
+        ['name',         `<strong>${esc(ftUser.name)}</strong>`],
+        ['email',        esc(ftUser.email)],
+        ['member_since', ftUser.member_since],
+        ['linked_accounts', ftUser.linked_accounts_count],
+      ]) +
+      fkCheck(true, `external_id "${zdUser?.external_id}" → FinTrack user: ${ftUser.name}`) +
+      `<div style="padding:8px 12px"><button class="link-btn" onclick="closeModal();buildScenarioForUser('${ftUser.user_id}')">Build full OpenClaw context for ${esc(ftUser.name)} →</button></div>`
+    );
+
+    if (accts.length) {
+      html += chainConnector(`accounts.user_id = "${ftUser.user_id}" (financial context)`);
+      html += chainBlock('cb-account','User Financial Accounts', `${accts.length} accounts`,
+        chainTable(
+          ['Institution','Type','Last 4','Balance','Status'],
+          accts.map(a=>[esc(a.institution_name),esc(a.account_type),`•••• ${a.last_four}`,$(a.balance),badgeHtml('active',a.status)]),
+          (r,i) => `openAccountModal('${accts[i].account_id}')`
+        ) +
+        `<div style="padding:7px 12px;font-size:11px;color:var(--text2)">Net balance: <strong>${$(accts.reduce((s,a)=>s+a.balance,0))}</strong></div>`
+      );
+    }
+
+    if (recent.length) {
+      html += chainConnector(`transactions.user_id = "${ftUser.user_id}" (recent activity)`);
+      html += chainBlock('cb-tx','Recent Transactions', `${recent.length} of ${FT.transactions.filter(t=>t.user_id===ftUser.user_id).length} total`,
+        chainTable(
+          ['Date','Merchant','Amount','Category'],
+          recent.map(t=>[t.date,esc(t.merchant),$(t.amount),badgeHtml('cat',esc(t.category))]),
+          (r,i) => `openTransactionModal('${recent[i].transaction_id}')`
+        )
+      );
+    }
+  } else if (zdUser) {
+    html += fkCheck(false, `zendesk.external_id "${zdUser?.external_id}" → NO matching FinTrack user!`);
+  }
+
+  if (email) {
+    html += chainConnector(`email.sender = "${zdUser?.email}" → email thread`);
+    html += chainBlock('cb-cross','Linked Email Thread','1 email',
+      chainFields([
+        ['subject',   `<strong>${esc(email.subject)}</strong>`],
+        ['from',      esc(email.sender)],
+        ['timestamp', new Date((email.timestamp||0)*1000).toISOString().slice(0,16).replace('T',' ')],
+        ['content',   `<div style="font-size:11px;color:var(--text2);line-height:1.55;max-height:70px;overflow-y:auto">${esc(email.content||'')}</div>`],
+      ])
+    );
+  }
+
+  openModal('ticket','TICKET', `${ticket.external_id||'TKT'+ticket.id} — ${ticket.subject}`, html);
+}
+
+/* ══════════════════════════════════════════════════
+   USERS TABLE
 ══════════════════════════════════════════════════ */
 function renderUsersPage() {
-  populateUsersFilters();
-  bindUsersEvents();
-  renderUsersTable();
+  bindEvent('users-search', 'input', debounce(()=>{PAGE.users=0;drawUsersTable();},200));
+  bindEvent('users-sort', 'change', ()=>{PAGE.users=0;SORT.users.col=document.getElementById('users-sort').value;drawUsersTable();});
+  drawUsersTable();
 }
 
-function populateUsersFilters() { /* filters are text-only */ }
-
-function bindUsersEvents() {
-  const search = document.getElementById('users-search');
-  const sortEl = document.getElementById('users-sort');
-  if (search) { search.oninput = debounce(() => { EX.user.page=0; renderUsersTable(); }, 200); }
-  if (sortEl) { sortEl.onchange = () => { EX.user.page=0; EX.user.sort.col=sortEl.value; renderUsersTable(); }; }
-}
-
-function renderUsersTable() {
-  const q = (document.getElementById('users-search')?.value||'').toLowerCase();
+function drawUsersTable() {
+  const q = (val('users-search')||'').toLowerCase();
   let rows = FT.users.filter(u =>
     !q || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || u.user_id.toLowerCase().includes(q)
   );
-
-  const col = EX.user.sort.col;
-  rows.sort((a,b) => {
-    const av = a[col]||'', bv = b[col]||'';
-    return typeof av === 'number' ? av-bv : String(av).localeCompare(String(bv));
+  const { col, dir } = SORT.users;
+  rows.sort((a,b)=>{
+    const av=a[col]||'', bv=b[col]||'';
+    const c = typeof av==='number' ? av-bv : String(av).localeCompare(String(bv));
+    return dir==='asc'?c:-c;
   });
-
   document.getElementById('users-count').textContent = `${rows.length} users`;
-
-  const page = EX.user.page;
-  const slice = rows.slice(page*PAGE_SIZE, (page+1)*PAGE_SIZE);
-  const cols = [
-    { key:'user_id', label:'ID', w:'70px' },
-    { key:'name',    label:'Name' },
-    { key:'email',   label:'Email' },
-    { key:'member_since', label:'Member Since', w:'120px' },
-    { key:'linked_accounts_count', label:'Accounts', w:'80px' },
-    { key:'status',  label:'Status', w:'80px' },
-  ];
-
+  const page = PAGE.users;
+  const slice = rows.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE);
   const html = `<table class="data-table">
-    <thead><tr>${cols.map(c => `<th style="${c.w?'width:'+c.w:''}">${c.label}</th>`).join('')}</tr></thead>
-    <tbody>${slice.map(u => `
-      <tr class="clickable" onclick="openDetail('user', ${safeJson(u)}, '${esc(u.name)}')">
-        <td class="mono">${esc(u.user_id)}</td>
+    <thead><tr>
+      <th style="width:70px">ID</th><th>Name</th><th>Email</th>
+      <th style="width:120px">Member Since</th>
+      <th style="width:80px">Accounts</th>
+      <th style="width:80px">Status</th>
+    </tr></thead>
+    <tbody>${slice.map(u=>`
+      <tr class="clickable" onclick="openUserModal('${u.user_id}')">
+        <td>${mono(u.user_id)}</td>
         <td><strong>${esc(u.name)}</strong></td>
         <td style="color:var(--text2)">${esc(u.email)}</td>
         <td>${u.member_since}</td>
         <td>${u.linked_accounts_count}</td>
-        <td><span class="badge badge-active">${u.status}</span></td>
+        <td>${badgeHtml('active',u.status)}</td>
       </tr>`).join('')}
     </tbody>
   </table>`;
-
-  document.getElementById('users-table').innerHTML = html;
-  renderPagination('users-pagination', page, rows.length, p => { EX.user.page=p; renderUsersTable(); });
+  document.getElementById('users-table-wrap').innerHTML = html;
+  renderPag('users-pag', page, rows.length, p=>{PAGE.users=p;drawUsersTable();});
 }
 
 /* ══════════════════════════════════════════════════
-   ACCOUNTS EXPLORER
+   ACCOUNTS TABLE
 ══════════════════════════════════════════════════ */
 function renderAccountsPage() {
-  const types = [...new Set(FT.accounts.map(a => a.account_type))].sort();
-  const insts = [...new Set(FT.accounts.map(a => a.institution_name))].sort();
-  const typeEl = document.getElementById('accounts-type-filter');
-  const instEl = document.getElementById('accounts-inst-filter');
-  if (typeEl && !typeEl.children.length > 1) {
-    types.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; typeEl.appendChild(o); });
-    insts.forEach(i => { const o=document.createElement('option'); o.value=i; o.textContent=i; instEl.appendChild(o); });
-    const bind = () => { EX.acct.page=0; renderAccountsTable(); };
-    document.getElementById('accounts-search').oninput = debounce(bind,200);
-    typeEl.onchange = bind;
-    instEl.onchange = bind;
-  }
-  renderAccountsTable();
+  const types = [...new Set(FT.accounts.map(a=>a.account_type))].sort();
+  const insts = [...new Set(FT.accounts.map(a=>a.institution_name))].sort();
+  populateSelect('accts-type', types);
+  populateSelect('accts-inst', insts);
+  bindEvent('accts-search','input',debounce(()=>{PAGE.accts=0;drawAccountsTable();},200));
+  bindEvent('accts-type','change',()=>{PAGE.accts=0;drawAccountsTable();});
+  bindEvent('accts-inst','change',()=>{PAGE.accts=0;drawAccountsTable();});
+  drawAccountsTable();
 }
 
-function renderAccountsTable() {
-  const q    = (document.getElementById('accounts-search')?.value||'').toLowerCase();
-  const type = document.getElementById('accounts-type-filter')?.value||'';
-  const inst = document.getElementById('accounts-inst-filter')?.value||'';
-
-  let rows = FT.accounts.filter(a =>
-    (!q    || a.institution_name.toLowerCase().includes(q) || a.account_type.toLowerCase().includes(q) || a.last_four?.includes(q) || a.user_id.toLowerCase().includes(q)) &&
-    (!type || a.account_type === type) &&
-    (!inst || a.institution_name === inst)
+function drawAccountsTable() {
+  const q    = (val('accts-search')||'').toLowerCase();
+  const type = val('accts-type')||'';
+  const inst = val('accts-inst')||'';
+  let rows = FT.accounts.filter(a=>
+    (!q    || a.institution_name.toLowerCase().includes(q) || a.account_type.toLowerCase().includes(q) || (a.last_four||'').includes(q) || a.user_id.toLowerCase().includes(q)) &&
+    (!type || a.account_type===type) &&
+    (!inst || a.institution_name===inst)
   );
-
-  document.getElementById('accounts-count').textContent = `${rows.length} accounts`;
-
-  const page = EX.acct.page;
-  const slice = rows.slice(page*PAGE_SIZE, (page+1)*PAGE_SIZE);
-
+  document.getElementById('accts-count').textContent = `${rows.length} accounts`;
+  const page = PAGE.accts;
+  const slice = rows.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE);
   const html = `<table class="data-table">
     <thead><tr>
       <th style="width:80px">Acct ID</th><th>Institution</th><th>Type</th>
       <th style="width:90px">Last Four</th><th style="width:120px">Balance</th>
       <th style="width:80px">Status</th><th>Owner</th>
     </tr></thead>
-    <tbody>${slice.map(a => {
-      const owner = FT.users.find(u => u.user_id === a.user_id);
-      return `<tr class="clickable" onclick="openDetail('account', ${safeJson(a)}, '${esc(a.institution_name)} ${esc(a.account_type)}')">
-        <td class="mono" style="font-size:11px">${esc(a.account_id)}</td>
+    <tbody>${slice.map(a=>{
+      const owner=FT.users.find(u=>u.user_id===a.user_id);
+      return `<tr class="clickable" onclick="openAccountModal('${a.account_id}')">
+        <td>${mono(a.account_id)}</td>
         <td><strong>${esc(a.institution_name)}</strong></td>
         <td>${esc(a.account_type)}</td>
-        <td class="mono">•••• ${a.last_four}</td>
+        <td style="font-family:var(--mono)">•••• ${a.last_four}</td>
         <td class="${a.balance<0?'amt-neg':'amt-pos'}">$${Math.abs(a.balance).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
-        <td><span class="badge badge-active">${a.status}</span></td>
-        <td><button class="link-btn" onclick="event.stopPropagation();openUserDetail('${a.user_id}')">${esc(owner?.name||a.user_id)}</button></td>
+        <td>${badgeHtml('active',a.status)}</td>
+        <td><button class="link-btn" onclick="event.stopPropagation();openUserModal('${a.user_id}')">${esc(owner?.name||a.user_id)}</button></td>
       </tr>`;
     }).join('')}
     </tbody>
   </table>`;
-
-  document.getElementById('accounts-table').innerHTML = html;
-  renderPagination('accounts-pagination', page, rows.length, p => { EX.acct.page=p; renderAccountsTable(); });
+  document.getElementById('accts-table-wrap').innerHTML = html;
+  renderPag('accts-pag', page, rows.length, p=>{PAGE.accts=p;drawAccountsTable();});
 }
 
 /* ══════════════════════════════════════════════════
-   TRANSACTIONS EXPLORER
+   TRANSACTIONS TABLE
 ══════════════════════════════════════════════════ */
 function renderTransactionsPage() {
-  /* Populate category dropdown */
-  const catEl  = document.getElementById('tx-cat-filter');
-  const userEl = document.getElementById('tx-user-filter');
-  if (catEl && catEl.children.length <= 1) {
-    const cats = [...new Set(FT.transactions.map(t => t.category))].sort();
-    cats.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; catEl.appendChild(o); });
-    FT.users.slice(0,80).forEach(u => { const o=document.createElement('option'); o.value=u.user_id; o.textContent=u.name; userEl.appendChild(o); });
-
-    const bind = debounce(() => { EX.tx.page=0; readTxFilters(); renderTransactionsTable(); }, 200);
-    ['tx-search','tx-cat-filter','tx-user-filter','tx-date-from','tx-date-to','tx-amt-min','tx-amt-max']
-      .forEach(id => { const el=document.getElementById(id); if(el){ el.oninput=bind; el.onchange=bind; } });
-    document.getElementById('tx-clear').onclick = () => {
-      ['tx-search','tx-date-from','tx-date-to','tx-amt-min','tx-amt-max'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-      catEl.value=''; userEl.value='';
-      EX.tx.filters = { search:'', cat:'', userId:'', dateFrom:'', dateTo:'', amtMin:'', amtMax:'' };
-      EX.tx.page=0; renderTransactionsTable();
-    };
-  }
-  /* Restore any pre-set filters (e.g. from filterTxByUser) */
-  if (EX.tx.filters.userId) {
-    const sel = document.getElementById('tx-user-filter');
-    if (sel) sel.value = EX.tx.filters.userId;
-  }
-  renderTransactionsTable();
+  const cats = [...new Set(FT.transactions.map(t=>t.category))].sort();
+  populateSelect('tx-cat', cats);
+  FT.users.slice(0,100).forEach(u=>{
+    const opt=document.createElement('option');opt.value=u.user_id;opt.textContent=u.name;
+    document.getElementById('tx-user').appendChild(opt);
+  });
+  const bind = debounce(()=>{PAGE.tx=0;drawTxTable();},200);
+  ['tx-search','tx-cat','tx-user','tx-from','tx-to','tx-min','tx-max'].forEach(id=>bindEvent(id,'input',bind));
+  ['tx-cat','tx-user'].forEach(id=>bindEvent(id,'change',bind));
+  bindEvent('tx-clear-btn','click',()=>{
+    ['tx-search','tx-from','tx-to','tx-min','tx-max'].forEach(id=>{ const el=document.getElementById(id); if(el)el.value=''; });
+    ['tx-cat','tx-user'].forEach(id=>{ const el=document.getElementById(id); if(el)el.value=''; });
+    PAGE.tx=0; drawTxTable();
+  });
+  drawTxTable();
 }
 
-function readTxFilters() {
-  EX.tx.filters = {
-    search:   (document.getElementById('tx-search')?.value||'').toLowerCase(),
-    cat:       document.getElementById('tx-cat-filter')?.value||'',
-    userId:    document.getElementById('tx-user-filter')?.value||'',
-    dateFrom:  document.getElementById('tx-date-from')?.value||'',
-    dateTo:    document.getElementById('tx-date-to')?.value||'',
-    amtMin:    document.getElementById('tx-amt-min')?.value||'',
-    amtMax:    document.getElementById('tx-amt-max')?.value||'',
-  };
-}
+function drawTxTable() {
+  const q    = (val('tx-search')||'').toLowerCase();
+  const cat  = val('tx-cat')||'';
+  const uid  = val('tx-user')||'';
+  const from = val('tx-from')||'';
+  const to   = val('tx-to')||'';
+  const min  = val('tx-min');
+  const max  = val('tx-max');
 
-function renderTransactionsTable() {
-  readTxFilters();
-  const f = EX.tx.filters;
-
-  let rows = FT.transactions.filter(t => {
-    if (f.search  && !t.merchant.toLowerCase().includes(f.search)) return false;
-    if (f.cat     && t.category !== f.cat)    return false;
-    if (f.userId  && t.user_id  !== f.userId) return false;
-    if (f.dateFrom && t.date < f.dateFrom)    return false;
-    if (f.dateTo   && t.date > f.dateTo)      return false;
-    const amt = Math.abs(t.amount);
-    if (f.amtMin && amt < parseFloat(f.amtMin)) return false;
-    if (f.amtMax && amt > parseFloat(f.amtMax)) return false;
+  let rows = FT.transactions.filter(t=>{
+    if (q   && !t.merchant.toLowerCase().includes(q)) return false;
+    if (cat && t.category!==cat) return false;
+    if (uid && t.user_id!==uid)  return false;
+    if (from && t.date<from)     return false;
+    if (to   && t.date>to)       return false;
+    const a = Math.abs(t.amount);
+    if (min && a < parseFloat(min)) return false;
+    if (max && a > parseFloat(max)) return false;
     return true;
   });
 
-  /* Sort */
-  const { col, dir } = EX.tx.sort;
-  rows.sort((a,b) => {
-    let av = a[col], bv = b[col];
-    if (col === 'amount') { av = Math.abs(av); bv = Math.abs(bv); }
-    const cmp = typeof av === 'number' ? av-bv : String(av||'').localeCompare(String(bv||''));
-    return dir === 'asc' ? cmp : -cmp;
+  const {col,dir} = SORT.tx;
+  rows.sort((a,b)=>{
+    let av=a[col], bv=b[col];
+    if (col==='amount'){av=Math.abs(av);bv=Math.abs(bv);}
+    const c = typeof av==='number'?av-bv:String(av||'').localeCompare(String(bv||''));
+    return dir==='asc'?c:-c;
   });
 
-  const total = rows.length;
-  document.getElementById('tx-count').textContent = `${total.toLocaleString()} transactions`;
-
-  const page = EX.tx.page;
-  const slice = rows.slice(page*PAGE_SIZE, (page+1)*PAGE_SIZE);
-  const sortable = (lbl, col_) =>
-    `<th style="cursor:pointer" class="${EX.tx.sort.col===col_?'sorted-'+EX.tx.sort.dir:''}" onclick="txSort('${col_}')">${lbl}</th>`;
-
+  document.getElementById('tx-count').textContent = `${rows.length.toLocaleString()} transactions`;
+  const page = PAGE.tx;
+  const slice = rows.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE);
+  const sortTh = (label,c) => `<th class="${SORT.tx.col===c?'sorted-'+SORT.tx.dir:''}" onclick="txSortBy('${c}')">${label}</th>`;
   const html = `<table class="data-table">
     <thead><tr>
-      ${sortable('Date','date')}
+      ${sortTh('Date','date')}
       <th>User</th>
-      ${sortable('Merchant','merchant')}
-      ${sortable('Amount','amount')}
+      ${sortTh('Merchant','merchant')}
+      ${sortTh('Amount','amount')}
       <th>Category</th>
       <th style="width:100px">Account</th>
-      <th style="width:70px" class="no-sort">ID</th>
+      <th style="width:70px;color:var(--text4)">TX ID</th>
     </tr></thead>
-    <tbody>${slice.map(t => {
-      const owner = FT.users.find(u => u.user_id === t.user_id);
-      return `<tr class="clickable" onclick="openDetail('tx', ${safeJson(t)}, '${esc(t.merchant)}')">
+    <tbody>${slice.map(t=>{
+      const u=FT.users.find(x=>x.user_id===t.user_id);
+      return `<tr class="clickable" onclick="openTransactionModal('${t.transaction_id}')">
         <td>${t.date}</td>
-        <td><button class="link-btn" onclick="event.stopPropagation();openUserDetail('${t.user_id}')">${esc(owner?.name||t.user_id)}</button></td>
+        <td><button class="link-btn" onclick="event.stopPropagation();openUserModal('${t.user_id}')">${esc(u?.name||t.user_id)}</button></td>
         <td><strong>${esc(t.merchant)}</strong></td>
         <td class="${t.amount<0?'amt-neg':'amt-pos'}">$${Math.abs(t.amount).toFixed(2)}</td>
-        <td><span class="badge badge-cat">${esc(t.category)}</span></td>
-        <td class="mono" style="font-size:11px">•••• ${t.account_last_four||'—'}</td>
-        <td class="mono" style="font-size:10px;color:var(--text3)">${t.transaction_id}</td>
+        <td>${badgeHtml('cat',esc(t.category))}</td>
+        <td style="font-family:var(--mono);font-size:11px">•••• ${t.account_last_four||'—'}</td>
+        <td style="font-family:var(--mono);font-size:10px;color:var(--text4)">${t.transaction_id}</td>
       </tr>`;
     }).join('')}
     </tbody>
   </table>`;
-
-  document.getElementById('tx-table').innerHTML = html;
-  renderPagination('tx-pagination', page, total, p => { EX.tx.page=p; renderTransactionsTable(); });
+  document.getElementById('tx-table-wrap').innerHTML = html;
+  renderPag('tx-pag', page, rows.length, p=>{PAGE.tx=p;drawTxTable();});
 }
 
-function txSort(col) {
-  if (EX.tx.sort.col === col) { EX.tx.sort.dir = EX.tx.sort.dir==='asc'?'desc':'asc'; }
-  else { EX.tx.sort.col = col; EX.tx.sort.dir = 'desc'; }
-  EX.tx.page = 0;
-  renderTransactionsTable();
+function txSortBy(col) {
+  if (SORT.tx.col===col) SORT.tx.dir = SORT.tx.dir==='asc'?'desc':'asc';
+  else { SORT.tx.col=col; SORT.tx.dir='desc'; }
+  PAGE.tx=0; drawTxTable();
+}
+
+function filterTxByUser(userId) {
+  navigateTo('transactions');
+  setTimeout(()=>{
+    const el=document.getElementById('tx-user'); if(el)el.value=userId;
+    PAGE.tx=0; drawTxTable();
+  },100);
 }
 
 /* ══════════════════════════════════════════════════
-   SUBSCRIPTIONS EXPLORER
+   SUBSCRIPTIONS TABLE
 ══════════════════════════════════════════════════ */
 function renderSubscriptionsPage() {
-  renderSubCharts();
-  renderBillingTimeline();
-  renderSubscriptionsTable();
-  bindSubEvents();
+  const freqs = [...new Set(FT.subscriptions.map(s=>s.billing_frequency))].sort();
+  populateSelect('sub-freq', freqs);
+  const bind = debounce(()=>{PAGE.subs=0;drawSubsTable();},200);
+  ['sub-search','sub-status','sub-freq'].forEach(id=>{bindEvent(id,'input',bind);bindEvent(id,'change',bind);});
+  drawSubsTable();
 }
 
-function bindSubEvents() {
-  const freqEl = document.getElementById('sub-freq-filter');
-  if (freqEl && freqEl.children.length <= 1) {
-    const freqs = [...new Set(FT.subscriptions.map(s => s.billing_frequency))].sort();
-    freqs.forEach(f => { const o=document.createElement('option'); o.value=f; o.textContent=f; freqEl.appendChild(o); });
-    const bind = debounce(() => { EX.sub.page=0; renderSubscriptionsTable(); }, 200);
-    ['sub-search','sub-status-filter','sub-freq-filter'].forEach(id => {
-      const el = document.getElementById(id); if(el){ el.oninput=bind; el.onchange=bind; }
-    });
-  }
-}
-
-function renderSubscriptionsTable() {
-  const q      = (document.getElementById('sub-search')?.value||'').toLowerCase();
-  const status = document.getElementById('sub-status-filter')?.value||'';
-  const freq   = document.getElementById('sub-freq-filter')?.value||'';
-
-  let rows = FT.subscriptions.filter(s =>
-    (!q      || s.service_name.toLowerCase().includes(q) || s.user_id.toLowerCase().includes(q)) &&
-    (!status || s.status === status) &&
-    (!freq   || s.billing_frequency === freq)
+function drawSubsTable() {
+  const q   = (val('sub-search')||'').toLowerCase();
+  const st  = val('sub-status')||'';
+  const fr  = val('sub-freq')||'';
+  let rows = FT.subscriptions.filter(s=>
+    (!q  || s.service_name.toLowerCase().includes(q) || s.user_id.toLowerCase().includes(q)) &&
+    (!st || s.status===st) &&
+    (!fr || s.billing_frequency===fr)
   );
-
   document.getElementById('sub-count').textContent = `${rows.length} subscriptions`;
-
-  const page = EX.sub.page;
-  const slice = rows.slice(page*PAGE_SIZE, (page+1)*PAGE_SIZE);
-
+  const page = PAGE.subs;
+  const slice = rows.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE);
   const html = `<table class="data-table">
     <thead><tr>
       <th style="width:80px">Sub ID</th><th>User</th><th>Service</th>
       <th style="width:90px">Amount</th><th style="width:110px">Frequency</th>
       <th style="width:120px">Next Billing</th><th style="width:90px">Status</th>
     </tr></thead>
-    <tbody>${slice.map(s => {
-      const owner = FT.users.find(u => u.user_id === s.user_id);
-      return `<tr class="clickable" onclick="openDetail('sub', ${safeJson(s)}, '${esc(s.service_name)}')">
-        <td class="mono" style="font-size:11px">${esc(s.subscription_id)}</td>
-        <td><button class="link-btn" onclick="event.stopPropagation();openUserDetail('${s.user_id}')">${esc(owner?.name||s.user_id)}</button></td>
+    <tbody>${slice.map(s=>{
+      const u=FT.users.find(x=>x.user_id===s.user_id);
+      return `<tr class="clickable" onclick="openSubscriptionModal('${s.subscription_id}')">
+        <td>${mono(s.subscription_id)}</td>
+        <td><button class="link-btn" onclick="event.stopPropagation();openUserModal('${s.user_id}')">${esc(u?.name||s.user_id)}</button></td>
         <td><strong>${esc(s.service_name)}</strong></td>
         <td>$${s.amount?.toFixed(2)}</td>
-        <td><span class="badge badge-cat">${s.billing_frequency}</span></td>
+        <td>${badgeHtml('cat',s.billing_frequency)}</td>
         <td>${s.next_billing_date}</td>
-        <td><span class="badge badge-${s.status?.toLowerCase()}">${s.status}</span></td>
+        <td>${badgeHtml(s.status==='Active'?'active':'cancelled',s.status)}</td>
       </tr>`;
     }).join('')}
     </tbody>
   </table>`;
-
-  document.getElementById('sub-table').innerHTML = html;
-  renderPagination('sub-pagination', page, rows.length, p => { EX.sub.page=p; renderSubscriptionsTable(); });
+  document.getElementById('sub-table-wrap').innerHTML = html;
+  renderPag('sub-pag', page, rows.length, p=>{PAGE.subs=p;drawSubsTable();});
 }
 
 /* ══════════════════════════════════════════════════
-   SUPPORT EXPLORER
+   SUPPORT MESSAGES
 ══════════════════════════════════════════════════ */
 function renderSupportPage() {
-  renderSupportCharts();
-  bindSupportEvents();
-  renderSupportTable();
+  bindEvent('sup-search','input',debounce(drawSupportMessages,200));
+  drawSupportMessages();
 }
 
-function bindSupportEvents() {
-  const el = document.getElementById('support-search');
-  if (el && !el._bound) {
-    el._bound = true;
-    el.oninput = debounce(() => renderSupportTable(), 200);
-  }
-}
+function drawSupportMessages() {
+  const q = (val('sup-search')||'').toLowerCase();
+  const zdUserMap = {};
+  (ZD.users||[]).forEach(u=>{zdUserMap[u.id]=u;});
 
-function renderSupportTable() {
-  const q = (document.getElementById('support-search')?.value||'').toLowerCase();
-
-  const tickets = (ZD.tickets||[]).filter(t =>
+  const tickets = (ZD.tickets||[]).filter(t=>
     !q || t.subject?.toLowerCase().includes(q) || t.description?.toLowerCase().includes(q) || t.external_id?.toLowerCase().includes(q)
   );
-  const emails = (EM.emails||[]).filter(e =>
-    !q || e.subject?.toLowerCase().includes(q) || e.sender?.toLowerCase().includes(q)
-  );
+  document.getElementById('sup-count').textContent = `${tickets.length} tickets`;
 
-  document.getElementById('support-count').textContent = `${tickets.length} tickets · ${emails.length} emails`;
+  const html = tickets.map(t=>{
+    const zd = zdUserMap[t.requester_id];
+    const ft = zd ? FT.users.find(u=>u.user_id===zd.external_id) : null;
+    const email = (EM.emails||[]).find(e=>e.sender===zd?.email);
+    const accts = ft ? FT.accounts.filter(a=>a.user_id===ft.user_id) : [];
+    const bal   = accts.reduce((s,a)=>s+a.balance,0);
+    return `<div class="message-card" onclick="openTicketModal(${t.id})">
+      <div class="message-card-header">
+        <div>
+          <div class="message-sender">${esc(zd?.name||'Unknown User')}</div>
+          <div class="message-meta">${esc(zd?.email||'')} · ${(t.created_at||'').slice(0,16).replace('T',' ')} · ${t.external_id||'TKT'+t.id}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          ${badgeHtml('open',t.status)}
+          ${ft ? `<div style="font-size:10px;color:var(--text3);margin-top:4px">${ft.user_id} · ${accts.length} accts · <span class="${bal<0?'amt-neg':'amt-pos'}">$${Math.abs(Math.round(bal)).toLocaleString()}</span></div>` : '<div style="font-size:10px;color:var(--rose);margin-top:4px">No FinTrack account</div>'}
+        </div>
+      </div>
+      <div class="message-subject">${esc(t.subject||'')}</div>
+      <div class="message-body">${esc(t.description||'').slice(0,180)}${(t.description||'').length>180?'…':''}</div>
+      <div class="message-tags">
+        ${(t.tags||[]).map(tag=>`${badgeHtml('cat',tag)}`).join('')}
+        ${email ? `<span class="badge badge-cat">📧 email linked</span>` : ''}
+        ${ft ? `<button class="link-btn" onclick="event.stopPropagation();openUserModal('${ft.user_id}')">View ${ft.name}'s full profile →</button>` : ''}
+      </div>
+    </div>`;
+  }).join('') || '<div class="empty-state">No tickets found.</div>';
 
-  const zdUserMap = {};
-  (ZD.users||[]).forEach(u => { zdUserMap[u.id] = u; });
+  document.getElementById('sup-messages-wrap').innerHTML = html;
+}
 
-  const html = `<table class="data-table">
-    <thead><tr>
-      <th style="width:90px">Ticket ID</th>
-      <th>Subject</th>
-      <th style="width:160px">Requester</th>
-      <th style="width:90px">FinTrack ID</th>
-      <th style="width:80px">Status</th>
-      <th style="width:80px">Priority</th>
-      <th style="width:110px">Created</th>
-      <th style="width:70px" class="no-sort">Email</th>
-    </tr></thead>
-    <tbody>${tickets.map(t => {
-      const zd = zdUserMap[t.requester_id];
-      const extId = zd?.external_id||'—';
-      const ftUser = FT.users.find(u => u.user_id === extId);
-      const linkedEmail = (EM.emails||[]).find(e => e.sender === zd?.email);
-      return `<tr class="clickable" onclick="openDetail('ticket', ${safeJson(t)}, '${esc(t.subject?.slice(0,40))}')">
-        <td class="mono">${t.external_id||'TKT'+t.id}</td>
-        <td>${esc(t.subject||'').slice(0,65)}${(t.subject||'').length>65?'…':''}</td>
-        <td><button class="link-btn" onclick="event.stopPropagation();${ftUser?`openUserDetail('${extId}')`:''}">${esc(zd?.name||'—')}</button></td>
-        <td class="mono" style="font-size:11px">${extId}</td>
-        <td><span class="badge badge-open">${t.status}</span></td>
-        <td><span class="badge badge-normal">${t.priority||'normal'}</span></td>
-        <td style="font-size:11px">${(t.created_at||'').slice(0,16).replace('T',' ')}</td>
-        <td>${linkedEmail ? `<button class="link-btn" onclick="event.stopPropagation();openDetail('email',${safeJson(linkedEmail)},'${esc(linkedEmail.subject)}')">📧</button>` : '—'}</td>
-      </tr>`;
-    }).join('')}
-    </tbody>
-  </table>`;
+/* ══════════════════════════════════════════════════
+   DATA INTEGRITY
+══════════════════════════════════════════════════ */
+function renderIntegrityPage() {
+  const tests = runIntegrityTests();
+  const html = `<div class="integrity-grid">${tests.map(t=>`
+    <div class="integrity-card">
+      <div class="integrity-card-hdr">
+        <span class="integrity-card-title">${t.name}</span>
+        <span class="${t.pass?'integrity-badge-pass':t.warn?'integrity-badge-warn':'integrity-badge-fail'}">${t.pass?'✅ PASS':t.warn?'⚠ WARN':'❌ FAIL'}</span>
+      </div>
+      <div class="integrity-card-body">
+        ${t.message}
+        ${t.detail?`<div class="integrity-detail">${t.detail}</div>`:''}
+        ${t.issues?.length ? `<div class="integrity-issues">${t.issues.slice(0,10).map(i=>`<div class="integrity-issue-row">⟶ ${esc(i)}</div>`).join('')}${t.issues.length>10?`<div class="integrity-issue-row">…and ${t.issues.length-10} more</div>`:''}</div>` : ''}
+      </div>
+    </div>`).join('')}</div>`;
+  document.getElementById('integrity-results').innerHTML = html;
+}
 
-  document.getElementById('support-table').innerHTML = html;
+function runIntegrityTests() {
+  const tests = [];
+  const userIds = new Set(FT.users.map(u=>u.user_id));
+
+  /* 1. FK: accounts → users */
+  const badAcctFKs = FT.accounts.filter(a=>!userIds.has(a.user_id));
+  tests.push({
+    name:'FK: accounts.user_id → users',
+    pass: badAcctFKs.length===0,
+    message: badAcctFKs.length===0
+      ? `All ${FT.accounts.length} accounts reference valid users.`
+      : `${badAcctFKs.length} accounts reference non-existent user_ids.`,
+    detail: `Checked ${FT.accounts.length} account records`,
+    issues: badAcctFKs.map(a=>`${a.account_id}: user_id="${a.user_id}" not found`),
+  });
+
+  /* 2. FK: transactions → users */
+  const badTxFKs = FT.transactions.filter(t=>!userIds.has(t.user_id));
+  tests.push({
+    name:'FK: transactions.user_id → users',
+    pass: badTxFKs.length===0,
+    message: badTxFKs.length===0
+      ? `All ${FT.transactions.length.toLocaleString()} transactions reference valid users.`
+      : `${badTxFKs.length} transactions reference non-existent user_ids.`,
+    detail: `Checked ${FT.transactions.length.toLocaleString()} transaction records`,
+    issues: badTxFKs.map(t=>`${t.transaction_id}: user_id="${t.user_id}" not found`),
+  });
+
+  /* 3. FK: transactions account match */
+  const acctKeySet = new Set(FT.accounts.map(a=>`${a.user_id}::${a.last_four}`));
+  const badTxAcct = FT.transactions.filter(t=>t.account_last_four && !acctKeySet.has(`${t.user_id}::${t.account_last_four}`));
+  tests.push({
+    name:'FK: transactions → accounts (user_id + last_four)',
+    pass: badTxAcct.length===0,
+    message: badTxAcct.length===0
+      ? `All transactions with account_last_four match a known account.`
+      : `${badTxAcct.length} transactions reference unknown account (user+last4 combo).`,
+    issues: badTxAcct.slice(0,10).map(t=>`${t.transaction_id}: ${t.user_id} + ****${t.account_last_four} not in accounts`),
+  });
+
+  /* 4. FK: subscriptions → users */
+  const badSubFKs = FT.subscriptions.filter(s=>!userIds.has(s.user_id));
+  tests.push({
+    name:'FK: subscriptions.user_id → users',
+    pass: badSubFKs.length===0,
+    message: badSubFKs.length===0
+      ? `All ${FT.subscriptions.length} subscriptions reference valid users.`
+      : `${badSubFKs.length} subscriptions reference non-existent user_ids.`,
+    issues: badSubFKs.map(s=>`${s.subscription_id}: user_id="${s.user_id}" not found`),
+  });
+
+  /* 5. Unique user IDs */
+  const dupUsers = findDuplicates(FT.users.map(u=>u.user_id));
+  tests.push({
+    name:'Primary Key: users.user_id uniqueness',
+    pass: dupUsers.length===0,
+    message: dupUsers.length===0
+      ? `All ${FT.users.length} user IDs are unique.`
+      : `${dupUsers.length} duplicate user_ids found.`,
+    issues: dupUsers,
+  });
+
+  /* 6. Unique transaction IDs */
+  const dupTxs = findDuplicates(FT.transactions.map(t=>t.transaction_id));
+  tests.push({
+    name:'Primary Key: transactions.transaction_id uniqueness',
+    pass: dupTxs.length===0,
+    message: dupTxs.length===0
+      ? `All ${FT.transactions.length.toLocaleString()} transaction IDs are unique.`
+      : `${dupTxs.length} duplicate transaction_ids found.`,
+    issues: dupTxs,
+  });
+
+  /* 7. linked_accounts_count accuracy */
+  const acctCountByUser = {};
+  FT.accounts.forEach(a=>{acctCountByUser[a.user_id]=(acctCountByUser[a.user_id]||0)+1;});
+  const countMismatches = FT.users.filter(u=>(acctCountByUser[u.user_id]||0)!==u.linked_accounts_count);
+  tests.push({
+    name:'Data Consistency: linked_accounts_count accuracy',
+    pass: countMismatches.length===0,
+    warn: countMismatches.length>0 && countMismatches.length<10,
+    message: countMismatches.length===0
+      ? `All users' linked_accounts_count matches their actual account count.`
+      : `${countMismatches.length} users have mismatched linked_accounts_count.`,
+    issues: countMismatches.slice(0,10).map(u=>`${u.user_id}: stated ${u.linked_accounts_count}, actual ${acctCountByUser[u.user_id]||0}`),
+  });
+
+  /* 8. Zendesk external_ids */
+  const zdExternal = (ZD.users||[]).filter(u=>u.external_id && u.external_id!=='fintrack-agent-001').map(u=>u.external_id);
+  const badZdFKs = zdExternal.filter(id=>!userIds.has(id));
+  tests.push({
+    name:'FK: zendesk.external_id → fintrack users',
+    pass: badZdFKs.length===0,
+    message: badZdFKs.length===0
+      ? `All ${zdExternal.length} Zendesk external_ids point to valid FinTrack users.`
+      : `${badZdFKs.length} Zendesk external_ids have no matching FinTrack user.`,
+    issues: badZdFKs.map(id=>`external_id="${id}" not found in users`),
+  });
+
+  /* 9. Calendar-subscription sync */
+  const calStatuses = {};
+  (CAL.events||[]).forEach(e=>{
+    const st = e.description?.match(/Status: (.+)/)?.[1];
+    const svc = e.description?.match(/Subscription: (.+)/)?.[1];
+    if (svc && st==='Cancelled') calStatuses[svc]=(calStatuses[svc]||0)+1;
+  });
+  const cancelledEvtCount = Object.values(calStatuses).reduce((s,v)=>s+v,0);
+  tests.push({
+    name:'Calendar: cancelled subscriptions in events',
+    pass: cancelledEvtCount===0,
+    warn: cancelledEvtCount>0,
+    message: cancelledEvtCount===0
+      ? `No cancelled subscriptions found in calendar events.`
+      : `${cancelledEvtCount} calendar events reference cancelled subscriptions — these may be stale.`,
+    detail: cancelledEvtCount>0 ? `Services with cancelled events: ${Object.keys(calStatuses).slice(0,5).join(', ')}` : '',
+  });
+
+  /* 10. Email sender → FinTrack user linkage */
+  const emailSenders = [...new Set((EM.emails||[]).map(e=>e.sender))];
+  const userEmails = new Set(FT.users.map(u=>u.email));
+  const unmatchedSenders = emailSenders.filter(e=>!userEmails.has(e) && e!=='support@fintrack.example.com');
+  tests.push({
+    name:'Email: sender addresses → FinTrack users',
+    pass: unmatchedSenders.length===0,
+    warn: unmatchedSenders.length>0,
+    message: unmatchedSenders.length===0
+      ? `All email senders are registered FinTrack users.`
+      : `${unmatchedSenders.length} email senders have no matching FinTrack user record.`,
+    issues: unmatchedSenders.map(e=>`sender "${e}" not in fintrack users`),
+  });
+
+  /* 11. Valid transaction amounts */
+  const invalidAmts = FT.transactions.filter(t=>t.amount==null||isNaN(t.amount)||t.amount===0);
+  tests.push({
+    name:'Data Quality: valid transaction amounts',
+    pass: invalidAmts.length===0,
+    message: invalidAmts.length===0
+      ? `All ${FT.transactions.length.toLocaleString()} transactions have valid non-zero amounts.`
+      : `${invalidAmts.length} transactions have null, NaN, or zero amounts.`,
+    issues: invalidAmts.map(t=>`${t.transaction_id}: amount=${t.amount}`),
+  });
+
+  /* 12. Contacts ↔ Users sync */
+  const ctEmails = new Set((CT.contacts||[]).map(c=>c.email));
+  const usersWithoutContact = FT.users.filter(u=>!ctEmails.has(u.email));
+  tests.push({
+    name:'Contacts: FinTrack users with contact records',
+    pass: usersWithoutContact.length<5,
+    warn: usersWithoutContact.length>0,
+    message: usersWithoutContact.length===0
+      ? `All ${FT.users.length} users have a corresponding contact record.`
+      : `${FT.users.length-usersWithoutContact.length} of ${FT.users.length} users have a contact record (${usersWithoutContact.length} missing).`,
+    detail: `Contact coverage: ${(((FT.users.length-usersWithoutContact.length)/FT.users.length)*100).toFixed(1)}%`,
+  });
+
+  return tests;
+}
+
+function findDuplicates(arr) {
+  const seen={}, dups=[];
+  arr.forEach(id=>{
+    if (seen[id]) dups.push(id);
+    else seen[id]=true;
+  });
+  return dups;
 }
 
 /* ══════════════════════════════════════════════════
    SCENARIO BUILDER
 ══════════════════════════════════════════════════ */
 function initScenarioBuilder() {
-  const sel = document.getElementById('scenario-user-select');
-  const btn = document.getElementById('scenario-build-btn');
-  if (!sel || sel.children.length > 1) return;
-  FT.users.forEach(u => {
-    const o = document.createElement('option'); o.value = u.user_id;
-    o.textContent = `${u.user_id} — ${u.name}`; sel.appendChild(o);
+  const sel = document.getElementById('sc-user-select');
+  const btn = document.getElementById('sc-build-btn');
+  if (!sel||sel.children.length>1) return;
+  FT.users.forEach(u=>{
+    const o=document.createElement('option');o.value=u.user_id;o.textContent=`${u.user_id} — ${u.name}`;sel.appendChild(o);
   });
-  sel.onchange = () => { btn.disabled = !sel.value; };
-  btn.onclick = () => { if (sel.value) buildScenario(sel.value); };
+  sel.onchange = ()=>{ btn.disabled=!sel.value; };
+  btn.onclick  = ()=>{ if(sel.value) buildScenario(sel.value); };
+}
+
+function buildScenarioForUser(userId) {
+  navigateTo('scenarios');
+  setTimeout(()=>{
+    const sel=document.getElementById('sc-user-select');
+    if(sel)sel.value=userId;
+    const btn=document.getElementById('sc-build-btn');
+    if(btn)btn.disabled=false;
+    buildScenario(userId);
+  },100);
 }
 
 function buildScenario(userId) {
-  const user = FT.users.find(u => u.user_id === userId);
+  const user = FT.users.find(u=>u.user_id===userId);
   if (!user) return;
-
-  const accts   = FT.accounts.filter(a => a.user_id === userId);
-  const txns    = FT.transactions.filter(t => t.user_id === userId);
-  const subs    = FT.subscriptions.filter(s => s.user_id === userId);
-  const zdUser  = (ZD.users||[]).find(u => u.external_id === userId);
-  const tickets = zdUser ? (ZD.tickets||[]).filter(t => t.requester_id === zdUser.id) : [];
-  const emails  = (EM.emails||[]).filter(e => e.sender === user.email);
-  const contact = (CT.contacts||[]).find(c => c.email === user.email);
-  const calEvts = (CAL.events||[]).filter(e => (e.attendees||[]).includes(user.name));
-
-  const totalBal   = accts.reduce((s,a) => s+a.balance, 0);
-  const totalSpend = txns.filter(t=>t.amount<0).reduce((s,t)=>s+Math.abs(t.amount),0);
-  const activeSubs = subs.filter(s => s.status === 'Active');
-  const monthlySubCost = activeSubs.reduce((s,sub) => {
-    const f = {Monthly:1,Annual:1/12,Weekly:4.33,'Bi-weekly':2.165}[sub.billing_frequency]||1;
-    return s + sub.amount * f;
-  }, 0);
-
-  const catMap = {};
-  txns.filter(t=>t.amount<0).forEach(t => { catMap[t.category] = (catMap[t.category]||0) + Math.abs(t.amount); });
+  const accts   = FT.accounts.filter(a=>a.user_id===userId);
+  const txns    = FT.transactions.filter(t=>t.user_id===userId);
+  const subs    = FT.subscriptions.filter(s=>s.user_id===userId);
+  const active  = subs.filter(s=>s.status==='Active');
+  const zdUser  = (ZD.users||[]).find(u=>u.external_id===userId);
+  const tickets = zdUser ? (ZD.tickets||[]).filter(t=>t.requester_id===zdUser.id) : [];
+  const emails  = (EM.emails||[]).filter(e=>e.sender===user.email);
+  const contact = (CT.contacts||[]).find(c=>c.email===user.email);
+  const calEvts = (CAL.events||[]).filter(e=>(e.attendees||[]).includes(user.name));
+  const totalBal= accts.reduce((s,a)=>s+a.balance,0);
+  const monthlyEst=active.reduce((s,sub)=>s+sub.amount*({Monthly:1,Annual:1/12,Weekly:4.33,'Bi-weekly':2.165}[sub.billing_frequency]||1),0);
+  const catMap={};
+  txns.filter(t=>t.amount<0).forEach(t=>{catMap[t.category]=(catMap[t.category]||0)+Math.abs(t.amount);});
   const topCats = Object.entries(catMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const recent  = [...txns].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
+  const upcoming= calEvts.filter(e=>e.start_datetime*1000>Date.now()).sort((a,b)=>a.start_datetime-b.start_datetime).slice(0,5);
 
-  const upcomingBills = calEvts
-    .filter(e => e.start_datetime * 1000 > Date.now())
-    .sort((a,b) => a.start_datetime - b.start_datetime)
-    .slice(0,5);
-
-  const recentTxns = [...txns].sort((a,b) => b.date.localeCompare(a.date)).slice(0,8);
-
-  const out = document.getElementById('scenario-output');
-  out.innerHTML = `<div class="scenario-out">
-
-    <!-- Identity -->
-    <div class="scenario-block">
-      <div class="scenario-block-title"><span class="sb-icon">👤</span> Identity — ${esc(user.name)} (${user.user_id})</div>
-      <div class="scenario-kpi-row">
-        <div class="sc-kpi"><div class="sc-kpi-val">${esc(user.user_id)}</div><div class="sc-kpi-lbl">User ID</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">${esc(user.member_since)}</div><div class="sc-kpi-lbl">Member Since</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">${accts.length}</div><div class="sc-kpi-lbl">Linked Accounts</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">${tickets.length}</div><div class="sc-kpi-lbl">Support Tickets</div></div>
-      </div>
-      <table class="related-mini-table">
-        <tr><td style="color:var(--text3);width:140px">Email</td><td>${esc(user.email)}</td></tr>
-        <tr><td style="color:var(--text3)">Phone</td><td>${esc(user.phone)}</td></tr>
-        <tr><td style="color:var(--text3)">Date of Birth</td><td>${user.date_of_birth}</td></tr>
-        <tr><td style="color:var(--text3)">Status</td><td><span class="badge badge-active">${user.status}</span></td></tr>
-        ${contact ? `<tr><td style="color:var(--text3)">Contact Record</td><td>${esc(contact.description||'')}</td></tr>` : ''}
-      </table>
-    </div>
-
-    <!-- Financial Summary -->
-    <div class="scenario-block">
-      <div class="scenario-block-title"><span class="sb-icon">💰</span> Financial Summary — ${accts.length} accounts across ${[...new Set(accts.map(a=>a.institution_name))].length} institutions</div>
-      <div class="scenario-kpi-row">
-        <div class="sc-kpi"><div class="sc-kpi-val ${totalBal<0?'amt-neg':'amt-pos'}">$${Math.abs(Math.round(totalBal)).toLocaleString()}</div><div class="sc-kpi-lbl">Net Balance</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">$${Math.round(totalSpend).toLocaleString()}</div><div class="sc-kpi-lbl">Total Spent</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">${txns.length}</div><div class="sc-kpi-lbl">Transactions</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">$${monthlySubCost.toFixed(0)}/mo</div><div class="sc-kpi-lbl">Subscriptions</div></div>
-      </div>
-      <table class="related-mini-table">
-        <thead><tr><th>Institution</th><th>Type</th><th>Last4</th><th>Balance</th></tr></thead>
-        <tbody>${accts.map(a => `
-          <tr class="link-row" onclick="openDetail('account',${safeJson(a)},'${esc(a.institution_name)}')">
-            <td>${esc(a.institution_name)}</td><td>${esc(a.account_type)}</td>
-            <td class="mono">•••• ${a.last_four}</td>
-            <td class="${a.balance<0?'amt-neg':'amt-pos'}">$${Math.abs(a.balance).toLocaleString(undefined,{minimumFractionDigits:2})}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Spending Breakdown -->
-    <div class="scenario-block">
-      <div class="scenario-block-title"><span class="sb-icon">📊</span> Spending Breakdown (top categories)</div>
-      <table class="related-mini-table">
-        <thead><tr><th>Category</th><th>Total Spent</th><th>% of Total</th></tr></thead>
-        <tbody>${topCats.map(([cat,amt]) => `
-          <tr>
-            <td><span class="badge badge-cat">${esc(cat)}</span></td>
-            <td>$${amt.toFixed(2)}</td>
-            <td>${totalSpend > 0 ? (amt/totalSpend*100).toFixed(1)+'%' : '—'}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Recent Transactions -->
-    <div class="scenario-block">
-      <div class="scenario-block-title"><span class="sb-icon">💳</span> Recent Transactions (${txns.length} total)</div>
-      <table class="related-mini-table">
-        <thead><tr><th>Date</th><th>Merchant</th><th>Amount</th><th>Category</th><th>Account</th></tr></thead>
-        <tbody>${recentTxns.map(t => `
-          <tr class="link-row" onclick="openDetail('tx',${safeJson(t)},'${esc(t.merchant)}')">
-            <td>${t.date}</td><td>${esc(t.merchant)}</td>
-            <td class="${t.amount<0?'amt-neg':'amt-pos'}">$${Math.abs(t.amount).toFixed(2)}</td>
-            <td><span class="badge badge-cat">${esc(t.category)}</span></td>
-            <td class="mono">•••• ${t.account_last_four||'—'}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
-      <button class="btn-ghost" style="margin-top:8px;font-size:10px" onclick="filterTxByUser('${userId}')">View all ${txns.length} transactions →</button>
-    </div>
-
-    <!-- Active Subscriptions -->
-    <div class="scenario-block">
-      <div class="scenario-block-title"><span class="sb-icon">🔄</span> Active Subscriptions (${activeSubs.length})</div>
-      ${activeSubs.length ? `<table class="related-mini-table">
-        <thead><tr><th>Service</th><th>Amount</th><th>Frequency</th><th>Next Billing</th></tr></thead>
-        <tbody>${activeSubs.map(s => `
-          <tr class="link-row" onclick="openDetail('sub',${safeJson(s)},'${esc(s.service_name)}')">
-            <td>${esc(s.service_name)}</td><td>$${s.amount?.toFixed(2)}</td>
-            <td>${s.billing_frequency}</td><td>${s.next_billing_date}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>` : '<div style="color:var(--text3);font-size:12px;padding:8px 0">No active subscriptions.</div>'}
-    </div>
-
-    <!-- Upcoming Bills -->
-    ${upcomingBills.length ? `<div class="scenario-block">
-      <div class="scenario-block-title"><span class="sb-icon">📅</span> Upcoming Billing Events</div>
-      ${upcomingBills.map(e => {
-        const d = new Date(e.start_datetime*1000).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        const amt = e.description?.match(/Amount: \$(.+)/)?.[1]||'';
-        return `<div class="related-item">
-          <span class="related-item-icon">📅</span>
-          <div><div class="related-item-main">${esc(e.title)}</div>
-          <div class="related-item-sub">${d}${amt?' · $'+amt:''}</div></div></div>`;
-      }).join('')}
-    </div>` : ''}
-
-    <!-- Support History -->
-    <div class="scenario-block">
-      <div class="scenario-block-title"><span class="sb-icon">🎫</span> Support History (${tickets.length} tickets · ${emails.length} emails)</div>
-      ${tickets.length ? `<table class="related-mini-table">
-        <thead><tr><th>ID</th><th>Subject</th><th>Status</th><th>Created</th></tr></thead>
-        <tbody>${tickets.map(t => `
-          <tr class="link-row" onclick="openDetail('ticket',${safeJson(t)},'${esc(t.subject?.slice(0,40))}')">
-            <td class="mono">${t.external_id}</td>
-            <td>${esc(t.subject||'').slice(0,55)}</td>
-            <td><span class="badge badge-open">${t.status}</span></td>
-            <td>${(t.created_at||'').slice(0,10)}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>` : '<div style="color:var(--text3);font-size:12px;padding:8px 0">No support tickets found.</div>'}
-      ${emails.map(e => `
-        <div class="related-item" style="margin-top:6px" onclick="openDetail('email',${safeJson(e)},'${esc(e.subject)}')">
-          <span class="related-item-icon">📧</span>
-          <div><div class="related-item-main">${esc(e.subject)}</div>
-          <div class="related-item-sub">From: ${esc(e.sender)} · ${new Date(e.timestamp*1000).toLocaleDateString()}</div></div></div>`).join('')}
-    </div>
-
-    <!-- OpenClaw Agent Context -->
-    <div class="scenario-block" style="border-color:rgba(129,140,248,0.3)">
-      <div class="scenario-block-title" style="color:var(--indigo)"><span class="sb-icon">⚡</span> What OpenClaw Sees When Handling a Request from ${esc(user.name)}</div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.7;">
-        <p>When ${esc(user.name)} submits a support request or asks a financial question, OpenClaw assembles this complete context in a single multi-service query:</p>
-        <ul style="margin:10px 0 10px 18px">
-          <li><strong>Identity</strong>: Full profile from FinTrack + contact record (${contact?'found':'not found'})</li>
-          <li><strong>Financial state</strong>: ${accts.length} accounts, net balance <span class="${totalBal<0?'amt-neg':'amt-pos'}">$${Math.abs(Math.round(totalBal)).toLocaleString()}</span>, ${txns.length} transactions on record</li>
-          <li><strong>Recurring obligations</strong>: ${activeSubs.length} active subscriptions, ~$${monthlySubCost.toFixed(0)}/month</li>
-          <li><strong>Calendar</strong>: ${calEvts.length} billing events scheduled</li>
-          <li><strong>Support context</strong>: ${tickets.length} previous ticket${tickets.length!==1?'s':''}, ${emails.length} email thread${emails.length!==1?'s':''}</li>
-          <li><strong>Top spending categories</strong>: ${topCats.map(([c])=>c).join(', ')||'none'}</li>
-        </ul>
-        <p style="color:var(--text3);font-size:11px;margin-top:8px">All data assembled from: FinTrack (users/accounts/transactions/subscriptions) · Contacts · Calendar · Email · Zendesk</p>
-      </div>
-    </div>
-
+  const blk = (icon,title,inner) => `<div class="sc-block">
+    <div class="sc-block-title"><span>${icon}</span>${title}</div>
+    ${inner}
   </div>`;
+
+  const miniTable=(heads,rows_,onRowClick_=null)=>`<table class="chain-mini-table">
+    <thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+    <tbody>${rows_.map((r,i)=>`<tr class="${onRowClick_?'linkable':''}" ${onRowClick_?`onclick="${onRowClick_(r,i)}"`:''} >${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
+  </table>`;
+
+  const html =
+    blk('👤',`Identity — ${esc(user.name)} (${user.user_id})`,
+      `<div class="sc-kpi-row">
+        <div class="sc-kpi"><div class="sc-kpi-val">${user.user_id}</div><div class="sc-kpi-lbl">User ID</div></div>
+        <div class="sc-kpi"><div class="sc-kpi-val">${user.member_since}</div><div class="sc-kpi-lbl">Member Since</div></div>
+        <div class="sc-kpi"><div class="sc-kpi-val">${accts.length}</div><div class="sc-kpi-lbl">Accounts</div></div>
+        <div class="sc-kpi"><div class="sc-kpi-val">${tickets.length}</div><div class="sc-kpi-lbl">Tickets</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);margin-top:6px">Email: ${esc(user.email)} · Phone: ${esc(user.phone||'—')}
+      ${contact?` · Contact record found`:''}${zdUser?` · Zendesk ID: ${zdUser.id}`:''}</div>`) +
+
+    blk('💰',`Financial Summary — ${accts.length} accounts, $${Math.abs(Math.round(totalBal)).toLocaleString()} net balance`,
+      `<div class="sc-kpi-row">
+        <div class="sc-kpi"><div class="sc-kpi-val ${totalBal<0?'amt-neg':'amt-pos'}">$${Math.abs(Math.round(totalBal)).toLocaleString()}</div><div class="sc-kpi-lbl">Net Balance</div></div>
+        <div class="sc-kpi"><div class="sc-kpi-val">$${Math.round(txns.filter(t=>t.amount<0).reduce((s,t)=>s+Math.abs(t.amount),0)).toLocaleString()}</div><div class="sc-kpi-lbl">Total Spent</div></div>
+        <div class="sc-kpi"><div class="sc-kpi-val">${txns.length}</div><div class="sc-kpi-lbl">Transactions</div></div>
+        <div class="sc-kpi"><div class="sc-kpi-val">$${monthlyEst.toFixed(0)}/mo</div><div class="sc-kpi-lbl">Subscriptions</div></div>
+      </div>` +
+      miniTable(['Institution','Type','Last 4','Balance','Status'],
+        accts.map(a=>[esc(a.institution_name),esc(a.account_type),`•••• ${a.last_four}`,$(a.balance),badgeHtml('active',a.status)]),
+        (r,i)=>`openAccountModal('${accts[i].account_id}')`
+      )) +
+
+    blk('📊','Spending Breakdown',
+      miniTable(['Category','Total Spent','% of Spending'],
+        topCats.map(([c,v])=>[badgeHtml('cat',esc(c)),`$${v.toFixed(2)}`,
+          `${txns.filter(t=>t.amount<0).reduce((s,t)=>s+Math.abs(t.amount),0)>0?(v/txns.filter(t=>t.amount<0).reduce((s,t)=>s+Math.abs(t.amount),0)*100).toFixed(1)+'%':'—'}`
+        ]), null
+      )) +
+
+    blk('💳',`Recent Transactions (${txns.length} total)`,
+      miniTable(['Date','Merchant','Amount','Category'],
+        recent.map(t=>[t.date,esc(t.merchant),$(t.amount),badgeHtml('cat',esc(t.category))]),
+        (r,i)=>`openTransactionModal('${recent[i].transaction_id}')`
+      ) +
+      `<button class="link-btn" style="margin:8px 0 0;display:block" onclick="filterTxByUser('${userId}')">View all ${txns.length} transactions →</button>`) +
+
+    blk('🔄',`Active Subscriptions (${active.length})`,
+      active.length ? miniTable(['Service','Amount','Frequency','Next Billing'],
+        active.map(s=>[esc(s.service_name),`$${s.amount?.toFixed(2)}`,s.billing_frequency,s.next_billing_date]),
+        (r,i)=>`openSubscriptionModal('${active[i].subscription_id}')`
+      ) : '<div style="color:var(--text3);font-size:12px">No active subscriptions.</div>') +
+
+    (upcoming.length ? blk('📅','Upcoming Billing Events',
+      upcoming.map(e=>{
+        const d=new Date(e.start_datetime*1000).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        const amt=e.description?.match(/Amount: \$(.+)/)?.[1]||'';
+        return `<div style="padding:5px 0;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">📅 ${esc(e.title)} — ${d}${amt?' · $'+amt:''}</div>`;
+      }).join('')) : '') +
+
+    blk('🎫',`Support History (${tickets.length} tickets · ${emails.length} emails)`,
+      tickets.length ? miniTable(['Ticket ID','Subject','Status','Created'],
+        tickets.map(t=>[t.external_id||'TKT'+t.id,esc((t.subject||'').slice(0,55)),badgeHtml('open',t.status),(t.created_at||'').slice(0,10)]),
+        (r,i)=>`openTicketModal(${tickets[i].id})`
+      ) : '<div style="color:var(--text3);font-size:12px">No support tickets.</div>') +
+
+    blk('⚡','What OpenClaw Sees',
+      `<div style="font-size:12px;color:var(--text2);line-height:1.7">
+        When <strong>${esc(user.name)}</strong> contacts support, OpenClaw assembles this context in one multi-service query:
+        <ul style="margin:8px 0 0 16px">
+          <li><strong>Identity</strong>: FinTrack profile + ${contact?'contact record found':'no contact record'}</li>
+          <li><strong>Financial state</strong>: ${accts.length} accounts, net <span class="${totalBal<0?'amt-neg':'amt-pos'}">$${Math.abs(Math.round(totalBal)).toLocaleString()}</span>, ${txns.length} transactions</li>
+          <li><strong>Recurring costs</strong>: ${active.length} active subscriptions, ~$${monthlyEst.toFixed(0)}/month</li>
+          <li><strong>Calendar</strong>: ${calEvts.length} billing events on record</li>
+          <li><strong>Support history</strong>: ${tickets.length} ticket${tickets.length!==1?'s':''}, ${emails.length} email${emails.length!==1?'s':''}</li>
+          <li><strong>Top spending</strong>: ${topCats.map(([c])=>c).join(', ')||'none'}</li>
+        </ul>
+        <div style="font-size:10px;color:var(--text3);margin-top:8px">Data from: FinTrack · Contacts · Calendar · Email · Zendesk</div>
+      </div>`);
+
+  document.getElementById('sc-output').innerHTML = html;
 }
 
 /* ══════════════════════════════════════════════════
-   PAGINATION HELPER
+   GLOBAL SEARCH
 ══════════════════════════════════════════════════ */
-function renderPagination(containerId, currentPage, total, onPage) {
-  const totalPages = Math.ceil(total / PAGE_SIZE);
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  if (totalPages <= 1) { el.innerHTML = ''; return; }
+function initGlobalSearch() {
+  const input = document.getElementById('global-search');
+  const dd    = document.getElementById('search-dropdown');
+  if (!input) return;
+  let timer;
+  input.addEventListener('input', ()=>{ clearTimeout(timer); timer=setTimeout(()=>runSearch(input.value.trim()),220); });
+  input.addEventListener('blur', ()=>{ setTimeout(()=>dd.classList.add('hidden'),200); });
+  input.addEventListener('focus', ()=>{ if(input.value.trim().length>=2) dd.classList.remove('hidden'); });
+}
 
-  const start = currentPage * PAGE_SIZE + 1;
-  const end   = Math.min((currentPage + 1) * PAGE_SIZE, total);
+function runSearch(q) {
+  const dd = document.getElementById('search-dropdown');
+  if (q.length<2) { dd.classList.add('hidden'); return; }
+  const ql = q.toLowerCase();
+  const hilite = (s,q_) => {
+    const re=new RegExp('('+q_.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+    return esc(s).replace(re,'<mark>$1</mark>');
+  };
 
-  let html = `<button class="page-btn" ${currentPage===0?'disabled':''} onclick="(${onPage.toString()})(${currentPage-1})">← Prev</button>`;
-  html += `<span class="page-info">${start}–${end} of ${total.toLocaleString()}</span>`;
+  const users = FT.users.filter(u=>u.name.toLowerCase().includes(ql)||u.email.toLowerCase().includes(ql)||u.user_id.toLowerCase().includes(ql)).slice(0,4);
+  const txs   = FT.transactions.filter(t=>t.merchant.toLowerCase().includes(ql)||t.category.toLowerCase().includes(ql)).slice(0,4);
+  const accts = FT.accounts.filter(a=>a.institution_name.toLowerCase().includes(ql)||a.account_type.toLowerCase().includes(ql)||(a.last_four||'').includes(ql)).slice(0,3);
+  const tkts  = (ZD.tickets||[]).filter(t=>t.subject?.toLowerCase().includes(ql)||t.external_id?.toLowerCase().includes(ql)).slice(0,3);
+  const subs  = FT.subscriptions.filter(s=>s.service_name.toLowerCase().includes(ql)).slice(0,3);
 
-  /* Page numbers (show up to 7 around current) */
-  const pages = [];
-  for (let i=0; i<totalPages; i++) {
-    if (i===0 || i===totalPages-1 || (i>=currentPage-2 && i<=currentPage+2)) pages.push(i);
+  if (!users.length&&!txs.length&&!accts.length&&!tkts.length&&!subs.length) {
+    dd.innerHTML=`<div class="sd-empty">No results for "${esc(q)}"</div>`;
+    dd.classList.remove('hidden'); return;
   }
-  let prev = null;
-  pages.forEach(p => {
-    if (prev !== null && p - prev > 1) html += `<span class="page-info">…</span>`;
-    html += `<button class="page-btn${p===currentPage?' active':''}" onclick="(${onPage.toString()})(${p})">${p+1}</button>`;
-    prev = p;
+
+  let html='';
+  const item=(icon,main,sub,onclick_)=>`<div class="sd-item" onclick="${onclick_};document.getElementById('search-dropdown').classList.add('hidden')"><span class="sd-icon">${icon}</span><div><div class="sd-main">${main}</div><div class="sd-sub">${sub}</div></div></div>`;
+
+  if(users.length){html+=`<div class="sd-group-title">👤 Users</div>`;
+    html+=users.map(u=>item('👤',hilite(u.name,ql),`${hilite(u.email,ql)} · ${u.user_id}`,`openUserModal('${u.user_id}')`)).join('');}
+  if(txs.length){html+=`<div class="sd-group-title">💳 Transactions</div>`;
+    html+=txs.map(t=>{const u=FT.users.find(x=>x.user_id===t.user_id);return item('💳',hilite(t.merchant,ql),`${t.date} · ${u?.name||t.user_id} · $${Math.abs(t.amount).toFixed(2)}`,`openTransactionModal('${t.transaction_id}')`)}).join('');}
+  if(accts.length){html+=`<div class="sd-group-title">🏦 Accounts</div>`;
+    html+=accts.map(a=>{const u=FT.users.find(x=>x.user_id===a.user_id);return item('🏦',hilite(a.institution_name,ql),`${a.account_type} · •••• ${a.last_four} · ${u?.name||a.user_id}`,`openAccountModal('${a.account_id}')`)}).join('');}
+  if(tkts.length){html+=`<div class="sd-group-title">🎫 Tickets</div>`;
+    html+=tkts.map(t=>item('🎫',hilite(t.subject||'',ql),`${t.external_id} · ${(t.created_at||'').slice(0,10)}`,`openTicketModal(${t.id})`)).join('');}
+  if(subs.length){html+=`<div class="sd-group-title">🔄 Subscriptions</div>`;
+    html+=subs.map(s=>{const u=FT.users.find(x=>x.user_id===s.user_id);return item('🔄',hilite(s.service_name,ql),`$${s.amount}/${s.billing_frequency} · ${u?.name||s.user_id}`,`openSubscriptionModal('${s.subscription_id}')`)}).join('');}
+
+  dd.innerHTML=html; dd.classList.remove('hidden');
+}
+
+/* ══════════════════════════════════════════════════
+   PAGINATION
+══════════════════════════════════════════════════ */
+function renderPag(containerId, current, total, onPage) {
+  const el=document.getElementById(containerId);
+  if(!el) return;
+  const pages=Math.ceil(total/PAGE_SIZE);
+  if(pages<=1){el.innerHTML='';return;}
+  const s=current*PAGE_SIZE+1, e=Math.min((current+1)*PAGE_SIZE,total);
+  let html=`<button class="page-btn" ${current===0?'disabled':''} onclick="(${onPage.toString()})(${current-1})">← Prev</button>`;
+  html+=`<span class="page-info">${s}–${e} of ${total.toLocaleString()}</span>`;
+  const nums=new Set([0,pages-1,...Array.from({length:5},(_,i)=>current-2+i).filter(p=>p>=0&&p<pages)]);
+  let prev=null;
+  [...nums].sort((a,b)=>a-b).forEach(p=>{
+    if(prev!==null&&p-prev>1) html+=`<span class="page-info">…</span>`;
+    html+=`<button class="page-btn${p===current?' current':''}" onclick="(${onPage.toString()})(${p})">${p+1}</button>`;
+    prev=p;
   });
-
-  html += `<button class="page-btn" ${currentPage>=totalPages-1?'disabled':''} onclick="(${onPage.toString()})(${currentPage+1})">Next →</button>`;
-  el.innerHTML = html;
+  html+=`<button class="page-btn" ${current>=pages-1?'disabled':''} onclick="(${onPage.toString()})(${current+1})">Next →</button>`;
+  el.innerHTML=html;
 }
 
 /* ══════════════════════════════════════════════════
-   UTILITY FUNCTIONS
+   UTILITY
 ══════════════════════════════════════════════════ */
-function debounce(fn, ms) {
-  let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
-}
+function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
+function val(id){const el=document.getElementById(id);return el?el.value:'';}
+function bindEvent(id,ev,fn){const el=document.getElementById(id);if(el&&!el[`_${ev}`]){el[`_${ev}`]=true;el.addEventListener(ev,fn);}}
+function populateSelect(id,opts){const el=document.getElementById(id);if(!el||el.children.length>1)return;opts.forEach(o=>{const x=document.createElement('option');x.value=o;x.textContent=o;el.appendChild(x);});}
 
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function esc(s) {
-  return String(s||'').replace(/'/g,"\\'").replace(/\n/g,' ');
-}
-
-function hilite(text, q) {
-  if (!q) return escHtml(text);
-  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
-  return escHtml(text).replace(re, '<mark style="background:rgba(251,191,36,0.3);color:var(--amber);border-radius:2px">$1</mark>');
-}
-
-function safeJson(obj) {
-  return escHtml(JSON.stringify(obj)).replace(/'/g,'&apos;');
-}
-
-/* ══════════════════════════════════════════════════
-   ENTRY POINT — called from app.js after data loads
-══════════════════════════════════════════════════ */
-function initExplorer() {
-  initGlobalSearch();
-  initScenarioBuilder();
-}
+/* ── Entry point ── */
+function initExplorer() { initGlobalSearch(); }

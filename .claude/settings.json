@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(python3 -c ' *)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(curl -s \"https://api.github.com/repos/PablitoFott14/FinTrack/contents/\")",
+      "Bash(node -e \"const d=require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\); JSON.parse\\(d\\).forEach\\(f=>console.log\\(f.type, f.name, f.path\\)\\)\")",
+      "Bash(curl -s \"https://api.github.com/repos/PablitoFott14/FinTrack/pages\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(curl -s \"https://api.github.com/repos/PablitoFott14/FinTrack/contents/fintrack-visualization/data\")",
+      "Bash(curl -s \"https://api.github.com/repos/PablitoFott14/FinTrack/contents/fintrack-visualization/js\")"
     ]
   }
 }

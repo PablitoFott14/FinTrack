@@ -5,184 +5,209 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OpenClaw · FinTrack Universe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- ══════════ HEADER ══════════ -->
+  <!-- ══ HEADER ══ -->
   <header class="header">
     <div class="header-inner">
       <div class="brand">
         <div class="brand-logo">OC</div>
-        <div class="brand-name">
-          <span>OpenClaw</span>
-          <small>FinTrack Universe</small>
-        </div>
+        <div class="brand-name"><span>OpenClaw</span><small>FinTrack Universe</small></div>
       </div>
-      <nav class="tabs">
+
+      <div class="global-search-wrap">
+        <input type="text" id="global-search" class="global-search" placeholder="Search users, transactions, merchants, tickets…" autocomplete="off" />
+        <div id="search-results" class="search-results hidden"></div>
+      </div>
+
+      <nav class="tabs" id="main-tabs">
         <button class="tab active" data-tab="overview">Overview</button>
-        <button class="tab" data-tab="network">Network Graph</button>
-        <button class="tab" data-tab="finance">Finance</button>
+        <button class="tab" data-tab="users">Users</button>
+        <button class="tab" data-tab="accounts">Accounts</button>
+        <button class="tab" data-tab="transactions">Transactions</button>
         <button class="tab" data-tab="subscriptions">Subscriptions</button>
         <button class="tab" data-tab="support">Support</button>
+        <button class="tab" data-tab="network">Network</button>
+        <button class="tab" data-tab="scenarios">Scenarios</button>
       </nav>
+
       <div class="status-bar">
         <span class="pulse-dot" id="status-dot"></span>
-        <span class="status-text" id="status-text">Initializing…</span>
+        <span class="status-text" id="status-text">Loading…</span>
       </div>
     </div>
   </header>
 
-  <!-- ══════════ MAIN ══════════ -->
-  <main class="main">
+  <!-- ══ MAIN LAYOUT ══ -->
+  <div class="layout" id="layout">
+    <main class="main" id="main-content">
 
-    <!-- ── OVERVIEW ── -->
-    <section class="page active" id="page-overview">
-      <div class="page-title">
-        <h2>Platform Overview</h2>
-        <p>Cross-service intelligence snapshot across all 5 FinTrack data services</p>
-      </div>
-      <div class="kpi-row" id="kpi-row"></div>
-      <div class="grid-3">
-        <div class="card">
-          <h4>Users by Linked Account Count</h4>
-          <canvas id="c-user-accounts"></canvas>
+      <!-- ── OVERVIEW ── -->
+      <section class="page active" id="page-overview">
+        <div class="page-title"><h2>Platform Overview</h2><p>Cross-service intelligence snapshot across all 5 FinTrack data services</p></div>
+        <div class="kpi-row" id="kpi-row"></div>
+        <div class="grid-3">
+          <div class="card"><h4>Users by Linked Account Count</h4><canvas id="c-user-accounts"></canvas></div>
+          <div class="card"><h4>Account Types Distribution</h4><canvas id="c-account-types"></canvas></div>
+          <div class="card"><h4>Data Coverage by Service</h4><canvas id="c-service-coverage"></canvas></div>
         </div>
-        <div class="card">
-          <h4>Account Types Distribution</h4>
-          <canvas id="c-account-types"></canvas>
-        </div>
-        <div class="card">
-          <h4>Data Coverage by Service</h4>
-          <canvas id="c-service-coverage"></canvas>
-        </div>
-      </div>
-      <div class="scenarios-section">
-        <h3>OpenClaw Enabled Scenarios</h3>
-        <div class="scenarios-grid" id="scenarios-grid"></div>
-      </div>
-    </section>
+        <div class="scenarios-section"><h3>OpenClaw Enabled Scenarios</h3><div class="scenarios-grid" id="scenarios-grid"></div></div>
+      </section>
 
-    <!-- ── NETWORK GRAPH ── -->
-    <section class="page" id="page-network">
-      <div class="page-title">
-        <h2>Entity Relationship Network</h2>
-        <p>Force-directed graph of Users ↔ Accounts ↔ Merchants ↔ Services ↔ Tickets</p>
-      </div>
-      <div class="network-controls">
-        <span class="ctrl-label">Show nodes:</span>
-        <label class="toggle-pill"><input type="checkbox" id="cb-users" checked /><span>Users</span></label>
-        <label class="toggle-pill"><input type="checkbox" id="cb-accounts" checked /><span>Accounts</span></label>
-        <label class="toggle-pill"><input type="checkbox" id="cb-merchants" checked /><span>Merchants</span></label>
-        <label class="toggle-pill"><input type="checkbox" id="cb-services" checked /><span>Services</span></label>
-        <label class="toggle-pill"><input type="checkbox" id="cb-tickets" /><span>Tickets</span></label>
-        <button class="btn-ghost" id="btn-reset-zoom">⟳ Reset View</button>
-      </div>
-      <div class="network-wrap">
-        <svg id="network-svg"></svg>
-        <div id="tooltip" class="tooltip hidden"></div>
-        <div class="network-legend">
-          <div class="leg"><span class="leg-dot" style="background:#818cf8"></span>User</div>
-          <div class="leg"><span class="leg-dot" style="background:#34d399"></span>Account</div>
-          <div class="leg"><span class="leg-dot" style="background:#fbbf24"></span>Merchant</div>
-          <div class="leg"><span class="leg-dot" style="background:#a78bfa"></span>Service</div>
-          <div class="leg"><span class="leg-dot" style="background:#f87171"></span>Ticket</div>
+      <!-- ── USERS EXPLORER ── -->
+      <section class="page" id="page-users">
+        <div class="page-title"><h2>Users</h2><p>All FinTrack users — click any row for full 360° profile across all services</p></div>
+        <div class="explorer-bar">
+          <input type="text" class="ex-search" id="users-search" placeholder="Search name or email…" />
+          <select class="ex-filter" id="users-sort">
+            <option value="user_id">Sort: ID</option>
+            <option value="name">Sort: Name</option>
+            <option value="member_since">Sort: Member Since</option>
+            <option value="linked_accounts_count">Sort: Accounts</option>
+          </select>
+          <span class="ex-count" id="users-count"></span>
         </div>
-      </div>
-    </section>
+        <div class="table-wrap" id="users-table"></div>
+        <div class="pagination" id="users-pagination"></div>
+      </section>
 
-    <!-- ── FINANCE ── -->
-    <section class="page" id="page-finance">
-      <div class="page-title">
-        <h2>Financial Analytics</h2>
-        <p>Spending patterns, account balances, and transaction trends across all users</p>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <h4>Spending by Category</h4>
-          <canvas id="c-spending-cat"></canvas>
+      <!-- ── ACCOUNTS EXPLORER ── -->
+      <section class="page" id="page-accounts">
+        <div class="page-title"><h2>Accounts</h2><p>All linked financial accounts — filter by institution, type, or balance range</p></div>
+        <div class="explorer-bar">
+          <input type="text" class="ex-search" id="accounts-search" placeholder="Search institution or type…" />
+          <select class="ex-filter" id="accounts-type-filter"><option value="">All Types</option></select>
+          <select class="ex-filter" id="accounts-inst-filter"><option value="">All Institutions</option></select>
+          <span class="ex-count" id="accounts-count"></span>
         </div>
-        <div class="card">
-          <h4>Monthly Spending Trend</h4>
-          <canvas id="c-monthly-trend"></canvas>
-        </div>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <h4>Top 12 Merchants by Transaction Volume ($)</h4>
-          <canvas id="c-top-merchants"></canvas>
-        </div>
-        <div class="card">
-          <h4>Account Balance Distribution</h4>
-          <canvas id="c-balance-dist"></canvas>
-        </div>
-      </div>
-    </section>
+        <div class="table-wrap" id="accounts-table"></div>
+        <div class="pagination" id="accounts-pagination"></div>
+      </section>
 
-    <!-- ── SUBSCRIPTIONS ── -->
-    <section class="page" id="page-subscriptions">
-      <div class="page-title">
-        <h2>Subscription Intelligence</h2>
-        <p>Recurring billing analysis, cost breakdown, and upcoming payment calendar</p>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <h4>Top Services by Subscriber Count</h4>
-          <canvas id="c-sub-services"></canvas>
+      <!-- ── TRANSACTIONS EXPLORER ── -->
+      <section class="page" id="page-transactions">
+        <div class="page-title"><h2>Transactions</h2><p>All 2,200+ transactions — search, filter, and drill into every record</p></div>
+        <div class="explorer-bar wrap">
+          <input type="text" class="ex-search" id="tx-search" placeholder="Search merchant…" />
+          <select class="ex-filter" id="tx-cat-filter"><option value="">All Categories</option></select>
+          <select class="ex-filter" id="tx-user-filter"><option value="">All Users</option></select>
+          <input type="text" class="ex-filter narrow" id="tx-date-from" placeholder="From (YYYY-MM-DD)" />
+          <input type="text" class="ex-filter narrow" id="tx-date-to" placeholder="To (YYYY-MM-DD)" />
+          <input type="number" class="ex-filter narrow" id="tx-amt-min" placeholder="Min $" />
+          <input type="number" class="ex-filter narrow" id="tx-amt-max" placeholder="Max $" />
+          <button class="btn-ghost" id="tx-clear">Clear Filters</button>
+          <span class="ex-count" id="tx-count"></span>
         </div>
-        <div class="card">
-          <h4>Billing Frequency Distribution</h4>
-          <canvas id="c-billing-freq"></canvas>
-        </div>
-      </div>
-      <div class="card full">
-        <h4>Upcoming Billing Events — Next 60 Days</h4>
-        <div id="billing-timeline"></div>
-      </div>
-      <div class="card full">
-        <h4>Estimated Monthly Subscription Spend per User (Top 25)</h4>
-        <div style="height:320px; position:relative;">
-          <canvas id="c-user-sub-cost"></canvas>
-        </div>
-      </div>
-    </section>
+        <div class="table-wrap" id="tx-table"></div>
+        <div class="pagination" id="tx-pagination"></div>
+      </section>
 
-    <!-- ── SUPPORT ── -->
-    <section class="page" id="page-support">
-      <div class="page-title">
-        <h2>Support Intelligence</h2>
-        <p>Ticket patterns, email correlation, and user issue analysis</p>
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <h4>Issue Categories (from Subject Lines)</h4>
-          <canvas id="c-ticket-cats"></canvas>
+      <!-- ── SUBSCRIPTIONS EXPLORER ── -->
+      <section class="page" id="page-subscriptions">
+        <div class="page-title"><h2>Subscriptions</h2><p>All recurring subscriptions — every billing record with full details</p></div>
+        <div class="explorer-bar">
+          <input type="text" class="ex-search" id="sub-search" placeholder="Search service name…" />
+          <select class="ex-filter" id="sub-status-filter"><option value="">All Statuses</option><option value="Active">Active</option><option value="Cancelled">Cancelled</option></select>
+          <select class="ex-filter" id="sub-freq-filter"><option value="">All Frequencies</option></select>
+          <span class="ex-count" id="sub-count"></span>
         </div>
-        <div class="card">
-          <h4>Ticket Creation Timeline</h4>
-          <canvas id="c-ticket-timeline"></canvas>
+        <div class="grid-2" style="margin-bottom:16px">
+          <div class="card"><h4>Top Services by Subscriber Count</h4><canvas id="c-sub-services"></canvas></div>
+          <div class="card"><h4>Billing Frequency Distribution</h4><canvas id="c-billing-freq"></canvas></div>
         </div>
-      </div>
-      <div class="card full">
-        <h4>Open Support Tickets</h4>
-        <div id="tickets-table" class="data-table-wrap"></div>
-      </div>
-    </section>
+        <div class="card full"><h4>Upcoming Billing Events — Next 60 Days</h4><div id="billing-timeline"></div></div>
+        <div class="card full" style="margin-top:16px"><h4>All Subscriptions</h4>
+          <div class="table-wrap" id="sub-table"></div>
+          <div class="pagination" id="sub-pagination"></div>
+        </div>
+      </section>
 
-  </main>
+      <!-- ── SUPPORT EXPLORER ── -->
+      <section class="page" id="page-support">
+        <div class="page-title"><h2>Support</h2><p>All tickets and emails — click any ticket to see the user's full financial context</p></div>
+        <div class="grid-2" style="margin-bottom:16px">
+          <div class="card"><h4>Issue Categories</h4><canvas id="c-ticket-cats"></canvas></div>
+          <div class="card"><h4>Ticket Creation Timeline</h4><canvas id="c-ticket-timeline"></canvas></div>
+        </div>
+        <div class="explorer-bar">
+          <input type="text" class="ex-search" id="support-search" placeholder="Search subject or description…" />
+          <span class="ex-count" id="support-count"></span>
+        </div>
+        <div class="table-wrap" id="support-table"></div>
+      </section>
+
+      <!-- ── NETWORK ── -->
+      <section class="page" id="page-network">
+        <div class="page-title"><h2>Entity Relationship Network</h2><p>Force-directed graph — click any node for full record detail</p></div>
+        <div class="network-controls">
+          <span class="ctrl-label">Show:</span>
+          <label class="toggle-pill"><input type="checkbox" id="cb-users" checked /><span>Users</span></label>
+          <label class="toggle-pill"><input type="checkbox" id="cb-accounts" checked /><span>Accounts</span></label>
+          <label class="toggle-pill"><input type="checkbox" id="cb-merchants" checked /><span>Merchants</span></label>
+          <label class="toggle-pill"><input type="checkbox" id="cb-services" checked /><span>Services</span></label>
+          <label class="toggle-pill"><input type="checkbox" id="cb-tickets" /><span>Tickets</span></label>
+          <button class="btn-ghost" id="btn-reset-zoom">⟳ Reset View</button>
+        </div>
+        <div class="network-wrap">
+          <svg id="network-svg"></svg>
+          <div id="tooltip" class="tooltip hidden"></div>
+          <div class="network-legend">
+            <div class="leg"><span class="leg-dot" style="background:#818cf8"></span>User</div>
+            <div class="leg"><span class="leg-dot" style="background:#34d399"></span>Account</div>
+            <div class="leg"><span class="leg-dot" style="background:#fbbf24"></span>Merchant</div>
+            <div class="leg"><span class="leg-dot" style="background:#a78bfa"></span>Service</div>
+            <div class="leg"><span class="leg-dot" style="background:#f87171"></span>Ticket</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SCENARIO BUILDER ── -->
+      <section class="page" id="page-scenarios">
+        <div class="page-title"><h2>Scenario Builder</h2><p>Assemble the complete OpenClaw context for any user — exactly what an AI agent sees when handling a request</p></div>
+        <div class="scenario-builder-controls">
+          <div class="sc-picker">
+            <label>Select a user:</label>
+            <select id="scenario-user-select" class="sc-user-select"><option value="">— Choose a user —</option></select>
+          </div>
+          <button class="btn-primary" id="scenario-build-btn" disabled>Build OpenClaw Context ⚡</button>
+        </div>
+        <div id="scenario-output"></div>
+      </section>
+
+    </main>
+
+    <!-- ══ DETAIL PANEL ══ -->
+    <aside class="detail-panel" id="detail-panel">
+      <div class="detail-header">
+        <div>
+          <span class="detail-type-badge" id="detail-type-badge"></span>
+          <span class="detail-title" id="detail-title"></span>
+        </div>
+        <button class="detail-close" id="detail-close" onclick="closeDetail()">✕</button>
+      </div>
+      <div class="detail-tabs">
+        <button class="detail-tab active" data-dtab="fields" onclick="switchDetailTab('fields',this)">Fields</button>
+        <button class="detail-tab" data-dtab="related" onclick="switchDetailTab('related',this)">Related</button>
+        <button class="detail-tab" data-dtab="raw" onclick="switchDetailTab('raw',this)">Raw JSON</button>
+      </div>
+      <div class="detail-body" id="detail-body"></div>
+      <div class="detail-body hidden" id="detail-related"></div>
+      <div class="detail-body hidden" id="detail-raw"></div>
+    </aside>
+  </div>
 
   <!-- Loading overlay -->
   <div id="loading-overlay" class="loading-overlay">
-    <div class="loader-box">
-      <div class="spinner"></div>
-      <p>Loading FinTrack Universe…</p>
-    </div>
+    <div class="loader-box"><div class="spinner"></div><p>Loading FinTrack Universe…</p></div>
   </div>
 
   <script src="js/network.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/explorer.js"></script>
 </body>
 </html>

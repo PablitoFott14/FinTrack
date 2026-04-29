@@ -1,0 +1,2224 @@
+{
+  "events": [
+    {
+      "event_id": "a5264dd698ba4877a92739dda0beae74",
+      "title": "Billing: AT&T Mobile \u2014 Rachel Reed",
+      "start_datetime": 1774150200.0,
+      "end_datetime": 1774153800.0,
+      "tag": "Billing",
+      "description": "Subscription: AT&T Mobile\nUser: Rachel Reed\nAmount: $85.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Rachel Reed"
+      ]
+    },
+    {
+      "event_id": "1f874163785945ed93f1ed89fde50f8e",
+      "title": "Billing: Verizon Mobile \u2014 David Young",
+      "start_datetime": 1773804600.0,
+      "end_datetime": 1773808200.0,
+      "tag": "Billing",
+      "description": "Subscription: Verizon Mobile\nUser: David Young\nAmount: $95.0\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "David Young"
+      ]
+    },
+    {
+      "event_id": "3601f8c37a8a41f78568a3551a7f0c96",
+      "title": "Billing: Spectrum Internet \u2014 David Young",
+      "start_datetime": 1773545400.0,
+      "end_datetime": 1773549000.0,
+      "tag": "Billing",
+      "description": "Subscription: Spectrum Internet\nUser: David Young\nAmount: $79.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "David Young"
+      ]
+    },
+    {
+      "event_id": "fbd15b8ebc34489fbc6f558a65976e46",
+      "title": "Billing: HelloFresh \u2014 David Young",
+      "start_datetime": 1773804600.0,
+      "end_datetime": 1773808200.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: David Young\nAmount: $69.99\nFrequency: Weekly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "David Young"
+      ]
+    },
+    {
+      "event_id": "5f80e66f1d9149689130ca9c02216c8d",
+      "title": "Billing: Peloton All-Access \u2014 Melissa Moore",
+      "start_datetime": 1773891000.0,
+      "end_datetime": 1773894600.0,
+      "tag": "Billing",
+      "description": "Subscription: Peloton All-Access\nUser: Melissa Moore\nAmount: $44.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Melissa Moore"
+      ]
+    },
+    {
+      "event_id": "b3180a4e4a8b4e77beb5eee425ba6099",
+      "title": "Billing: Audible \u2014 Melissa Moore",
+      "start_datetime": 1773113400.0,
+      "end_datetime": 1773117000.0,
+      "tag": "Billing",
+      "description": "Subscription: Audible\nUser: Melissa Moore\nAmount: $14.95\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Melissa Moore"
+      ]
+    },
+    {
+      "event_id": "74ce0736d0184d60897878658e2ec970",
+      "title": "Billing: Adobe Creative Cloud \u2014 Melissa Moore",
+      "start_datetime": 1774495800.0,
+      "end_datetime": 1774499400.0,
+      "tag": "Billing",
+      "description": "Subscription: Adobe Creative Cloud\nUser: Melissa Moore\nAmount: $54.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Melissa Moore"
+      ]
+    },
+    {
+      "event_id": "543eac2d3f89430ea0cc309c5a39096b",
+      "title": "Billing: Blue Apron \u2014 Melissa Moore",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Melissa Moore\nAmount: $59.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Melissa Moore"
+      ]
+    },
+    {
+      "event_id": "85e65b6b24fb42e8900a78db39d32937",
+      "title": "Billing: Peloton All-Access \u2014 Emily Morris",
+      "start_datetime": 1774150200.0,
+      "end_datetime": 1774153800.0,
+      "tag": "Billing",
+      "description": "Subscription: Peloton All-Access\nUser: Emily Morris\nAmount: $44.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emily Morris"
+      ]
+    },
+    {
+      "event_id": "11691d723fbc489bb0ebcede8cd959de",
+      "title": "Billing: Amazon Prime \u2014 Emily Morris",
+      "start_datetime": 1774582200.0,
+      "end_datetime": 1774585800.0,
+      "tag": "Billing",
+      "description": "Subscription: Amazon Prime\nUser: Emily Morris\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emily Morris"
+      ]
+    },
+    {
+      "event_id": "9efe2ef74045426ea2cd42bd2741b5d0",
+      "title": "Billing: Audible \u2014 Emily Morris",
+      "start_datetime": 1774323000.0,
+      "end_datetime": 1774326600.0,
+      "tag": "Billing",
+      "description": "Subscription: Audible\nUser: Emily Morris\nAmount: $14.95\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emily Morris"
+      ]
+    },
+    {
+      "event_id": "d1b82bffc6e847eba62ead4363d837f4",
+      "title": "Billing: T-Mobile \u2014 Helen Harris",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: T-Mobile\nUser: Helen Harris\nAmount: $70.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Helen Harris"
+      ]
+    },
+    {
+      "event_id": "22aada3fc72e493abda1f499ec0ae68b",
+      "title": "Billing: Amazon Prime \u2014 Helen Harris",
+      "start_datetime": 1773199800.0,
+      "end_datetime": 1773203400.0,
+      "tag": "Billing",
+      "description": "Subscription: Amazon Prime\nUser: Helen Harris\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Helen Harris"
+      ]
+    },
+    {
+      "event_id": "8b4b93f557c14a2caaa97e60969a82cb",
+      "title": "Billing: Orangetheory \u2014 Michelle Campbell",
+      "start_datetime": 1773718200.0,
+      "end_datetime": 1773721800.0,
+      "tag": "Billing",
+      "description": "Subscription: Orangetheory\nUser: Michelle Campbell\nAmount: $159.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Campbell"
+      ]
+    },
+    {
+      "event_id": "f659414030774a99a56879124fb200fe",
+      "title": "Billing: Microsoft 365 \u2014 Michelle Campbell",
+      "start_datetime": 1774409400.0,
+      "end_datetime": 1774413000.0,
+      "tag": "Billing",
+      "description": "Subscription: Microsoft 365\nUser: Michelle Campbell\nAmount: $99.99\nFrequency: Annual\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Campbell"
+      ]
+    },
+    {
+      "event_id": "1f464f2c588445ef8a83712155fc1f3f",
+      "title": "Billing: Kindle Unlimited \u2014 Angela Lee",
+      "start_datetime": 1773977400.0,
+      "end_datetime": 1773981000.0,
+      "tag": "Billing",
+      "description": "Subscription: Kindle Unlimited\nUser: Angela Lee\nAmount: $9.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Angela Lee"
+      ]
+    },
+    {
+      "event_id": "b4ce3d9f73754dcc8eb1b7b6a99bda5f",
+      "title": "Billing: Comcast Internet \u2014 Dennis Park",
+      "start_datetime": 1774323000.0,
+      "end_datetime": 1774326600.0,
+      "tag": "Billing",
+      "description": "Subscription: Comcast Internet\nUser: Dennis Park\nAmount: $89.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Dennis Park"
+      ]
+    },
+    {
+      "event_id": "20abcd2d94d5415db7b01e620036a095",
+      "title": "Billing: Xbox Game Pass \u2014 Dennis Park",
+      "start_datetime": 1775014200.0,
+      "end_datetime": 1775017800.0,
+      "tag": "Billing",
+      "description": "Subscription: Xbox Game Pass\nUser: Dennis Park\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Dennis Park"
+      ]
+    },
+    {
+      "event_id": "2cc8c44bc1e5499297481812cba0ce6a",
+      "title": "Billing: HelloFresh \u2014 Dennis Park",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Dennis Park\nAmount: $69.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Dennis Park"
+      ]
+    },
+    {
+      "event_id": "df6ee5b23bd446999a12808a518c4075",
+      "title": "Billing: LA Fitness \u2014 Dennis Park",
+      "start_datetime": 1773631800.0,
+      "end_datetime": 1773635400.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Dennis Park\nAmount: $49.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Dennis Park"
+      ]
+    },
+    {
+      "event_id": "46502d8e10a24f4b84d4641ca0859356",
+      "title": "Billing: T-Mobile \u2014 Carol Brown",
+      "start_datetime": 1775014200.0,
+      "end_datetime": 1775017800.0,
+      "tag": "Billing",
+      "description": "Subscription: T-Mobile\nUser: Carol Brown\nAmount: $70.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Carol Brown"
+      ]
+    },
+    {
+      "event_id": "962ac48e6769421aa98108348548f272",
+      "title": "Billing: LA Fitness \u2014 Carol Brown",
+      "start_datetime": 1773113400.0,
+      "end_datetime": 1773117000.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Carol Brown\nAmount: $49.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Carol Brown"
+      ]
+    },
+    {
+      "event_id": "67ac4637e9fe4058820a4f068b6d8618",
+      "title": "Billing: Adobe Creative Cloud \u2014 Carol Brown",
+      "start_datetime": 1773199800.0,
+      "end_datetime": 1773203400.0,
+      "tag": "Billing",
+      "description": "Subscription: Adobe Creative Cloud\nUser: Carol Brown\nAmount: $54.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Carol Brown"
+      ]
+    },
+    {
+      "event_id": "a72b5195cacd492db7ebd25550a93e68",
+      "title": "Billing: iCloud Storage \u2014 Carol Brown",
+      "start_datetime": 1775014200.0,
+      "end_datetime": 1775017800.0,
+      "tag": "Billing",
+      "description": "Subscription: iCloud Storage\nUser: Carol Brown\nAmount: $2.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Carol Brown"
+      ]
+    },
+    {
+      "event_id": "399db730864944589b03f10b8f72d4c6",
+      "title": "Billing: Dropbox Plus \u2014 Anthony Turner",
+      "start_datetime": 1773113400.0,
+      "end_datetime": 1773117000.0,
+      "tag": "Billing",
+      "description": "Subscription: Dropbox Plus\nUser: Anthony Turner\nAmount: $11.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Anthony Turner"
+      ]
+    },
+    {
+      "event_id": "6d0c76229da74476843c04645c9995b1",
+      "title": "Billing: Disney+ \u2014 Anthony Turner",
+      "start_datetime": 1773891000.0,
+      "end_datetime": 1773894600.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Anthony Turner\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Anthony Turner"
+      ]
+    },
+    {
+      "event_id": "ba8606a55d56492691b5f133561b201d",
+      "title": "Billing: LinkedIn Premium \u2014 Timothy King",
+      "start_datetime": 1774409400.0,
+      "end_datetime": 1774413000.0,
+      "tag": "Billing",
+      "description": "Subscription: LinkedIn Premium\nUser: Timothy King\nAmount: $29.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Timothy King"
+      ]
+    },
+    {
+      "event_id": "ce5bf0ecf7ed406a95b874e891038618",
+      "title": "Billing: Microsoft 365 \u2014 Mark Carter",
+      "start_datetime": 1774063800.0,
+      "end_datetime": 1774067400.0,
+      "tag": "Billing",
+      "description": "Subscription: Microsoft 365\nUser: Mark Carter\nAmount: $99.99\nFrequency: Annual\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Mark Carter"
+      ]
+    },
+    {
+      "event_id": "af696e3771ad4cfebe688df2522e842d",
+      "title": "Billing: LA Fitness \u2014 Mark Carter",
+      "start_datetime": 1773199800.0,
+      "end_datetime": 1773203400.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Mark Carter\nAmount: $49.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Mark Carter"
+      ]
+    },
+    {
+      "event_id": "8b865e0a91b341f585f1bb85657bafc8",
+      "title": "Billing: Apple Music \u2014 Mark Carter",
+      "start_datetime": 1773891000.0,
+      "end_datetime": 1773894600.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Mark Carter\nAmount: $10.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Mark Carter"
+      ]
+    },
+    {
+      "event_id": "78abfba3201d47bab9332b9f6b5209c0",
+      "title": "Billing: Comcast Internet \u2014 Mark Carter",
+      "start_datetime": 1773459000.0,
+      "end_datetime": 1773462600.0,
+      "tag": "Billing",
+      "description": "Subscription: Comcast Internet\nUser: Mark Carter\nAmount: $89.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Mark Carter"
+      ]
+    },
+    {
+      "event_id": "6a5552e0eeb74ac994eba8caf59bf9f7",
+      "title": "Billing: Kindle Unlimited \u2014 Gregory Anderson",
+      "start_datetime": 1773286200.0,
+      "end_datetime": 1773289800.0,
+      "tag": "Billing",
+      "description": "Subscription: Kindle Unlimited\nUser: Gregory Anderson\nAmount: $9.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Gregory Anderson"
+      ]
+    },
+    {
+      "event_id": "64c6980fbef5439ca3adc1d1f805dab9",
+      "title": "Billing: Comcast Internet \u2014 Linda Turner",
+      "start_datetime": 1774755000.0,
+      "end_datetime": 1774758600.0,
+      "tag": "Billing",
+      "description": "Subscription: Comcast Internet\nUser: Linda Turner\nAmount: $89.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Linda Turner"
+      ]
+    },
+    {
+      "event_id": "b66655426fdd42e1ba72a5c4754f8637",
+      "title": "Billing: AT&T Mobile \u2014 Linda Turner",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: AT&T Mobile\nUser: Linda Turner\nAmount: $85.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Linda Turner"
+      ]
+    },
+    {
+      "event_id": "fa8dac1d5e014a6dbedfe90be6919d1f",
+      "title": "Billing: Apple Music \u2014 Linda Turner",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Linda Turner\nAmount: $10.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Linda Turner"
+      ]
+    },
+    {
+      "event_id": "c0c2b136a43b4c6698cfbdcb500b384f",
+      "title": "Billing: Audible \u2014 Richard Bell",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: Audible\nUser: Richard Bell\nAmount: $14.95\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Richard Bell"
+      ]
+    },
+    {
+      "event_id": "06a84dda1d1f40b1a35a7ff98db7cc8e",
+      "title": "Billing: LinkedIn Premium \u2014 Richard Bell",
+      "start_datetime": 1774927800.0,
+      "end_datetime": 1774931400.0,
+      "tag": "Billing",
+      "description": "Subscription: LinkedIn Premium\nUser: Richard Bell\nAmount: $29.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Richard Bell"
+      ]
+    },
+    {
+      "event_id": "904a8398894941948b57f5c3747903b4",
+      "title": "Billing: Amazon Prime \u2014 Richard Bell",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: Amazon Prime\nUser: Richard Bell\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Richard Bell"
+      ]
+    },
+    {
+      "event_id": "605a3149b83b4cfe92b595cd7e4d7b1c",
+      "title": "Billing: Peloton All-Access \u2014 Richard Bell",
+      "start_datetime": 1774236600.0,
+      "end_datetime": 1774240200.0,
+      "tag": "Billing",
+      "description": "Subscription: Peloton All-Access\nUser: Richard Bell\nAmount: $44.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Richard Bell"
+      ]
+    },
+    {
+      "event_id": "f00a8b69d1c744ae97d0a333c4d3b385",
+      "title": "Billing: Apple Music \u2014 Barbara Patterson",
+      "start_datetime": 1773286200.0,
+      "end_datetime": 1773289800.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Barbara Patterson\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Barbara Patterson"
+      ]
+    },
+    {
+      "event_id": "7a83e9b081af4ce68c4e7a5084cdb8db",
+      "title": "Billing: Disney+ \u2014 Barbara Patterson",
+      "start_datetime": 1774063800.0,
+      "end_datetime": 1774067400.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Barbara Patterson\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Barbara Patterson"
+      ]
+    },
+    {
+      "event_id": "60c061f90c6c41c9bebfd3edc7ca9a6a",
+      "title": "Billing: HelloFresh \u2014 Barbara Patterson",
+      "start_datetime": 1773631800.0,
+      "end_datetime": 1773635400.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Barbara Patterson\nAmount: $69.99\nFrequency: Weekly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Barbara Patterson"
+      ]
+    },
+    {
+      "event_id": "24025ff3dbfe4291b3ccfdd2ee8178c5",
+      "title": "Billing: Orangetheory \u2014 Mary Adams",
+      "start_datetime": 1772940600.0,
+      "end_datetime": 1772944200.0,
+      "tag": "Billing",
+      "description": "Subscription: Orangetheory\nUser: Mary Adams\nAmount: $159.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Mary Adams"
+      ]
+    },
+    {
+      "event_id": "59a2563061cb46d3ac0165782ce13841",
+      "title": "Billing: Spotify Premium \u2014 Mary Adams",
+      "start_datetime": 1774841400.0,
+      "end_datetime": 1774845000.0,
+      "tag": "Billing",
+      "description": "Subscription: Spotify Premium\nUser: Mary Adams\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Mary Adams"
+      ]
+    },
+    {
+      "event_id": "ec594ea2d6fa4359ad201dfdc28aaf98",
+      "title": "Billing: T-Mobile \u2014 Mary Adams",
+      "start_datetime": 1773804600.0,
+      "end_datetime": 1773808200.0,
+      "tag": "Billing",
+      "description": "Subscription: T-Mobile\nUser: Mary Adams\nAmount: $70.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Mary Adams"
+      ]
+    },
+    {
+      "event_id": "517b656c082948bfa8a395a7795c06be",
+      "title": "Billing: Apple Music \u2014 Mary Adams",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Mary Adams\nAmount: $10.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Mary Adams"
+      ]
+    },
+    {
+      "event_id": "a92cc11ea9fa44588f5f0cc8686ac557",
+      "title": "Billing: Blue Apron \u2014 Edward Park",
+      "start_datetime": 1775100600.0,
+      "end_datetime": 1775104200.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Edward Park\nAmount: $59.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Park"
+      ]
+    },
+    {
+      "event_id": "35db6dd0baf04d2c9ac16acea6d3054e",
+      "title": "Billing: Spectrum Internet \u2014 Edward Park",
+      "start_datetime": 1773545400.0,
+      "end_datetime": 1773549000.0,
+      "tag": "Billing",
+      "description": "Subscription: Spectrum Internet\nUser: Edward Park\nAmount: $79.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Park"
+      ]
+    },
+    {
+      "event_id": "186655f863ef4398b90448464bdb9b5e",
+      "title": "Billing: Disney+ \u2014 Edward Park",
+      "start_datetime": 1773113400.0,
+      "end_datetime": 1773117000.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Edward Park\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Park"
+      ]
+    },
+    {
+      "event_id": "8aec9793fb0f45eebe5e1257770e64f3",
+      "title": "Billing: AT&T Mobile \u2014 Edward Park",
+      "start_datetime": 1772940600.0,
+      "end_datetime": 1772944200.0,
+      "tag": "Billing",
+      "description": "Subscription: AT&T Mobile\nUser: Edward Park\nAmount: $85.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Park"
+      ]
+    },
+    {
+      "event_id": "2d65676418564c9483aaea9a00d589a8",
+      "title": "Billing: Hulu Basic \u2014 Linda Phillips",
+      "start_datetime": 1774755000.0,
+      "end_datetime": 1774758600.0,
+      "tag": "Billing",
+      "description": "Subscription: Hulu Basic\nUser: Linda Phillips\nAmount: $7.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Linda Phillips"
+      ]
+    },
+    {
+      "event_id": "08df007aafc04021baebb9c84ab1e2a5",
+      "title": "Billing: T-Mobile \u2014 Linda Phillips",
+      "start_datetime": 1774323000.0,
+      "end_datetime": 1774326600.0,
+      "tag": "Billing",
+      "description": "Subscription: T-Mobile\nUser: Linda Phillips\nAmount: $70.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Linda Phillips"
+      ]
+    },
+    {
+      "event_id": "1cc737430ebb4133b724ee8f0750979d",
+      "title": "Billing: Microsoft 365 \u2014 Anthony Torres",
+      "start_datetime": 1774755000.0,
+      "end_datetime": 1774758600.0,
+      "tag": "Billing",
+      "description": "Subscription: Microsoft 365\nUser: Anthony Torres\nAmount: $99.99\nFrequency: Annual\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Anthony Torres"
+      ]
+    },
+    {
+      "event_id": "a42d6dbdc2794ca999cb378e2b31375c",
+      "title": "Billing: Blue Apron \u2014 Anthony Torres",
+      "start_datetime": 1774495800.0,
+      "end_datetime": 1774499400.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Anthony Torres\nAmount: $59.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Anthony Torres"
+      ]
+    },
+    {
+      "event_id": "28b690b033614df8a333b5d52c182eb8",
+      "title": "Billing: Xbox Game Pass \u2014 Cynthia Rivera",
+      "start_datetime": 1772595000.0,
+      "end_datetime": 1772598600.0,
+      "tag": "Billing",
+      "description": "Subscription: Xbox Game Pass\nUser: Cynthia Rivera\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Cynthia Rivera"
+      ]
+    },
+    {
+      "event_id": "53046c56bb58410cac899a31826787f8",
+      "title": "Billing: Planet Fitness \u2014 Cynthia Rivera",
+      "start_datetime": 1773286200.0,
+      "end_datetime": 1773289800.0,
+      "tag": "Billing",
+      "description": "Subscription: Planet Fitness\nUser: Cynthia Rivera\nAmount: $24.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Cynthia Rivera"
+      ]
+    },
+    {
+      "event_id": "1433173b944f4c20b935d8489dbbf805",
+      "title": "Billing: Planet Fitness \u2014 Raymond Scott",
+      "start_datetime": 1772681400.0,
+      "end_datetime": 1772685000.0,
+      "tag": "Billing",
+      "description": "Subscription: Planet Fitness\nUser: Raymond Scott\nAmount: $24.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Raymond Scott"
+      ]
+    },
+    {
+      "event_id": "641e8b603b3e49d3aa11d6edd8436097",
+      "title": "Billing: LA Fitness \u2014 Karen Brooks",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Karen Brooks\nAmount: $49.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Karen Brooks"
+      ]
+    },
+    {
+      "event_id": "76ccfa66c0a54527b81dc8731f8594ac",
+      "title": "Billing: YouTube Premium \u2014 Karen Brooks",
+      "start_datetime": 1773891000.0,
+      "end_datetime": 1773894600.0,
+      "tag": "Billing",
+      "description": "Subscription: YouTube Premium\nUser: Karen Brooks\nAmount: $11.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Karen Brooks"
+      ]
+    },
+    {
+      "event_id": "43df40ce611747768e8d305006c5374b",
+      "title": "Billing: Netflix Premium \u2014 Edward Gray",
+      "start_datetime": 1772940600.0,
+      "end_datetime": 1772944200.0,
+      "tag": "Billing",
+      "description": "Subscription: Netflix Premium\nUser: Edward Gray\nAmount: $15.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Gray"
+      ]
+    },
+    {
+      "event_id": "492adcb0d0bc4cc9a8da14d6f57c731a",
+      "title": "Billing: Blue Apron \u2014 Edward Gray",
+      "start_datetime": 1774323000.0,
+      "end_datetime": 1774326600.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Edward Gray\nAmount: $59.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Gray"
+      ]
+    },
+    {
+      "event_id": "17c3f810cf8148258ba3c487585b1ba0",
+      "title": "Billing: Amazon Prime \u2014 Edward Gray",
+      "start_datetime": 1774323000.0,
+      "end_datetime": 1774326600.0,
+      "tag": "Billing",
+      "description": "Subscription: Amazon Prime\nUser: Edward Gray\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Gray"
+      ]
+    },
+    {
+      "event_id": "de1c59dcc7844d718b24327c7fac45de",
+      "title": "Billing: HelloFresh \u2014 Edward Gray",
+      "start_datetime": 1773891000.0,
+      "end_datetime": 1773894600.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Edward Gray\nAmount: $69.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Gray"
+      ]
+    },
+    {
+      "event_id": "ed1821c40daa47d2aa2f0e65355a5a2b",
+      "title": "Billing: Kindle Unlimited \u2014 Ashley Cox",
+      "start_datetime": 1774668600.0,
+      "end_datetime": 1774672200.0,
+      "tag": "Billing",
+      "description": "Subscription: Kindle Unlimited\nUser: Ashley Cox\nAmount: $9.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Ashley Cox"
+      ]
+    },
+    {
+      "event_id": "f25f61d704a54b19b349dca934623a44",
+      "title": "Billing: Apple Music \u2014 Ashley Cox",
+      "start_datetime": 1772767800.0,
+      "end_datetime": 1772771400.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Ashley Cox\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Ashley Cox"
+      ]
+    },
+    {
+      "event_id": "ac40cacf02dd48a98f46f3d5c1342ee4",
+      "title": "Billing: Blue Apron \u2014 Kathleen Phillips",
+      "start_datetime": 1772681400.0,
+      "end_datetime": 1772685000.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Kathleen Phillips\nAmount: $59.99\nFrequency: Weekly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Kathleen Phillips"
+      ]
+    },
+    {
+      "event_id": "a83df5f145184900965369cb4cab478e",
+      "title": "Billing: Dropbox Plus \u2014 Kenneth Scott",
+      "start_datetime": 1773286200.0,
+      "end_datetime": 1773289800.0,
+      "tag": "Billing",
+      "description": "Subscription: Dropbox Plus\nUser: Kenneth Scott\nAmount: $11.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Kenneth Scott"
+      ]
+    },
+    {
+      "event_id": "ed007c9f2f1b4295858ac84bd37aa5a7",
+      "title": "Billing: PlayStation Plus \u2014 Kenneth Scott",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: PlayStation Plus\nUser: Kenneth Scott\nAmount: $9.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Kenneth Scott"
+      ]
+    },
+    {
+      "event_id": "a492dc6ba0294f64ad5d8984a0cfb636",
+      "title": "Billing: Disney+ \u2014 Kenneth Scott",
+      "start_datetime": 1773804600.0,
+      "end_datetime": 1773808200.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Kenneth Scott\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Kenneth Scott"
+      ]
+    },
+    {
+      "event_id": "e427eef634a544f3acf0e84e8692fd2e",
+      "title": "Billing: HelloFresh \u2014 Kenneth Scott",
+      "start_datetime": 1774236600.0,
+      "end_datetime": 1774240200.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Kenneth Scott\nAmount: $69.99\nFrequency: Weekly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Kenneth Scott"
+      ]
+    },
+    {
+      "event_id": "54c74e419db2404cbef33bdbfde3523e",
+      "title": "Billing: Comcast Internet \u2014 Raymond Kelly",
+      "start_datetime": 1772767800.0,
+      "end_datetime": 1772771400.0,
+      "tag": "Billing",
+      "description": "Subscription: Comcast Internet\nUser: Raymond Kelly\nAmount: $89.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Raymond Kelly"
+      ]
+    },
+    {
+      "event_id": "3a4ea77ce033431da0dbb60573219724",
+      "title": "Billing: LA Fitness \u2014 Raymond Kelly",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Raymond Kelly\nAmount: $49.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Raymond Kelly"
+      ]
+    },
+    {
+      "event_id": "8784cd02ef904b1a85d916f9e2681e7d",
+      "title": "Billing: Netflix Standard \u2014 Raymond Kelly",
+      "start_datetime": 1772767800.0,
+      "end_datetime": 1772771400.0,
+      "tag": "Billing",
+      "description": "Subscription: Netflix Standard\nUser: Raymond Kelly\nAmount: $12.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Raymond Kelly"
+      ]
+    },
+    {
+      "event_id": "71250a96a7b64a59bb69115fcb01651b",
+      "title": "Billing: New York Times \u2014 Michelle Barnes",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: New York Times\nUser: Michelle Barnes\nAmount: $17.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Barnes"
+      ]
+    },
+    {
+      "event_id": "7d8e15df43e04793a9e361b9901b665d",
+      "title": "Billing: HBO Max \u2014 Michelle Barnes",
+      "start_datetime": 1773545400.0,
+      "end_datetime": 1773549000.0,
+      "tag": "Billing",
+      "description": "Subscription: HBO Max\nUser: Michelle Barnes\nAmount: $15.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Barnes"
+      ]
+    },
+    {
+      "event_id": "b328bc7fbaac46cab3070b882cf9d36c",
+      "title": "Billing: Peloton All-Access \u2014 Michelle Barnes",
+      "start_datetime": 1773631800.0,
+      "end_datetime": 1773635400.0,
+      "tag": "Billing",
+      "description": "Subscription: Peloton All-Access\nUser: Michelle Barnes\nAmount: $44.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Barnes"
+      ]
+    },
+    {
+      "event_id": "e2814d639a234fd4901ad49c48b68bc5",
+      "title": "Billing: Blue Apron \u2014 Michelle Barnes",
+      "start_datetime": 1773545400.0,
+      "end_datetime": 1773549000.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Michelle Barnes\nAmount: $59.99\nFrequency: Weekly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Michelle Barnes"
+      ]
+    },
+    {
+      "event_id": "797a0a876a00472e9af6f31d1d5d7b6b",
+      "title": "Billing: Microsoft 365 \u2014 Larry Young",
+      "start_datetime": 1774927800.0,
+      "end_datetime": 1774931400.0,
+      "tag": "Billing",
+      "description": "Subscription: Microsoft 365\nUser: Larry Young\nAmount: $99.99\nFrequency: Annual\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Larry Young"
+      ]
+    },
+    {
+      "event_id": "6fb8078b885c421a85421447766d6b65",
+      "title": "Billing: Disney+ \u2014 Larry Young",
+      "start_datetime": 1774150200.0,
+      "end_datetime": 1774153800.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Larry Young\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Larry Young"
+      ]
+    },
+    {
+      "event_id": "ab940c69e30c4c2b9b15c59253150cdb",
+      "title": "Billing: HBO Max \u2014 Larry Young",
+      "start_datetime": 1774150200.0,
+      "end_datetime": 1774153800.0,
+      "tag": "Billing",
+      "description": "Subscription: HBO Max\nUser: Larry Young\nAmount: $15.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Larry Young"
+      ]
+    },
+    {
+      "event_id": "a0f1885bd2ad4d8abc9c90ce05623de6",
+      "title": "Billing: YouTube Premium \u2014 Gregory Cooper",
+      "start_datetime": 1774668600.0,
+      "end_datetime": 1774672200.0,
+      "tag": "Billing",
+      "description": "Subscription: YouTube Premium\nUser: Gregory Cooper\nAmount: $11.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Gregory Cooper"
+      ]
+    },
+    {
+      "event_id": "1265a26809fc46a8b7009a6402f72963",
+      "title": "Billing: iCloud Storage \u2014 Gregory Cooper",
+      "start_datetime": 1773977400.0,
+      "end_datetime": 1773981000.0,
+      "tag": "Billing",
+      "description": "Subscription: iCloud Storage\nUser: Gregory Cooper\nAmount: $2.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Gregory Cooper"
+      ]
+    },
+    {
+      "event_id": "1892187439aa47e0b3b7b28d2c9331bc",
+      "title": "Billing: Blue Apron \u2014 Gregory Cooper",
+      "start_datetime": 1774927800.0,
+      "end_datetime": 1774931400.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Gregory Cooper\nAmount: $59.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Gregory Cooper"
+      ]
+    },
+    {
+      "event_id": "54fdeaef032143ef88eece8d356300a7",
+      "title": "Billing: Xbox Game Pass \u2014 Donna Perry",
+      "start_datetime": 1772681400.0,
+      "end_datetime": 1772685000.0,
+      "tag": "Billing",
+      "description": "Subscription: Xbox Game Pass\nUser: Donna Perry\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Donna Perry"
+      ]
+    },
+    {
+      "event_id": "6f7e846ce4444f45863a9e4842b868a9",
+      "title": "Billing: Comcast Internet \u2014 Donna Perry",
+      "start_datetime": 1775014200.0,
+      "end_datetime": 1775017800.0,
+      "tag": "Billing",
+      "description": "Subscription: Comcast Internet\nUser: Donna Perry\nAmount: $89.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Donna Perry"
+      ]
+    },
+    {
+      "event_id": "5e20484a2ad244b0ae56cda95c855ca3",
+      "title": "Billing: Orangetheory \u2014 Donna Perry",
+      "start_datetime": 1772595000.0,
+      "end_datetime": 1772598600.0,
+      "tag": "Billing",
+      "description": "Subscription: Orangetheory\nUser: Donna Perry\nAmount: $159.0\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Donna Perry"
+      ]
+    },
+    {
+      "event_id": "8ebd3bb696cb4b2480dc1efdea22b9e1",
+      "title": "Billing: HelloFresh \u2014 Donna Perry",
+      "start_datetime": 1773631800.0,
+      "end_datetime": 1773635400.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Donna Perry\nAmount: $69.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Donna Perry"
+      ]
+    },
+    {
+      "event_id": "457432a27d2c4ecba1143526f7fb9a02",
+      "title": "Billing: iCloud Storage \u2014 John Bailey",
+      "start_datetime": 1775100600.0,
+      "end_datetime": 1775104200.0,
+      "tag": "Billing",
+      "description": "Subscription: iCloud Storage\nUser: John Bailey\nAmount: $2.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "John Bailey"
+      ]
+    },
+    {
+      "event_id": "b181399000cc49ab94b7e6696137285a",
+      "title": "Billing: AT&T Mobile \u2014 John Bailey",
+      "start_datetime": 1773545400.0,
+      "end_datetime": 1773549000.0,
+      "tag": "Billing",
+      "description": "Subscription: AT&T Mobile\nUser: John Bailey\nAmount: $85.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "John Bailey"
+      ]
+    },
+    {
+      "event_id": "52f7a37b675f473cbf9dba3a2d3e2220",
+      "title": "Billing: Spotify Premium \u2014 John Bailey",
+      "start_datetime": 1774150200.0,
+      "end_datetime": 1774153800.0,
+      "tag": "Billing",
+      "description": "Subscription: Spotify Premium\nUser: John Bailey\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "John Bailey"
+      ]
+    },
+    {
+      "event_id": "d95d3116b43a47829833a0ce32bd81c8",
+      "title": "Billing: Microsoft 365 \u2014 Frank Jenkins",
+      "start_datetime": 1773891000.0,
+      "end_datetime": 1773894600.0,
+      "tag": "Billing",
+      "description": "Subscription: Microsoft 365\nUser: Frank Jenkins\nAmount: $99.99\nFrequency: Annual\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Frank Jenkins"
+      ]
+    },
+    {
+      "event_id": "2e02123334004849a8179dc81e57d92c",
+      "title": "Billing: Xbox Game Pass \u2014 Frank Jenkins",
+      "start_datetime": 1774668600.0,
+      "end_datetime": 1774672200.0,
+      "tag": "Billing",
+      "description": "Subscription: Xbox Game Pass\nUser: Frank Jenkins\nAmount: $14.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Frank Jenkins"
+      ]
+    },
+    {
+      "event_id": "1f3bdec5387d48128f2b73c5a8b3a728",
+      "title": "Billing: Peloton All-Access \u2014 Frank Jenkins",
+      "start_datetime": 1774323000.0,
+      "end_datetime": 1774326600.0,
+      "tag": "Billing",
+      "description": "Subscription: Peloton All-Access\nUser: Frank Jenkins\nAmount: $44.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Frank Jenkins"
+      ]
+    },
+    {
+      "event_id": "156c2d79605543ae9a8defe5c8afbb1a",
+      "title": "Billing: AT&T Mobile \u2014 Carol Barnes",
+      "start_datetime": 1773804600.0,
+      "end_datetime": 1773808200.0,
+      "tag": "Billing",
+      "description": "Subscription: AT&T Mobile\nUser: Carol Barnes\nAmount: $85.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Carol Barnes"
+      ]
+    },
+    {
+      "event_id": "669c5169dada42caafe381ab9f41eae7",
+      "title": "Billing: HelloFresh \u2014 Emily Green",
+      "start_datetime": 1774150200.0,
+      "end_datetime": 1774153800.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Emily Green\nAmount: $69.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emily Green"
+      ]
+    },
+    {
+      "event_id": "a72e53d7f6744d6d8b44962133d1910a",
+      "title": "Billing: Adobe Creative Cloud \u2014 Emily Green",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: Adobe Creative Cloud\nUser: Emily Green\nAmount: $54.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emily Green"
+      ]
+    },
+    {
+      "event_id": "374e6dad2c744ee385416b35203921b9",
+      "title": "Billing: Hulu Basic \u2014 Paul Cox",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: Hulu Basic\nUser: Paul Cox\nAmount: $7.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Paul Cox"
+      ]
+    },
+    {
+      "event_id": "c5d937dc23f44cae856c57c65693af93",
+      "title": "Billing: Apple Music \u2014 Paul Cox",
+      "start_datetime": 1774668600.0,
+      "end_datetime": 1774672200.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Paul Cox\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Paul Cox"
+      ]
+    },
+    {
+      "event_id": "7280d38f749b46c3ada1a0f2669641a9",
+      "title": "Billing: Orangetheory \u2014 Lisa Bell",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: Orangetheory\nUser: Lisa Bell\nAmount: $159.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Lisa Bell"
+      ]
+    },
+    {
+      "event_id": "5994392cf8a54386a9616bc9abc47abe",
+      "title": "Billing: YouTube Premium \u2014 Lisa Bell",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: YouTube Premium\nUser: Lisa Bell\nAmount: $11.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Lisa Bell"
+      ]
+    },
+    {
+      "event_id": "9f3a91fd63f3407e9071558204d72094",
+      "title": "Billing: PlayStation Plus \u2014 Jennifer Stewart",
+      "start_datetime": 1773199800.0,
+      "end_datetime": 1773203400.0,
+      "tag": "Billing",
+      "description": "Subscription: PlayStation Plus\nUser: Jennifer Stewart\nAmount: $9.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Jennifer Stewart"
+      ]
+    },
+    {
+      "event_id": "5fd0543f4bd84c149cd63154400abbfb",
+      "title": "Billing: LinkedIn Premium \u2014 Jennifer Stewart",
+      "start_datetime": 1774668600.0,
+      "end_datetime": 1774672200.0,
+      "tag": "Billing",
+      "description": "Subscription: LinkedIn Premium\nUser: Jennifer Stewart\nAmount: $29.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Jennifer Stewart"
+      ]
+    },
+    {
+      "event_id": "922508394bcd4d15a55c9f06f45600cd",
+      "title": "Billing: T-Mobile \u2014 Jennifer Stewart",
+      "start_datetime": 1774323000.0,
+      "end_datetime": 1774326600.0,
+      "tag": "Billing",
+      "description": "Subscription: T-Mobile\nUser: Jennifer Stewart\nAmount: $70.0\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Jennifer Stewart"
+      ]
+    },
+    {
+      "event_id": "7f2a50391f27445d986900404374522e",
+      "title": "Billing: Adobe Creative Cloud \u2014 Jennifer Stewart",
+      "start_datetime": 1773891000.0,
+      "end_datetime": 1773894600.0,
+      "tag": "Billing",
+      "description": "Subscription: Adobe Creative Cloud\nUser: Jennifer Stewart\nAmount: $54.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Jennifer Stewart"
+      ]
+    },
+    {
+      "event_id": "65755669929d4a3c83124d2e5d916e53",
+      "title": "Billing: AT&T Mobile \u2014 Michelle Morris",
+      "start_datetime": 1774927800.0,
+      "end_datetime": 1774931400.0,
+      "tag": "Billing",
+      "description": "Subscription: AT&T Mobile\nUser: Michelle Morris\nAmount: $85.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Morris"
+      ]
+    },
+    {
+      "event_id": "1dfb258213cf42408fc2863bdf3ec8b4",
+      "title": "Billing: HelloFresh \u2014 Michelle Morris",
+      "start_datetime": 1774063800.0,
+      "end_datetime": 1774067400.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Michelle Morris\nAmount: $69.99\nFrequency: Weekly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Michelle Morris"
+      ]
+    },
+    {
+      "event_id": "26ac4c8ace6c42e28ed3fa1925970454",
+      "title": "Billing: Spotify Premium \u2014 Michelle Morris",
+      "start_datetime": 1773718200.0,
+      "end_datetime": 1773721800.0,
+      "tag": "Billing",
+      "description": "Subscription: Spotify Premium\nUser: Michelle Morris\nAmount: $10.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Michelle Morris"
+      ]
+    },
+    {
+      "event_id": "33db5ce15c9f43548103636b951924d7",
+      "title": "Billing: Xbox Game Pass \u2014 Michelle Morris",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: Xbox Game Pass\nUser: Michelle Morris\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Morris"
+      ]
+    },
+    {
+      "event_id": "62a5e999e72d4ecf8be13a20e72b4203",
+      "title": "Billing: HBO Max \u2014 Daniel Garcia",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: HBO Max\nUser: Daniel Garcia\nAmount: $15.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Daniel Garcia"
+      ]
+    },
+    {
+      "event_id": "b7f43abdf2dd4692963f1a45baf7842e",
+      "title": "Billing: Audible \u2014 Kathleen Moore",
+      "start_datetime": 1773113400.0,
+      "end_datetime": 1773117000.0,
+      "tag": "Billing",
+      "description": "Subscription: Audible\nUser: Kathleen Moore\nAmount: $14.95\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Kathleen Moore"
+      ]
+    },
+    {
+      "event_id": "4ce95b9071d34b5d8b5bde2d3297c83a",
+      "title": "Billing: T-Mobile \u2014 Kathleen Moore",
+      "start_datetime": 1774409400.0,
+      "end_datetime": 1774413000.0,
+      "tag": "Billing",
+      "description": "Subscription: T-Mobile\nUser: Kathleen Moore\nAmount: $70.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Kathleen Moore"
+      ]
+    },
+    {
+      "event_id": "c65c3942ab85438b997010c638b205f4",
+      "title": "Billing: Adobe Creative Cloud \u2014 Daniel Ross",
+      "start_datetime": 1774495800.0,
+      "end_datetime": 1774499400.0,
+      "tag": "Billing",
+      "description": "Subscription: Adobe Creative Cloud\nUser: Daniel Ross\nAmount: $54.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Daniel Ross"
+      ]
+    },
+    {
+      "event_id": "fa7915c42db4494982745cebe401939d",
+      "title": "Billing: Kindle Unlimited \u2014 Robert Park",
+      "start_datetime": 1773545400.0,
+      "end_datetime": 1773549000.0,
+      "tag": "Billing",
+      "description": "Subscription: Kindle Unlimited\nUser: Robert Park\nAmount: $9.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Robert Park"
+      ]
+    },
+    {
+      "event_id": "5cbaba6d373a42baac30a70cb761333f",
+      "title": "Billing: Dropbox Plus \u2014 Edward Cooper",
+      "start_datetime": 1773372600.0,
+      "end_datetime": 1773376200.0,
+      "tag": "Billing",
+      "description": "Subscription: Dropbox Plus\nUser: Edward Cooper\nAmount: $11.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Cooper"
+      ]
+    },
+    {
+      "event_id": "54258e9dccdd4b77a3b0b9b2a3a05458",
+      "title": "Billing: Amazon Prime \u2014 Edward Cooper",
+      "start_datetime": 1773459000.0,
+      "end_datetime": 1773462600.0,
+      "tag": "Billing",
+      "description": "Subscription: Amazon Prime\nUser: Edward Cooper\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Cooper"
+      ]
+    },
+    {
+      "event_id": "dc25313b44b14fabbad3dc63768d652e",
+      "title": "Billing: New York Times \u2014 Edward Cooper",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: New York Times\nUser: Edward Cooper\nAmount: $17.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Edward Cooper"
+      ]
+    },
+    {
+      "event_id": "25955f419a474f699cc0543fa681fea7",
+      "title": "Billing: Disney+ \u2014 Laura Bailey",
+      "start_datetime": 1774495800.0,
+      "end_datetime": 1774499400.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Laura Bailey\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Laura Bailey"
+      ]
+    },
+    {
+      "event_id": "56085efd434c450781842b90873c0e72",
+      "title": "Billing: Comcast Internet \u2014 Stephanie Powell",
+      "start_datetime": 1772940600.0,
+      "end_datetime": 1772944200.0,
+      "tag": "Billing",
+      "description": "Subscription: Comcast Internet\nUser: Stephanie Powell\nAmount: $89.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Stephanie Powell"
+      ]
+    },
+    {
+      "event_id": "a1200b8b1c58448c8f6ff3b8b7a51141",
+      "title": "Billing: YouTube Premium \u2014 Stephanie Powell",
+      "start_datetime": 1773459000.0,
+      "end_datetime": 1773462600.0,
+      "tag": "Billing",
+      "description": "Subscription: YouTube Premium\nUser: Stephanie Powell\nAmount: $11.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Stephanie Powell"
+      ]
+    },
+    {
+      "event_id": "6bcf8528006f440fad17e3df71c0f5e1",
+      "title": "Billing: Orangetheory \u2014 Emma Kelly",
+      "start_datetime": 1774495800.0,
+      "end_datetime": 1774499400.0,
+      "tag": "Billing",
+      "description": "Subscription: Orangetheory\nUser: Emma Kelly\nAmount: $159.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emma Kelly"
+      ]
+    },
+    {
+      "event_id": "ac5b4cd92efa458683700f214e86f12c",
+      "title": "Billing: Microsoft 365 \u2014 Emma Kelly",
+      "start_datetime": 1773977400.0,
+      "end_datetime": 1773981000.0,
+      "tag": "Billing",
+      "description": "Subscription: Microsoft 365\nUser: Emma Kelly\nAmount: $99.99\nFrequency: Annual\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emma Kelly"
+      ]
+    },
+    {
+      "event_id": "221aeb9e9ecb492e90a70dc533d394b4",
+      "title": "Billing: Verizon Mobile \u2014 Kenneth White",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: Verizon Mobile\nUser: Kenneth White\nAmount: $95.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Kenneth White"
+      ]
+    },
+    {
+      "event_id": "20b45d45940e4ec38e04106ba7f354d5",
+      "title": "Billing: PlayStation Plus \u2014 Kenneth White",
+      "start_datetime": 1774323000.0,
+      "end_datetime": 1774326600.0,
+      "tag": "Billing",
+      "description": "Subscription: PlayStation Plus\nUser: Kenneth White\nAmount: $9.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Kenneth White"
+      ]
+    },
+    {
+      "event_id": "20014d9c4b5541928bfd6ff9cc443536",
+      "title": "Billing: Adobe Creative Cloud \u2014 Kenneth White",
+      "start_datetime": 1772940600.0,
+      "end_datetime": 1772944200.0,
+      "tag": "Billing",
+      "description": "Subscription: Adobe Creative Cloud\nUser: Kenneth White\nAmount: $54.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Kenneth White"
+      ]
+    },
+    {
+      "event_id": "027b370173fc4bdbb88214809c3ac761",
+      "title": "Billing: Netflix Standard \u2014 Kenneth White",
+      "start_datetime": 1774927800.0,
+      "end_datetime": 1774931400.0,
+      "tag": "Billing",
+      "description": "Subscription: Netflix Standard\nUser: Kenneth White\nAmount: $12.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Kenneth White"
+      ]
+    },
+    {
+      "event_id": "9fd3aa40ceb04891b8078a66b4b792ec",
+      "title": "Billing: LA Fitness \u2014 Arthur Scott",
+      "start_datetime": 1773718200.0,
+      "end_datetime": 1773721800.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Arthur Scott\nAmount: $49.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Arthur Scott"
+      ]
+    },
+    {
+      "event_id": "64ea34c2cc214ce698c3c5a164939576",
+      "title": "Billing: Audible \u2014 Arthur Scott",
+      "start_datetime": 1774927800.0,
+      "end_datetime": 1774931400.0,
+      "tag": "Billing",
+      "description": "Subscription: Audible\nUser: Arthur Scott\nAmount: $14.95\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Arthur Scott"
+      ]
+    },
+    {
+      "event_id": "7606b7d002c44d4ba544e3e4362c1e87",
+      "title": "Billing: Xbox Game Pass \u2014 Arthur Scott",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: Xbox Game Pass\nUser: Arthur Scott\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Arthur Scott"
+      ]
+    },
+    {
+      "event_id": "e365c7e9fad84f6db3aaa7f232086a6f",
+      "title": "Billing: YouTube Premium \u2014 Ashley Green",
+      "start_datetime": 1775100600.0,
+      "end_datetime": 1775104200.0,
+      "tag": "Billing",
+      "description": "Subscription: YouTube Premium\nUser: Ashley Green\nAmount: $11.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Ashley Green"
+      ]
+    },
+    {
+      "event_id": "f9a10c7491ea4070acc9a04f0086c86b",
+      "title": "Billing: Netflix Premium \u2014 Ashley Green",
+      "start_datetime": 1774755000.0,
+      "end_datetime": 1774758600.0,
+      "tag": "Billing",
+      "description": "Subscription: Netflix Premium\nUser: Ashley Green\nAmount: $15.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Ashley Green"
+      ]
+    },
+    {
+      "event_id": "d70ae8a58c7d4f5183bb7d9e92a78c59",
+      "title": "Billing: PlayStation Plus \u2014 Ashley Green",
+      "start_datetime": 1773804600.0,
+      "end_datetime": 1773808200.0,
+      "tag": "Billing",
+      "description": "Subscription: PlayStation Plus\nUser: Ashley Green\nAmount: $9.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Ashley Green"
+      ]
+    },
+    {
+      "event_id": "d24d2de87ad34c958f0532a845cfe18c",
+      "title": "Billing: Audible \u2014 Raymond Kelly",
+      "start_datetime": 1774668600.0,
+      "end_datetime": 1774672200.0,
+      "tag": "Billing",
+      "description": "Subscription: Audible\nUser: Raymond Kelly\nAmount: $14.95\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Raymond Kelly"
+      ]
+    },
+    {
+      "event_id": "5b1eed407b9c47618c9b6073e455641c",
+      "title": "Billing: Spotify Premium \u2014 Raymond Kelly",
+      "start_datetime": 1773372600.0,
+      "end_datetime": 1773376200.0,
+      "tag": "Billing",
+      "description": "Subscription: Spotify Premium\nUser: Raymond Kelly\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Raymond Kelly"
+      ]
+    },
+    {
+      "event_id": "21b10618bf4e46cdb703fbdd35dfdf6b",
+      "title": "Billing: T-Mobile \u2014 Raymond Kelly",
+      "start_datetime": 1773372600.0,
+      "end_datetime": 1773376200.0,
+      "tag": "Billing",
+      "description": "Subscription: T-Mobile\nUser: Raymond Kelly\nAmount: $70.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Raymond Kelly"
+      ]
+    },
+    {
+      "event_id": "b8e7ade633434b8ba0aed83a67fdcf95",
+      "title": "Billing: Peloton All-Access \u2014 Raymond Kelly",
+      "start_datetime": 1774495800.0,
+      "end_datetime": 1774499400.0,
+      "tag": "Billing",
+      "description": "Subscription: Peloton All-Access\nUser: Raymond Kelly\nAmount: $44.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Raymond Kelly"
+      ]
+    },
+    {
+      "event_id": "c1664bb99d8447a2be68d3a5fdabaa0f",
+      "title": "Billing: HBO Max \u2014 Donald Scott",
+      "start_datetime": 1773977400.0,
+      "end_datetime": 1773981000.0,
+      "tag": "Billing",
+      "description": "Subscription: HBO Max\nUser: Donald Scott\nAmount: $15.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Donald Scott"
+      ]
+    },
+    {
+      "event_id": "b3477b64a056494d89e90ece0cfd656c",
+      "title": "Billing: Netflix Premium \u2014 Donald Scott",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: Netflix Premium\nUser: Donald Scott\nAmount: $15.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Donald Scott"
+      ]
+    },
+    {
+      "event_id": "35ad5da8ab83484188994b634bd8e690",
+      "title": "Billing: Orangetheory \u2014 Donald Scott",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: Orangetheory\nUser: Donald Scott\nAmount: $159.0\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Donald Scott"
+      ]
+    },
+    {
+      "event_id": "01dd71ac76494bc0aac483abb6cb22ea",
+      "title": "Billing: HelloFresh \u2014 Donald Scott",
+      "start_datetime": 1773113400.0,
+      "end_datetime": 1773117000.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Donald Scott\nAmount: $69.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Donald Scott"
+      ]
+    },
+    {
+      "event_id": "298dc46d0c674ea9a3eb01acbe4356bf",
+      "title": "Billing: Adobe Creative Cloud \u2014 Michelle Richardson",
+      "start_datetime": 1773804600.0,
+      "end_datetime": 1773808200.0,
+      "tag": "Billing",
+      "description": "Subscription: Adobe Creative Cloud\nUser: Michelle Richardson\nAmount: $54.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Richardson"
+      ]
+    },
+    {
+      "event_id": "0db16a641c5c43acb963dd854359feb2",
+      "title": "Billing: iCloud Storage \u2014 Michelle Richardson",
+      "start_datetime": 1772681400.0,
+      "end_datetime": 1772685000.0,
+      "tag": "Billing",
+      "description": "Subscription: iCloud Storage\nUser: Michelle Richardson\nAmount: $2.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Michelle Richardson"
+      ]
+    },
+    {
+      "event_id": "84dfa9d0c3ba4307b2fe4dc50e988d91",
+      "title": "Billing: T-Mobile \u2014 Michelle Richardson",
+      "start_datetime": 1774150200.0,
+      "end_datetime": 1774153800.0,
+      "tag": "Billing",
+      "description": "Subscription: T-Mobile\nUser: Michelle Richardson\nAmount: $70.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Richardson"
+      ]
+    },
+    {
+      "event_id": "58f3fb4991084bd2ba419dc3db6d4361",
+      "title": "Billing: Apple Music \u2014 Michelle Richardson",
+      "start_datetime": 1773372600.0,
+      "end_datetime": 1773376200.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Michelle Richardson\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Richardson"
+      ]
+    },
+    {
+      "event_id": "835e009b0fe24002b83c343f3d666d64",
+      "title": "Billing: Amazon Prime \u2014 Maria Bailey",
+      "start_datetime": 1774323000.0,
+      "end_datetime": 1774326600.0,
+      "tag": "Billing",
+      "description": "Subscription: Amazon Prime\nUser: Maria Bailey\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Maria Bailey"
+      ]
+    },
+    {
+      "event_id": "b56cfe92180247a7af0d3fa2e1823b84",
+      "title": "Billing: Apple Music \u2014 Steven Walker",
+      "start_datetime": 1772767800.0,
+      "end_datetime": 1772771400.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Steven Walker\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Steven Walker"
+      ]
+    },
+    {
+      "event_id": "f89e95ee475c4f0d9eb985dcc0f57b5d",
+      "title": "Billing: LinkedIn Premium \u2014 Steven Walker",
+      "start_datetime": 1773977400.0,
+      "end_datetime": 1773981000.0,
+      "tag": "Billing",
+      "description": "Subscription: LinkedIn Premium\nUser: Steven Walker\nAmount: $29.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Steven Walker"
+      ]
+    },
+    {
+      "event_id": "43e4eafb615a41f2925b534e7dcaae43",
+      "title": "Billing: Disney+ \u2014 Steven Walker",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Steven Walker\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Steven Walker"
+      ]
+    },
+    {
+      "event_id": "77bf5a04b7c34c1ca70fd0cf32360ec1",
+      "title": "Billing: HBO Max \u2014 Steven Walker",
+      "start_datetime": 1774841400.0,
+      "end_datetime": 1774845000.0,
+      "tag": "Billing",
+      "description": "Subscription: HBO Max\nUser: Steven Walker\nAmount: $15.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Steven Walker"
+      ]
+    },
+    {
+      "event_id": "55bf43206b5f44a89929b893c3d2ddb6",
+      "title": "Billing: Spectrum Internet \u2014 Betty Scott",
+      "start_datetime": 1774927800.0,
+      "end_datetime": 1774931400.0,
+      "tag": "Billing",
+      "description": "Subscription: Spectrum Internet\nUser: Betty Scott\nAmount: $79.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Betty Scott"
+      ]
+    },
+    {
+      "event_id": "167c8c5368e04470a1450aaf6d92a317",
+      "title": "Billing: LinkedIn Premium \u2014 Eric Morris",
+      "start_datetime": 1772767800.0,
+      "end_datetime": 1772771400.0,
+      "tag": "Billing",
+      "description": "Subscription: LinkedIn Premium\nUser: Eric Morris\nAmount: $29.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Eric Morris"
+      ]
+    },
+    {
+      "event_id": "2a7ee41b71e84dd8af8cd22cdb61eb44",
+      "title": "Billing: Comcast Internet \u2014 Eric Morris",
+      "start_datetime": 1774150200.0,
+      "end_datetime": 1774153800.0,
+      "tag": "Billing",
+      "description": "Subscription: Comcast Internet\nUser: Eric Morris\nAmount: $89.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Eric Morris"
+      ]
+    },
+    {
+      "event_id": "b07d1cb27a624735afd94479aac9a37d",
+      "title": "Billing: Disney+ \u2014 Eric Morris",
+      "start_datetime": 1774409400.0,
+      "end_datetime": 1774413000.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Eric Morris\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Eric Morris"
+      ]
+    },
+    {
+      "event_id": "1997a8c589cb4c94bebbb97524270436",
+      "title": "Billing: LA Fitness \u2014 Jeffrey Evans",
+      "start_datetime": 1774409400.0,
+      "end_datetime": 1774413000.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Jeffrey Evans\nAmount: $49.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Jeffrey Evans"
+      ]
+    },
+    {
+      "event_id": "2772c0c70f0548a98459c0204118b79d",
+      "title": "Billing: Hulu Basic \u2014 Jeffrey Evans",
+      "start_datetime": 1773804600.0,
+      "end_datetime": 1773808200.0,
+      "tag": "Billing",
+      "description": "Subscription: Hulu Basic\nUser: Jeffrey Evans\nAmount: $7.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Jeffrey Evans"
+      ]
+    },
+    {
+      "event_id": "7f2bb85cbf1f4ea8bc0cb2ba30fd52c2",
+      "title": "Billing: T-Mobile \u2014 Jeffrey Evans",
+      "start_datetime": 1772681400.0,
+      "end_datetime": 1772685000.0,
+      "tag": "Billing",
+      "description": "Subscription: T-Mobile\nUser: Jeffrey Evans\nAmount: $70.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Jeffrey Evans"
+      ]
+    },
+    {
+      "event_id": "47da8eaf521649ceb656e2b3c8509cfe",
+      "title": "Billing: Disney+ \u2014 Michelle Ross",
+      "start_datetime": 1774495800.0,
+      "end_datetime": 1774499400.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Michelle Ross\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Ross"
+      ]
+    },
+    {
+      "event_id": "02ccf5970f474ce3ab2f74bebd964b17",
+      "title": "Billing: HelloFresh \u2014 Michelle Ross",
+      "start_datetime": 1773113400.0,
+      "end_datetime": 1773117000.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Michelle Ross\nAmount: $69.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Ross"
+      ]
+    },
+    {
+      "event_id": "6923afcd1b8745d4a13539ed4e063bd1",
+      "title": "Billing: HBO Max \u2014 Michelle Ross",
+      "start_datetime": 1773545400.0,
+      "end_datetime": 1773549000.0,
+      "tag": "Billing",
+      "description": "Subscription: HBO Max\nUser: Michelle Ross\nAmount: $15.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Ross"
+      ]
+    },
+    {
+      "event_id": "38a1d7df74e943d0a47f6260e52959b6",
+      "title": "Billing: AT&T Mobile \u2014 Michelle Ross",
+      "start_datetime": 1774409400.0,
+      "end_datetime": 1774413000.0,
+      "tag": "Billing",
+      "description": "Subscription: AT&T Mobile\nUser: Michelle Ross\nAmount: $85.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Michelle Ross"
+      ]
+    },
+    {
+      "event_id": "4723090be7154bab92d53a217ab372ad",
+      "title": "Billing: Hulu Basic \u2014 Emma Stewart",
+      "start_datetime": 1773027000.0,
+      "end_datetime": 1773030600.0,
+      "tag": "Billing",
+      "description": "Subscription: Hulu Basic\nUser: Emma Stewart\nAmount: $7.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emma Stewart"
+      ]
+    },
+    {
+      "event_id": "f0c9e841cd324e129f41ee1cfe142ce2",
+      "title": "Billing: Disney+ \u2014 Emma Stewart",
+      "start_datetime": 1774582200.0,
+      "end_datetime": 1774585800.0,
+      "tag": "Billing",
+      "description": "Subscription: Disney+\nUser: Emma Stewart\nAmount: $13.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emma Stewart"
+      ]
+    },
+    {
+      "event_id": "fabbc78cb966477c95b5cb2ae7298ac5",
+      "title": "Billing: Spotify Premium \u2014 Emma Stewart",
+      "start_datetime": 1773113400.0,
+      "end_datetime": 1773117000.0,
+      "tag": "Billing",
+      "description": "Subscription: Spotify Premium\nUser: Emma Stewart\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emma Stewart"
+      ]
+    },
+    {
+      "event_id": "bfd80185d8ff4f56bc669ea03fd77228",
+      "title": "Billing: AT&T Mobile \u2014 Angela Lee",
+      "start_datetime": 1773199800.0,
+      "end_datetime": 1773203400.0,
+      "tag": "Billing",
+      "description": "Subscription: AT&T Mobile\nUser: Angela Lee\nAmount: $85.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Angela Lee"
+      ]
+    },
+    {
+      "event_id": "5a65722fd1374c8eb0de0fbbe2915340",
+      "title": "Billing: Xbox Game Pass \u2014 Angela Lee",
+      "start_datetime": 1774668600.0,
+      "end_datetime": 1774672200.0,
+      "tag": "Billing",
+      "description": "Subscription: Xbox Game Pass\nUser: Angela Lee\nAmount: $14.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Angela Lee"
+      ]
+    },
+    {
+      "event_id": "d55e3c49287144d3b2134a66f9434adc",
+      "title": "Billing: Verizon Mobile \u2014 Ronald Park",
+      "start_datetime": 1772854200.0,
+      "end_datetime": 1772857800.0,
+      "tag": "Billing",
+      "description": "Subscription: Verizon Mobile\nUser: Ronald Park\nAmount: $95.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Ronald Park"
+      ]
+    },
+    {
+      "event_id": "a99c08bde5e6440ba033743574eb4c4f",
+      "title": "Billing: Planet Fitness \u2014 Ronald Park",
+      "start_datetime": 1773199800.0,
+      "end_datetime": 1773203400.0,
+      "tag": "Billing",
+      "description": "Subscription: Planet Fitness\nUser: Ronald Park\nAmount: $24.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Ronald Park"
+      ]
+    },
+    {
+      "event_id": "64cf221c48aa4268900d650eceb87561",
+      "title": "Billing: HelloFresh \u2014 Paul Cooper",
+      "start_datetime": 1774495800.0,
+      "end_datetime": 1774499400.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Paul Cooper\nAmount: $69.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Paul Cooper"
+      ]
+    },
+    {
+      "event_id": "00aaff6a9e0543aeaf17bcb7d970a896",
+      "title": "Billing: Apple Music \u2014 Paul Cooper",
+      "start_datetime": 1774236600.0,
+      "end_datetime": 1774240200.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Paul Cooper\nAmount: $10.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Paul Cooper"
+      ]
+    },
+    {
+      "event_id": "3d4bff183472458093ed9bfea56dc4eb",
+      "title": "Billing: Apple Music \u2014 Margaret James",
+      "start_datetime": 1773372600.0,
+      "end_datetime": 1773376200.0,
+      "tag": "Billing",
+      "description": "Subscription: Apple Music\nUser: Margaret James\nAmount: $10.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Margaret James"
+      ]
+    },
+    {
+      "event_id": "a601c1eb8e834ff891f2101d954da5cb",
+      "title": "Billing: Microsoft 365 \u2014 Margaret James",
+      "start_datetime": 1772681400.0,
+      "end_datetime": 1772685000.0,
+      "tag": "Billing",
+      "description": "Subscription: Microsoft 365\nUser: Margaret James\nAmount: $99.99\nFrequency: Annual\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Margaret James"
+      ]
+    },
+    {
+      "event_id": "d7933431881a47e79b4808d623f3cb52",
+      "title": "Billing: Adobe Creative Cloud \u2014 Margaret James",
+      "start_datetime": 1774409400.0,
+      "end_datetime": 1774413000.0,
+      "tag": "Billing",
+      "description": "Subscription: Adobe Creative Cloud\nUser: Margaret James\nAmount: $54.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Margaret James"
+      ]
+    },
+    {
+      "event_id": "bfdc12b58ee94be4a07ebdd13178aa70",
+      "title": "Billing: Netflix Standard \u2014 Margaret James",
+      "start_datetime": 1774236600.0,
+      "end_datetime": 1774240200.0,
+      "tag": "Billing",
+      "description": "Subscription: Netflix Standard\nUser: Margaret James\nAmount: $12.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Margaret James"
+      ]
+    },
+    {
+      "event_id": "14035402d66b4f3593ed2ad8d85547a1",
+      "title": "Billing: LA Fitness \u2014 Brian Patterson",
+      "start_datetime": 1774236600.0,
+      "end_datetime": 1774240200.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Brian Patterson\nAmount: $49.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Brian Patterson"
+      ]
+    },
+    {
+      "event_id": "c2f0546238c5438397dca3eb90e914a7",
+      "title": "Billing: Blue Apron \u2014 Brian Patterson",
+      "start_datetime": 1773372600.0,
+      "end_datetime": 1773376200.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Brian Patterson\nAmount: $59.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Brian Patterson"
+      ]
+    },
+    {
+      "event_id": "8d3a44de11714b399e3bb2212b66ff39",
+      "title": "Billing: Blue Apron \u2014 Maria Evans",
+      "start_datetime": 1774582200.0,
+      "end_datetime": 1774585800.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Maria Evans\nAmount: $59.99\nFrequency: Weekly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Maria Evans"
+      ]
+    },
+    {
+      "event_id": "ef9bde2a36444e8b9e0bd32c3996a9f6",
+      "title": "Billing: iCloud Storage \u2014 Maria Evans",
+      "start_datetime": 1775014200.0,
+      "end_datetime": 1775017800.0,
+      "tag": "Billing",
+      "description": "Subscription: iCloud Storage\nUser: Maria Evans\nAmount: $2.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Maria Evans"
+      ]
+    },
+    {
+      "event_id": "6c9760254d234535a98a18854217efdc",
+      "title": "Billing: LA Fitness \u2014 Maria Evans",
+      "start_datetime": 1774668600.0,
+      "end_datetime": 1774672200.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Maria Evans\nAmount: $49.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Maria Evans"
+      ]
+    },
+    {
+      "event_id": "49fb6d790a214529ba69d78068c9a3c1",
+      "title": "Billing: OnlyFans - Creator Tier \u2014 Mark Scott",
+      "start_datetime": 1773545400.0,
+      "end_datetime": 1773549000.0,
+      "tag": "Billing",
+      "description": "Subscription: OnlyFans - Creator Tier\nUser: Mark Scott\nAmount: $19.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Mark Scott"
+      ]
+    },
+    {
+      "event_id": "01ed1cb57f714b769cb1751b7d8c3e45",
+      "title": "Billing: Spectrum Internet \u2014 Raymond Young",
+      "start_datetime": 1773977400.0,
+      "end_datetime": 1773981000.0,
+      "tag": "Billing",
+      "description": "Subscription: Spectrum Internet\nUser: Raymond Young\nAmount: $79.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Raymond Young"
+      ]
+    },
+    {
+      "event_id": "441f3c1b70bc4789afe6b49fdae5cbaf",
+      "title": "Billing: Gym Membership Pro \u2014 Raymond Park",
+      "start_datetime": 1775014200.0,
+      "end_datetime": 1775017800.0,
+      "tag": "Billing",
+      "description": "Subscription: Gym Membership Pro\nUser: Raymond Park\nAmount: $89.99\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Raymond Park"
+      ]
+    },
+    {
+      "event_id": "2e30511a465241528b3b74aa196c225d",
+      "title": "Billing: LA Fitness \u2014 Raymond Park",
+      "start_datetime": 1775014200.0,
+      "end_datetime": 1775017800.0,
+      "tag": "Billing",
+      "description": "Subscription: LA Fitness\nUser: Raymond Park\nAmount: $89.99\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Raymond Park"
+      ]
+    },
+    {
+      "event_id": "09a853a41a354ccd99fdfab18064d0db",
+      "title": "Billing: AT&T Mobile \u2014 Jessica Martinez",
+      "start_datetime": 1773545400.0,
+      "end_datetime": 1773549000.0,
+      "tag": "Billing",
+      "description": "Subscription: AT&T Mobile\nUser: Jessica Martinez\nAmount: $85.0\nFrequency: Monthly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Jessica Martinez"
+      ]
+    },
+    {
+      "event_id": "8a0f593a31bf4d4e8eacc94868307351",
+      "title": "Billing: Verizon Mobile \u2014 Jessica Martinez",
+      "start_datetime": 1775014200.0,
+      "end_datetime": 1775017800.0,
+      "tag": "Billing",
+      "description": "Subscription: Verizon Mobile\nUser: Jessica Martinez\nAmount: $95.0\nFrequency: Monthly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Jessica Martinez"
+      ]
+    },
+    {
+      "event_id": "8b489928de9048bcb0d1f58a65327469",
+      "title": "Billing: HelloFresh \u2014 Emily Gray",
+      "start_datetime": 1772940600.0,
+      "end_datetime": 1772944200.0,
+      "tag": "Billing",
+      "description": "Subscription: HelloFresh\nUser: Emily Gray\nAmount: $69.99\nFrequency: Weekly\nStatus: Active",
+      "location": null,
+      "attendees": [
+        "Emily Gray"
+      ]
+    },
+    {
+      "event_id": "22251e10c46549b38124a1dd45f848c5",
+      "title": "Billing: Blue Apron \u2014 Emily Gray",
+      "start_datetime": 1772940600.0,
+      "end_datetime": 1772944200.0,
+      "tag": "Billing",
+      "description": "Subscription: Blue Apron\nUser: Emily Gray\nAmount: $59.99\nFrequency: Weekly\nStatus: Cancelled",
+      "location": null,
+      "attendees": [
+        "Emily Gray"
+      ]
+    }
+  ]
+}

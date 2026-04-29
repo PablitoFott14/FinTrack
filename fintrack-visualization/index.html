@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw · FinTrack Universe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ══════════ HEADER ══════════ -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-logo">OC</div>
+        <div class="brand-name">
+          <span>OpenClaw</span>
+          <small>FinTrack Universe</small>
+        </div>
+      </div>
+      <nav class="tabs">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="network">Network Graph</button>
+        <button class="tab" data-tab="finance">Finance</button>
+        <button class="tab" data-tab="subscriptions">Subscriptions</button>
+        <button class="tab" data-tab="support">Support</button>
+      </nav>
+      <div class="status-bar">
+        <span class="pulse-dot" id="status-dot"></span>
+        <span class="status-text" id="status-text">Initializing…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════ MAIN ══════════ -->
+  <main class="main">
+
+    <!-- ── OVERVIEW ── -->
+    <section class="page active" id="page-overview">
+      <div class="page-title">
+        <h2>Platform Overview</h2>
+        <p>Cross-service intelligence snapshot across all 5 FinTrack data services</p>
+      </div>
+      <div class="kpi-row" id="kpi-row"></div>
+      <div class="grid-3">
+        <div class="card">
+          <h4>Users by Linked Account Count</h4>
+          <canvas id="c-user-accounts"></canvas>
+        </div>
+        <div class="card">
+          <h4>Account Types Distribution</h4>
+          <canvas id="c-account-types"></canvas>
+        </div>
+        <div class="card">
+          <h4>Data Coverage by Service</h4>
+          <canvas id="c-service-coverage"></canvas>
+        </div>
+      </div>
+      <div class="scenarios-section">
+        <h3>OpenClaw Enabled Scenarios</h3>
+        <div class="scenarios-grid" id="scenarios-grid"></div>
+      </div>
+    </section>
+
+    <!-- ── NETWORK GRAPH ── -->
+    <section class="page" id="page-network">
+      <div class="page-title">
+        <h2>Entity Relationship Network</h2>
+        <p>Force-directed graph of Users ↔ Accounts ↔ Merchants ↔ Services ↔ Tickets</p>
+      </div>
+      <div class="network-controls">
+        <span class="ctrl-label">Show nodes:</span>
+        <label class="toggle-pill"><input type="checkbox" id="cb-users" checked /><span>Users</span></label>
+        <label class="toggle-pill"><input type="checkbox" id="cb-accounts" checked /><span>Accounts</span></label>
+        <label class="toggle-pill"><input type="checkbox" id="cb-merchants" checked /><span>Merchants</span></label>
+        <label class="toggle-pill"><input type="checkbox" id="cb-services" checked /><span>Services</span></label>
+        <label class="toggle-pill"><input type="checkbox" id="cb-tickets" /><span>Tickets</span></label>
+        <button class="btn-ghost" id="btn-reset-zoom">⟳ Reset View</button>
+      </div>
+      <div class="network-wrap">
+        <svg id="network-svg"></svg>
+        <div id="tooltip" class="tooltip hidden"></div>
+        <div class="network-legend">
+          <div class="leg"><span class="leg-dot" style="background:#818cf8"></span>User</div>
+          <div class="leg"><span class="leg-dot" style="background:#34d399"></span>Account</div>
+          <div class="leg"><span class="leg-dot" style="background:#fbbf24"></span>Merchant</div>
+          <div class="leg"><span class="leg-dot" style="background:#a78bfa"></span>Service</div>
+          <div class="leg"><span class="leg-dot" style="background:#f87171"></span>Ticket</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FINANCE ── -->
+    <section class="page" id="page-finance">
+      <div class="page-title">
+        <h2>Financial Analytics</h2>
+        <p>Spending patterns, account balances, and transaction trends across all users</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Spending by Category</h4>
+          <canvas id="c-spending-cat"></canvas>
+        </div>
+        <div class="card">
+          <h4>Monthly Spending Trend</h4>
+          <canvas id="c-monthly-trend"></canvas>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Top 12 Merchants by Transaction Volume ($)</h4>
+          <canvas id="c-top-merchants"></canvas>
+        </div>
+        <div class="card">
+          <h4>Account Balance Distribution</h4>
+          <canvas id="c-balance-dist"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SUBSCRIPTIONS ── -->
+    <section class="page" id="page-subscriptions">
+      <div class="page-title">
+        <h2>Subscription Intelligence</h2>
+        <p>Recurring billing analysis, cost breakdown, and upcoming payment calendar</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Top Services by Subscriber Count</h4>
+          <canvas id="c-sub-services"></canvas>
+        </div>
+        <div class="card">
+          <h4>Billing Frequency Distribution</h4>
+          <canvas id="c-billing-freq"></canvas>
+        </div>
+      </div>
+      <div class="card full">
+        <h4>Upcoming Billing Events — Next 60 Days</h4>
+        <div id="billing-timeline"></div>
+      </div>
+      <div class="card full">
+        <h4>Estimated Monthly Subscription Spend per User (Top 25)</h4>
+        <div style="height:320px; position:relative;">
+          <canvas id="c-user-sub-cost"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SUPPORT ── -->
+    <section class="page" id="page-support">
+      <div class="page-title">
+        <h2>Support Intelligence</h2>
+        <p>Ticket patterns, email correlation, and user issue analysis</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Issue Categories (from Subject Lines)</h4>
+          <canvas id="c-ticket-cats"></canvas>
+        </div>
+        <div class="card">
+          <h4>Ticket Creation Timeline</h4>
+          <canvas id="c-ticket-timeline"></canvas>
+        </div>
+      </div>
+      <div class="card full">
+        <h4>Open Support Tickets</h4>
+        <div id="tickets-table" class="data-table-wrap"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="loader-box">
+      <div class="spinner"></div>
+      <p>Loading FinTrack Universe…</p>
+    </div>
+  </div>
+
+  <script src="js/network.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

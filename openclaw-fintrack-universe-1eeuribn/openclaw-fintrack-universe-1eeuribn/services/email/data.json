@@ -1,0 +1,720 @@
+{
+  "user_email": "support@fintrack.example.com",
+  "emails": [
+    {
+      "email_id": "d6be7cca00794b5c9165f4f7f3f9b67b",
+      "folder": "INBOX",
+      "sender": "elizabeth.harris890@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Net worth calculation seems off",
+      "content": "My net worth calculation doesn't seem right. I've been tracking manually and the total shown in FinTrack is different from what I calculated. Can you help me understand how it's calculated?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772542020.0,
+      "is_read": true
+    },
+    {
+      "email_id": "b62197cb736d4239aa8de21c563c7e98",
+      "folder": "INBOX",
+      "sender": "karen.brooks712@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Change email address",
+      "content": "How do I update my email address on file? I can't find the option in settings.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772544300.0,
+      "is_read": true
+    },
+    {
+      "email_id": "ec7aa2df3b024910a4546a6e4a881bff",
+      "folder": "INBOX",
+      "sender": "edward.gray474@email.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Investment tracking not working",
+      "content": "My investment accounts aren't tracking properly. The values shown don't match what I see in my brokerage account. Can you help?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772519700.0,
+      "is_read": true
+    },
+    {
+      "email_id": "3030109795a3400d8f36501839e94a5d",
+      "folder": "INBOX",
+      "sender": "donna.perry198@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Account connection lost",
+      "content": "One of my bank accounts keeps disconnecting. Can you fix this connection issue?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772515260.0,
+      "is_read": true
+    },
+    {
+      "email_id": "5ae2a47767ea4d63b80697e19ea1a6ca",
+      "folder": "INBOX",
+      "sender": "emma.richardson529@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Budget alerts not working",
+      "content": "I set up budget alerts but haven't received any notifications. Are they working correctly?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772517480.0,
+      "is_read": true
+    },
+    {
+      "email_id": "b240316d4914475c893f36feaacf6544",
+      "folder": "INBOX",
+      "sender": "elizabeth.rivera386@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "How do I set up bill reminders?",
+      "content": "How can I set up reminders for when bills are due? I don't see this feature in the app.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772519820.0,
+      "is_read": true
+    },
+    {
+      "email_id": "fa4878edaa684495a8ee3258a9631ffa",
+      "folder": "INBOX",
+      "sender": "andrew.sanders238@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Mobile app syncing issues",
+      "content": "My mobile app isn't syncing with the web version. Transactions show up on web but not on my phone. Please help.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772508360.0,
+      "is_read": true
+    },
+    {
+      "email_id": "f3c4f7c98fa849edaa11519bda4365f7",
+      "folder": "INBOX",
+      "sender": "daniel.nelson476@email.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Merchant name showing as gibberish",
+      "content": "Some merchant names show up as random codes instead of the actual store name. Can these be cleaned up?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772431500.0,
+      "is_read": true
+    },
+    {
+      "email_id": "8c5507b76d2e4347abe45835fc3f9c76",
+      "folder": "INBOX",
+      "sender": "rachel.reed122@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Feature request: Split transactions",
+      "content": "Is there a way to split a single transaction across multiple categories? Like when I buy groceries and household items in one trip?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772508360.0,
+      "is_read": true
+    },
+    {
+      "email_id": "361fbf6a7159477f8e7b1dc602bc1525",
+      "folder": "INBOX",
+      "sender": "lisa.bell611@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Transaction categorization error",
+      "content": "Some of my transactions are being categorized incorrectly. Can I manually recategorize them?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772422380.0,
+      "is_read": true
+    },
+    {
+      "email_id": "53d45e7ad3ca4ac2bf9ccad958a2e074",
+      "folder": "INBOX",
+      "sender": "rachel.reed122@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Password reset request",
+      "content": "I forgot my password and the reset email isn't coming through. Can you resend it or reset it manually?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772440560.0,
+      "is_read": true
+    },
+    {
+      "email_id": "cb9a0dfa03fc477a80cf9dacf9f5f2af",
+      "folder": "INBOX",
+      "sender": "michael.park440@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Duplicate transaction showing",
+      "content": "My dashboard numbers don't match when I manually calculate. Can you check?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772538000.0,
+      "is_read": true
+    },
+    {
+      "email_id": "31dddf56a8da424c81fa19108d4a3703",
+      "folder": "INBOX",
+      "sender": "andrew.murphy984@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Recurring transactions not detected",
+      "content": "I'm locked out of my account and need assistance getting back in.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772526480.0,
+      "is_read": true
+    },
+    {
+      "email_id": "af18f92e28044a0299095fdc4d2fa30b",
+      "folder": "INBOX",
+      "sender": "ashley.green949@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Mobile app syncing issues",
+      "content": "My mobile app isn't syncing with the web version. Transactions show up on web but not on my phone. Please help.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772536920.0,
+      "is_read": true
+    },
+    {
+      "email_id": "ce0193f1eb7b4c8eb151332faf3940d9",
+      "folder": "INBOX",
+      "sender": "linda.murphy698@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Can't access my account",
+      "content": "I'm locked out of my account. Says my password is wrong but I'm sure it's correct. Help!",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772423340.0,
+      "is_read": true
+    },
+    {
+      "email_id": "e973acdf3de04a23becfafb39e70a315",
+      "folder": "INBOX",
+      "sender": "sharon.howard661@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Investment tracking not working",
+      "content": "My investment accounts aren't tracking properly. The values shown don't match what I see in my brokerage account. Can you help?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772454480.0,
+      "is_read": true
+    },
+    {
+      "email_id": "7ef2d9c5b4c04ee1b7960b5c6cfb1ea2",
+      "folder": "INBOX",
+      "sender": "raymond.scott935@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Merchant name showing as gibberish",
+      "content": "Some merchant names show up as random codes instead of the actual store name. Can these be cleaned up?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772542500.0,
+      "is_read": true
+    },
+    {
+      "email_id": "94fd553c5359483abe52bfa6d6291358",
+      "folder": "INBOX",
+      "sender": "angela.baker578@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Can't access my account",
+      "content": "I'm locked out of my account. Says my password is wrong but I'm sure it's correct. Help!",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772435040.0,
+      "is_read": true
+    },
+    {
+      "email_id": "4f43be5e47e8455eb836200373acac5b",
+      "folder": "INBOX",
+      "sender": "steven.bell992@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Recurring transactions not detected",
+      "content": "Is there a way to add custom spending categories?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772514480.0,
+      "is_read": true
+    },
+    {
+      "email_id": "3487d77856aa4812af4622334232c215",
+      "folder": "INBOX",
+      "sender": "rachel.reed122@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Budget alerts not working",
+      "content": "I set up budget alerts but haven't received any notifications. Are they working correctly?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772543640.0,
+      "is_read": true
+    },
+    {
+      "email_id": "d6120b2811634f2293dc7085e0a4cdb4",
+      "folder": "INBOX",
+      "sender": "emma.kelly252@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Request for annual spending report",
+      "content": "Can I get an annual spending report for 2025? I need it for tax purposes.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772532240.0,
+      "is_read": true
+    },
+    {
+      "email_id": "ff3ef59e9ae1419493405d87d26307ac",
+      "folder": "INBOX",
+      "sender": "larry.young298@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Merchant name showing as gibberish",
+      "content": "Some merchant names show up as random codes instead of the actual store name. Can these be cleaned up?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772432760.0,
+      "is_read": true
+    },
+    {
+      "email_id": "b94a703e2efa4b38b3ef11f36e689faa",
+      "folder": "INBOX",
+      "sender": "arthur.garcia578@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Budget alerts not working",
+      "content": "I set up budget alerts but haven't received any notifications. Are they working correctly?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772453280.0,
+      "is_read": true
+    },
+    {
+      "email_id": "dfe05fa5bb964331889d780d75aee104",
+      "folder": "INBOX",
+      "sender": "rachel.carter655@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Password reset request",
+      "content": "I forgot my password and the reset email isn't coming through. Can you resend it or reset it manually?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772426940.0,
+      "is_read": true
+    },
+    {
+      "email_id": "cdbdf0605de24bd186a46192257a288e",
+      "folder": "INBOX",
+      "sender": "michelle.campbell517@email.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Net worth calculation seems off",
+      "content": "My net worth calculation doesn't seem right. I've been tracking manually and the total shown in FinTrack is different from what I calculated. Can you help me understand how it's calculated?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772521680.0,
+      "is_read": true
+    },
+    {
+      "email_id": "906a077b0ffd4fd1acfa549ee9a482b4",
+      "folder": "INBOX",
+      "sender": "amanda.cox441@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Mobile app syncing issues",
+      "content": "My mobile app isn't syncing with the web version. Transactions show up on web but not on my phone. Please help.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772530380.0,
+      "is_read": true
+    },
+    {
+      "email_id": "a7578001a25446b5a295c8c2d807d2e3",
+      "folder": "INBOX",
+      "sender": "betty.scott356@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Budget alerts not working",
+      "content": "I set up budget alerts but haven't received any notifications. Are they working correctly?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772536260.0,
+      "is_read": true
+    },
+    {
+      "email_id": "d7507c71981e4e9fb3cc1996a8439551",
+      "folder": "INBOX",
+      "sender": "jeffrey.evans56@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Request for annual spending report",
+      "content": "Can I get an annual spending report for 2025? I need it for tax purposes.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772425200.0,
+      "is_read": true
+    },
+    {
+      "email_id": "411fffa5e4704cfbbdfb13613df06c69",
+      "folder": "INBOX",
+      "sender": "barbara.peterson42@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Password reset request",
+      "content": "I forgot my password and the reset email isn't coming through. Can you resend it or reset it manually?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772536140.0,
+      "is_read": true
+    },
+    {
+      "email_id": "31a577780ffc4210880473836bca3d3a",
+      "folder": "INBOX",
+      "sender": "george.ross683@email.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Can't access my account",
+      "content": "I'm locked out of my account. Says my password is wrong but I'm sure it's correct. Help!",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772545860.0,
+      "is_read": true
+    },
+    {
+      "email_id": "259e8cea9ca0436a9c8c3c2cde1f921c",
+      "folder": "INBOX",
+      "sender": "paul.cox767@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "How to export transaction data to CSV?",
+      "content": "I need to export all my 2025 transactions to CSV for my accountant. Where's the export button? I can't find it in the transactions tab.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772505900.0,
+      "is_read": true
+    },
+    {
+      "email_id": "c1580815cb2c41bd8eda551ac4368c9b",
+      "folder": "INBOX",
+      "sender": "steven.bell992@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Enable two-factor authentication",
+      "content": "I want to enable 2FA for my account for extra security. How do I set this up? I don't see it in account settings.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772514000.0,
+      "is_read": true
+    },
+    {
+      "email_id": "81ca8559667c4001a3bc3c9ad3b23707",
+      "folder": "INBOX",
+      "sender": "eric.carter171@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Spending insights report not generating",
+      "content": "When I try to generate my monthly spending insights report, I get an error message. Can you help me get this working? I need to see my spending breakdown by category.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772518500.0,
+      "is_read": true
+    },
+    {
+      "email_id": "86a4690c98ca49b2a664fcc97bd15242",
+      "folder": "INBOX",
+      "sender": "jennifer.stewart911@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Can't link my Chase Sapphire card",
+      "content": "I'm trying to add my Chase Sapphire Reserve credit card but keep getting 'Connection Failed' error. I've tried three times. Can you help me link this account?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772481000.0,
+      "is_read": true
+    },
+    {
+      "email_id": "2a56bd49490c45c69950da3d02b24928",
+      "folder": "INBOX",
+      "sender": "andrew.murphy984@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Request to delete my account",
+      "content": "I want to permanently delete my FinTrack account and all associated data. What's the process for this? Do I need to unlink all accounts first?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772485500.0,
+      "is_read": true
+    },
+    {
+      "email_id": "4f0bec781a3741bfbed440770f6824da",
+      "folder": "INBOX",
+      "sender": "michelle.phillips346@email.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Recurring transaction tracking",
+      "content": "Is there a way to track recurring transactions separately? I want to see all my monthly subscriptions and bills in one view. Does FinTrack have this feature?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772490000.0,
+      "is_read": true
+    },
+    {
+      "email_id": "9e4af14ed8884d8cb86ae03ca623fad4",
+      "folder": "INBOX",
+      "sender": "daniel.taylor105@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Turn off email notifications",
+      "content": "I'm getting too many email notifications about every single transaction. Can I turn these off or limit them to just large transactions over $100?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772492100.0,
+      "is_read": true
+    },
+    {
+      "email_id": "6228ffeee74849dfa5294e89ac15bd0d",
+      "folder": "INBOX",
+      "sender": "paul.cooper837@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Add tags to transactions",
+      "content": "Can I add custom tags to transactions? I want to tag business expenses separately from personal ones for tax purposes.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772595600.0,
+      "is_read": true
+    },
+    {
+      "email_id": "0ae42ff6d5ea4315b83bcc506f24f633",
+      "folder": "INBOX",
+      "sender": "ashley.white484@outlook.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Savings goal tracking feature?",
+      "content": "Does FinTrack have a savings goal feature? I'm trying to save $10,000 for a vacation and want to track progress. If not, is this planned?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772601000.0,
+      "is_read": true
+    },
+    {
+      "email_id": "fdb9f45be3e741dc84f844b4cd5acabd",
+      "folder": "INBOX",
+      "sender": "cynthia.rivera956@gmail.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Transaction missing from feed",
+      "content": "I made a payment to my credit card yesterday but it's not showing up in my transaction feed. Should I wait longer or is something wrong?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772605500.0,
+      "is_read": true
+    },
+    {
+      "email_id": "4df14642a1864afda0df509fd6d40a81",
+      "folder": "INBOX",
+      "sender": "paul.morris906@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Connect Venmo account",
+      "content": "Can I link my Venmo account to FinTrack? I don't see it in the list of supported institutions. I have a lot of transactions there I want to track.",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772567400.0,
+      "is_read": true
+    },
+    {
+      "email_id": "26c540f1a7f046e28ef3cb431172ed09",
+      "folder": "INBOX",
+      "sender": "stephanie.walker323@email.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Spending comparison: this year vs last year",
+      "content": "I'd love to see a comparison of my spending this year versus last year. Is there a report or dashboard that shows year-over-year trends?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772572500.0,
+      "is_read": true
+    },
+    {
+      "email_id": "ae88d54b570045e2a498c5e74a43d10e",
+      "folder": "INBOX",
+      "sender": "amanda.cox441@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Cash transaction entry",
+      "content": "How do I manually add cash transactions? I withdrew $200 from ATM and spent cash but it's not being tracked. Can I enter these manually?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772575200.0,
+      "is_read": true
+    },
+    {
+      "email_id": "b8c8934da2354b6ebc610c7406584c2c",
+      "folder": "INBOX",
+      "sender": "raymond.kelly733@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Merchant logo incorrect",
+      "content": "The logo for Starbucks is showing up as a generic coffee cup instead of the actual Starbucks logo. Minor issue but thought you should know!",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772577900.0,
+      "is_read": true
+    },
+    {
+      "email_id": "b1946530702840158e07a9662fa35ceb",
+      "folder": "INBOX",
+      "sender": "michael.brooks994@yahoo.com",
+      "recipients": [
+        "support@fintrack.example.com"
+      ],
+      "subject": "Shared account with spouse",
+      "content": "My spouse and I want to share access to track our joint checking account. Can we both link the same account to our separate FinTrack profiles?",
+      "cc": [],
+      "parent_id": null,
+      "attachments": {},
+      "timestamp": 1772583600.0,
+      "is_read": true
+    }
+  ],
+  "jmap_emails": [],
+  "threads": [],
+  "mailboxes": [
+    {
+      "id": "INBOX",
+      "name": "Inbox",
+      "role": "inbox",
+      "totalEmails": 45,
+      "unreadEmails": 0,
+      "totalThreads": 0,
+      "unreadThreads": 0
+    },
+    {
+      "id": "SENT",
+      "name": "Sent",
+      "role": "sent",
+      "totalEmails": 0,
+      "unreadEmails": 0,
+      "totalThreads": 0,
+      "unreadThreads": 0
+    },
+    {
+      "id": "DRAFT",
+      "name": "Drafts",
+      "role": "drafts",
+      "totalEmails": 0,
+      "unreadEmails": 0,
+      "totalThreads": 0,
+      "unreadThreads": 0
+    },
+    {
+      "id": "TRASH",
+      "name": "Trash",
+      "role": "trash",
+      "totalEmails": 0,
+      "unreadEmails": 0,
+      "totalThreads": 0,
+      "unreadThreads": 0
+    }
+  ]
+}

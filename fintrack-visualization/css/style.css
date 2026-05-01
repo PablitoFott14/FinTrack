@@ -161,6 +161,12 @@ mark { background: rgba(251,191,36,0.25); color: var(--amber); border-radius: 2p
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
 .card h4 { font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.6px; }
 .card canvas { max-height: 240px; }
+.chart-legend-wrap { display: flex; align-items: center; gap: 16px; }
+.chart-legend-wrap canvas { flex-shrink: 0; }
+.chart-legend-list { display: flex; flex-direction: column; gap: 5px; overflow-y: auto; max-height: 240px; }
+.cll-item { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+.cll-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+.cll-label { font-size: 11px; color: #94a3b8; }
 
 /* ─── EXPLORER BAR ─── */
 .explorer-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: 10px; }

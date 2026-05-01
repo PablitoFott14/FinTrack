@@ -218,11 +218,19 @@ function renderSpendingChart() {
   const cat = {};
   FT.transactions.forEach(t => { if(t.amount<0) cat[t.category]=(cat[t.category]||0)+Math.abs(t.amount); });
   const e = Object.entries(cat).sort((a,b)=>b[1]-a[1]);
+  const colors = PALETTE.map(c=>c+'bb');
   mkChart('c-spending-cat','doughnut',{
     labels: e.map(([k])=>k),
-    datasets:[{data:e.map(([,v])=>+v.toFixed(0)),backgroundColor:PALETTE.map(c=>c+'bb'),borderColor:'#0f1829',borderWidth:2}]
-  },{plugins:{legend:{position:'right',labels:{color:'#94a3b8',padding:9,boxWidth:9}}},cutout:'55%',
+    datasets:[{data:e.map(([,v])=>+v.toFixed(0)),backgroundColor:colors,borderColor:'#0f1829',borderWidth:2}]
+  },{plugins:{legend:{display:false}},cutout:'55%',
     tooltip:{callbacks:{label:ctx=>` ${ctx.label}: $${ctx.parsed.toLocaleString()}`}}});
+
+  const legend = document.getElementById('c-spending-cat-legend');
+  if (legend) {
+    legend.innerHTML = e.map(([k], i) =>
+      `<div class="cll-item"><span class="cll-dot" style="background:${colors[i]}"></span><span class="cll-label">${k}</span></div>`
+    ).join('');
+  }
 }
 
 function renderAccountTypesChart() {

@@ -435,8 +435,7 @@ function openTicketModal(ticketId) {
         ['member_since', ftUser.member_since],
         ['linked_accounts', ftUser.linked_accounts_count],
       ]) +
-      fkCheck(true, `external_id "${zdUser?.external_id}" → FinTrack user: ${ftUser.name}`) +
-      `<div style="padding:8px 12px"><button class="link-btn" onclick="closeModal();buildScenarioForUser('${ftUser.user_id}')">Build full OpenClaw context for ${esc(ftUser.name)} →</button></div>`
+      fkCheck(true, `external_id "${zdUser?.external_id}" → FinTrack user: ${ftUser.name}`)
     );
 
     if (accts.length) {
@@ -951,134 +950,6 @@ function findDuplicates(arr) {
     else seen[id]=true;
   });
   return dups;
-}
-
-/* ══════════════════════════════════════════════════
-   SCENARIO BUILDER
-══════════════════════════════════════════════════ */
-function initScenarioBuilder() {
-  const sel = document.getElementById('sc-user-select');
-  const btn = document.getElementById('sc-build-btn');
-  if (!sel||sel.children.length>1) return;
-  FT.users.forEach(u=>{
-    const o=document.createElement('option');o.value=u.user_id;o.textContent=`${u.user_id} — ${u.name}`;sel.appendChild(o);
-  });
-  sel.onchange = ()=>{ btn.disabled=!sel.value; };
-  btn.onclick  = ()=>{ if(sel.value) buildScenario(sel.value); };
-}
-
-function buildScenarioForUser(userId) {
-  navigateTo('scenarios');
-  setTimeout(()=>{
-    const sel=document.getElementById('sc-user-select');
-    if(sel)sel.value=userId;
-    const btn=document.getElementById('sc-build-btn');
-    if(btn)btn.disabled=false;
-    buildScenario(userId);
-  },100);
-}
-
-function buildScenario(userId) {
-  const user = FT.users.find(u=>u.user_id===userId);
-  if (!user) return;
-  const accts   = FT.accounts.filter(a=>a.user_id===userId);
-  const txns    = FT.transactions.filter(t=>t.user_id===userId);
-  const subs    = FT.subscriptions.filter(s=>s.user_id===userId);
-  const active  = subs.filter(s=>s.status==='Active');
-  const zdUser  = (ZD.users||[]).find(u=>u.external_id===userId);
-  const tickets = zdUser ? (ZD.tickets||[]).filter(t=>t.requester_id===zdUser.id) : [];
-  const emails  = (EM.emails||[]).filter(e=>e.sender===user.email);
-  const contact = (CT.contacts||[]).find(c=>c.email===user.email);
-  const calEvts = (CAL.events||[]).filter(e=>(e.attendees||[]).includes(user.name));
-  const totalBal= accts.reduce((s,a)=>s+a.balance,0);
-  const monthlyEst=active.reduce((s,sub)=>s+sub.amount*({Monthly:1,Annual:1/12,Weekly:4.33,'Bi-weekly':2.165}[sub.billing_frequency]||1),0);
-  const catMap={};
-  txns.filter(t=>t.amount<0).forEach(t=>{catMap[t.category]=(catMap[t.category]||0)+Math.abs(t.amount);});
-  const topCats = Object.entries(catMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const recent  = [...txns].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
-  const upcoming= calEvts.filter(e=>e.start_datetime*1000>Date.now()).sort((a,b)=>a.start_datetime-b.start_datetime).slice(0,5);
-
-  const blk = (icon,title,inner) => `<div class="sc-block">
-    <div class="sc-block-title"><span>${icon}</span>${title}</div>
-    ${inner}
-  </div>`;
-
-  const miniTable=(heads,rows_,onRowClick_=null)=>`<table class="chain-mini-table">
-    <thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
-    <tbody>${rows_.map((r,i)=>`<tr class="${onRowClick_?'linkable':''}" ${onRowClick_?`onclick="${onRowClick_(r,i)}"`:''} >${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
-  </table>`;
-
-  const html =
-    blk('👤',`Identity — ${esc(user.name)} (${user.user_id})`,
-      `<div class="sc-kpi-row">
-        <div class="sc-kpi"><div class="sc-kpi-val">${user.user_id}</div><div class="sc-kpi-lbl">User ID</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">${user.member_since}</div><div class="sc-kpi-lbl">Member Since</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">${accts.length}</div><div class="sc-kpi-lbl">Accounts</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">${tickets.length}</div><div class="sc-kpi-lbl">Tickets</div></div>
-      </div>
-      <div style="font-size:11px;color:var(--text2);margin-top:6px">Email: ${esc(user.email)} · Phone: ${esc(user.phone||'—')}
-      ${contact?` · Contact record found`:''}${zdUser?` · Zendesk ID: ${zdUser.id}`:''}</div>`) +
-
-    blk('💰',`Financial Summary — ${accts.length} accounts, $${Math.abs(Math.round(totalBal)).toLocaleString()} net balance`,
-      `<div class="sc-kpi-row">
-        <div class="sc-kpi"><div class="sc-kpi-val ${totalBal<0?'amt-neg':'amt-pos'}">$${Math.abs(Math.round(totalBal)).toLocaleString()}</div><div class="sc-kpi-lbl">Net Balance</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">$${Math.round(txns.filter(t=>t.amount<0).reduce((s,t)=>s+Math.abs(t.amount),0)).toLocaleString()}</div><div class="sc-kpi-lbl">Total Spent</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">${txns.length}</div><div class="sc-kpi-lbl">Transactions</div></div>
-        <div class="sc-kpi"><div class="sc-kpi-val">$${monthlyEst.toFixed(0)}/mo</div><div class="sc-kpi-lbl">Subscriptions</div></div>
-      </div>` +
-      miniTable(['Institution','Type','Last 4','Balance','Status'],
-        accts.map(a=>[esc(a.institution_name),esc(a.account_type),`•••• ${a.last_four}`,$(a.balance),badgeHtml('active',a.status)]),
-        (r,i)=>`openAccountModal('${accts[i].account_id}')`
-      )) +
-
-    blk('📊','Spending Breakdown',
-      miniTable(['Category','Total Spent','% of Spending'],
-        topCats.map(([c,v])=>[badgeHtml('cat',esc(c)),`$${v.toFixed(2)}`,
-          `${txns.filter(t=>t.amount<0).reduce((s,t)=>s+Math.abs(t.amount),0)>0?(v/txns.filter(t=>t.amount<0).reduce((s,t)=>s+Math.abs(t.amount),0)*100).toFixed(1)+'%':'—'}`
-        ]), null
-      )) +
-
-    blk('💳',`Recent Transactions (${txns.length} total)`,
-      miniTable(['Date','Merchant','Amount','Category'],
-        recent.map(t=>[t.date,esc(t.merchant),$(t.amount),badgeHtml('cat',esc(t.category))]),
-        (r,i)=>`openTransactionModal('${recent[i].transaction_id}')`
-      ) +
-      `<button class="link-btn" style="margin:8px 0 0;display:block" onclick="filterTxByUser('${userId}')">View all ${txns.length} transactions →</button>`) +
-
-    blk('🔄',`Active Subscriptions (${active.length})`,
-      active.length ? miniTable(['Service','Amount','Frequency','Next Billing'],
-        active.map(s=>[esc(s.service_name),`$${s.amount?.toFixed(2)}`,s.billing_frequency,s.next_billing_date]),
-        (r,i)=>`openSubscriptionModal('${active[i].subscription_id}')`
-      ) : '<div style="color:var(--text3);font-size:12px">No active subscriptions.</div>') +
-
-    (upcoming.length ? blk('📅','Upcoming Billing Events',
-      upcoming.map(e=>{
-        const d=new Date(e.start_datetime*1000).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-        const amt=e.description?.match(/Amount: \$(.+)/)?.[1]||'';
-        return `<div style="padding:5px 0;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">📅 ${esc(e.title)} — ${d}${amt?' · $'+amt:''}</div>`;
-      }).join('')) : '') +
-
-    blk('🎫',`Support History (${tickets.length} tickets · ${emails.length} emails)`,
-      tickets.length ? miniTable(['Ticket ID','Subject','Status','Created'],
-        tickets.map(t=>[t.external_id||'TKT'+t.id,esc((t.subject||'').slice(0,55)),badgeHtml('open',t.status),(t.created_at||'').slice(0,10)]),
-        (r,i)=>`openTicketModal(${tickets[i].id})`
-      ) : '<div style="color:var(--text3);font-size:12px">No support tickets.</div>') +
-
-    blk('⚡','What OpenClaw Sees',
-      `<div style="font-size:12px;color:var(--text2);line-height:1.7">
-        When <strong>${esc(user.name)}</strong> contacts support, OpenClaw assembles this context in one multi-service query:
-        <ul style="margin:8px 0 0 16px">
-          <li><strong>Identity</strong>: FinTrack profile + ${contact?'contact record found':'no contact record'}</li>
-          <li><strong>Financial state</strong>: ${accts.length} accounts, net <span class="${totalBal<0?'amt-neg':'amt-pos'}">$${Math.abs(Math.round(totalBal)).toLocaleString()}</span>, ${txns.length} transactions</li>
-          <li><strong>Recurring costs</strong>: ${active.length} active subscriptions, ~$${monthlyEst.toFixed(0)}/month</li>
-          <li><strong>Calendar</strong>: ${calEvts.length} billing events on record</li>
-          <li><strong>Support history</strong>: ${tickets.length} ticket${tickets.length!==1?'s':''}, ${emails.length} email${emails.length!==1?'s':''}</li>
-          <li><strong>Top spending</strong>: ${topCats.map(([c])=>c).join(', ')||'none'}</li>
-        </ul>
-        <div style="font-size:10px;color:var(--text3);margin-top:8px">Data from: FinTrack · Contacts · Calendar · Email · Zendesk</div>
-      </div>`);
-
-  document.getElementById('sc-output').innerHTML = html;
 }
 
 /* ══════════════════════════════════════════════════

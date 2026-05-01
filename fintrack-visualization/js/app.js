@@ -65,7 +65,7 @@ function lazyRender(tab) {
     case 'transactions':  renderTransactionsPage(); break;
     case 'subscriptions': renderSubscriptionsPage();break;
     case 'support':       renderSupportPage();      break;
-    case 'scenarios':     initScenarioBuilder();    break;
+
     case 'integrity':     renderIntegrityPage();    break;
     case 'network':       renderNetwork();          break;
   }

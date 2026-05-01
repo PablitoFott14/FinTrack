@@ -218,37 +218,49 @@ function renderSpendingChart() {
   const cat = {};
   FT.transactions.forEach(t => { if(t.amount<0) cat[t.category]=(cat[t.category]||0)+Math.abs(t.amount); });
   const e = Object.entries(cat).sort((a,b)=>b[1]-a[1]);
-  const colors = PALETTE.map(c=>c+'bb');
   mkChart('c-spending-cat','doughnut',{
     labels: e.map(([k])=>k),
-    datasets:[{data:e.map(([,v])=>+v.toFixed(0)),backgroundColor:colors,borderColor:'#0f1829',borderWidth:2}]
-  },{plugins:{legend:{display:false}},cutout:'55%',
-    tooltip:{callbacks:{label:ctx=>` ${ctx.label}: $${ctx.parsed.toLocaleString()}`}}});
-
-  const legend = document.getElementById('c-spending-cat-legend');
-  if (legend) {
-    legend.innerHTML = e.map(([k], i) =>
-      `<div class="cll-item"><span class="cll-dot" style="background:${colors[i]}"></span><span class="cll-label">${k}</span></div>`
-    ).join('');
-  }
+    datasets:[{data:e.map(([,v])=>+v.toFixed(0)),backgroundColor:PALETTE.map(c=>c+'bb'),borderColor:'#0f1829',borderWidth:2}]
+  },{
+    plugins:{
+      legend:{position:'bottom',labels:{color:'#94a3b8',padding:10,boxWidth:9,font:{size:11}}},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.label}: $${ctx.parsed.toLocaleString()}`}}
+    },
+    cutout:'55%',
+    onClick:(evt,elements)=>{
+      if(!elements.length) return;
+      const label = e[elements[0].index][0];
+      navigateTo('transactions');
+      setTimeout(()=>{
+        const sel = document.getElementById('tx-cat');
+        if(sel){ sel.value = label; sel.dispatchEvent(new Event('input')); sel.dispatchEvent(new Event('change')); }
+      }, 50);
+    }
+  });
 }
 
 function renderAccountTypesChart() {
   const dist = {};
   FT.accounts.forEach(a => { dist[a.account_type]=(dist[a.account_type]||0)+1; });
   const e = Object.entries(dist).sort((a,b)=>b[1]-a[1]);
-  const colors = PALETTE.map(c=>c+'bb');
   mkChart('c-account-types','doughnut',{
     labels:e.map(([k])=>k),
-    datasets:[{data:e.map(([,v])=>v),backgroundColor:colors,borderColor:'#0f1829',borderWidth:2}]
-  },{plugins:{legend:{display:false}},cutout:'55%'});
-
-  const legend = document.getElementById('c-account-types-legend');
-  if (legend) {
-    legend.innerHTML = e.map(([k], i) =>
-      `<div class="cll-item"><span class="cll-dot" style="background:${colors[i]}"></span><span class="cll-label">${k}</span></div>`
-    ).join('');
-  }
+    datasets:[{data:e.map(([,v])=>v),backgroundColor:PALETTE.map(c=>c+'bb'),borderColor:'#0f1829',borderWidth:2}]
+  },{
+    plugins:{
+      legend:{position:'bottom',labels:{color:'#94a3b8',padding:10,boxWidth:9,font:{size:11}}}
+    },
+    cutout:'55%',
+    onClick:(evt,elements)=>{
+      if(!elements.length) return;
+      const label = e[elements[0].index][0];
+      navigateTo('accounts');
+      setTimeout(()=>{
+        const sel = document.getElementById('accts-type');
+        if(sel){ sel.value = label; sel.dispatchEvent(new Event('input')); sel.dispatchEvent(new Event('change')); }
+      }, 50);
+    }
+  });
 }
 
 /* ══════════════════════════════════════

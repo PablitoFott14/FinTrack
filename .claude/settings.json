@@ -10,7 +10,9 @@
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
       "Bash(curl -s \"https://api.github.com/repos/PablitoFott14/FinTrack/contents/fintrack-visualization/data\")",
-      "Bash(curl -s \"https://api.github.com/repos/PablitoFott14/FinTrack/contents/fintrack-visualization/js\")"
+      "Bash(curl -s \"https://api.github.com/repos/PablitoFott14/FinTrack/contents/fintrack-visualization/js\")",
+      "WebFetch(domain:mila-avag.github.io)",
+      "Bash(curl -s \"https://mila-avag.github.io/finance-support-environment/\")"
     ]
   }
 }

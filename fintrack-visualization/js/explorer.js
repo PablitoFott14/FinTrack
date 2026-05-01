@@ -144,7 +144,7 @@ function openUserModal(userId) {
   html += chainConnector(`transactions.user_id = "${userId}"`);
 
   /* Block 3: Recent transactions */
-  html += chainBlock('cb-tx', `Recent Transactions (last 10 of ${txns.length})`, `${txns.length} total`,
+  html += chainBlock('cb-tx', `Recent Transactions`, `${txns.length} total`,
     chainTable(
       ['Date','Merchant','Amount','Category','Account'],
       recent.map(t=>[
@@ -452,7 +452,7 @@ function openTicketModal(ticketId) {
 
     if (recent.length) {
       html += chainConnector(`transactions.user_id = "${ftUser.user_id}" (recent activity)`);
-      html += chainBlock('cb-tx','Recent Transactions', `${recent.length} of ${FT.transactions.filter(t=>t.user_id===ftUser.user_id).length} total`,
+      html += chainBlock('cb-tx','Recent Transactions', `${FT.transactions.filter(t=>t.user_id===ftUser.user_id).length} total`,
         chainTable(
           ['Date','Merchant','Amount','Category'],
           recent.map(t=>[t.date,esc(t.merchant),$(t.amount),badgeHtml('cat',esc(t.category))]),

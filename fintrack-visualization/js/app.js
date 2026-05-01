@@ -237,10 +237,18 @@ function renderAccountTypesChart() {
   const dist = {};
   FT.accounts.forEach(a => { dist[a.account_type]=(dist[a.account_type]||0)+1; });
   const e = Object.entries(dist).sort((a,b)=>b[1]-a[1]);
+  const colors = PALETTE.map(c=>c+'bb');
   mkChart('c-account-types','doughnut',{
     labels:e.map(([k])=>k),
-    datasets:[{data:e.map(([,v])=>v),backgroundColor:PALETTE.map(c=>c+'bb'),borderColor:'#0f1829',borderWidth:2}]
-  },{plugins:{legend:{position:'right',labels:{color:'#94a3b8',padding:9,boxWidth:9}}},cutout:'55%'});
+    datasets:[{data:e.map(([,v])=>v),backgroundColor:colors,borderColor:'#0f1829',borderWidth:2}]
+  },{plugins:{legend:{display:false}},cutout:'55%'});
+
+  const legend = document.getElementById('c-account-types-legend');
+  if (legend) {
+    legend.innerHTML = e.map(([k], i) =>
+      `<div class="cll-item"><span class="cll-dot" style="background:${colors[i]}"></span><span class="cll-label">${k}</span></div>`
+    ).join('');
+  }
 }
 
 /* ══════════════════════════════════════
